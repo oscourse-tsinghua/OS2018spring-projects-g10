@@ -9,5 +9,5 @@ before_install:
         - docker pull amadeuschan/osproject
 
 script:
-        - docker run -d amadeuschan/osproject /bin/sh -c "/root/OS2018spring-projects-g10; make verify"
+        - docker run -d amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git;cd /root/OS2018spring-projects-g10; make verify"
         - docker ps -a
