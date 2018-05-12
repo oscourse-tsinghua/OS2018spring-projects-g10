@@ -9,4 +9,5 @@ before_install:
         - docker pull amadeuschan/osproject
 
 script:
-        - python verify.py
+        - docker run -d amadeuschan/osproject /bin/sh -c "/root/OS2018spring-projects-g10; make verify"
+        - docker ps -a
