@@ -112,7 +112,7 @@ class AsyncDisk(object):
     def flush(self):
         on = self._mach.create_on(self._dirty)
         if self._docache:
-            self._disk = If(on, self._disk, self._cache)
+            self._disk = If(on, self._disk, self._cache) # something wrong??
         self._dirty = []
 
     def read(self, bid):

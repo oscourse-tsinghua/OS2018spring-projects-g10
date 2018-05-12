@@ -7,6 +7,7 @@ from yggdrasil.util import *
 from yggdrasil import test
 
 
+# inode meta-data
 def FreshAttr():
     bsize = FreshSize('bsize')
     mtime = FreshSize('mtime')
@@ -24,7 +25,7 @@ def attr_eq(a, b):
 class InodeDiskRefinement(test.RefinementTest):
     def create_spec(self, mach):
         mappedarray = FreshDiskArray('mappedarray')
-        attr_array = FreshDiskArray('spec_attr', domain=BitVecSort(32))
+        attr_array = FreshDiskArray('spec_attr', domain=BitVecSort(32)) # to store meta-data
         diskarray = FreshDiskArray('diskarray')
         return InodeSpec(mach, [mappedarray, attr_array, diskarray])
 
@@ -36,6 +37,7 @@ class InodeDiskRefinement(test.RefinementTest):
         txndisk = MultiTxnDisk(mach, [freemaparray, inodemetaarray, inodedataarray, diskarray])
         return InodeDisk(txndisk, Allocator64, BitmapSpec, InodePackSpec)
 
+    # this function is not called?
     def pre_post(self, spec, impl, fnargs, *args, **kwargs):
         pre_reverse_map = Function(fresh_name('reverse_map'), SizeSort, SizeSort)
 
@@ -144,6 +146,7 @@ class InodeDiskRefinement(test.RefinementTest):
         mapped = impl.is_mapped(vbn)
 
         pre = mapped
+        # ULT = unsigned less than
         pre = And(pre, ULT(off, InodeDisk.NDIRECT))
 
         impl.begin_tx()

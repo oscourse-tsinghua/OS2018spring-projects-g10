@@ -19,6 +19,8 @@ from util import prove, solve
 
 import solver
 
+# to understand the code, it is necesary to read python source code unittest.py
+# https://pythonhosted.org/gchecky/unittest-pysrc.html
 
 def z3_option(**kwargs):
     def decorator(fn):
@@ -68,6 +70,8 @@ class DiskTest(unittest.TestCase):
                 # we shoud gather all the sub-results
                 # Copy the original one for-deduplication>
                 presult = copy.deepcopy(result)
+
+                # merged result from child-process
 
                 # Wait at most 1 second *after* child has died
                 # for result.
