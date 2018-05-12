@@ -9,4 +9,4 @@ before_install:
         - docker pull amadeuschan/osproject
 
 script:
-        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git;cd OS2018spring-projects-g10/yggdrasil; make verify"
+        - travis_wait 60 mvn docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git;cd OS2018spring-projects-g10/yggdrasil; make verify"
