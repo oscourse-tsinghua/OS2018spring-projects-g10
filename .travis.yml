@@ -9,11 +9,11 @@ before_install:
         - docker pull amadeuschan/osproject
 
 script:
-        - travis_wait docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git"
-        - travis_wait docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git && cd OS2018spring-projects-g10/yggdrasil && make all prod && make clean && make verify"
-        - travis_wait 30 docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git;cd OS2018spring-projects-g10/yggdrasil; python test_xv6inode.py"
-        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git;cd OS2018spring-projects-g10/yggdrasil; python test_dirspec.py"
-        - travis_wait 60 docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git;cd OS2018spring-projects-g10/yggdrasil; python test_bitmap.py"
-        - travis_wait 60 docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git;cd OS2018spring-projects-g10/yggdrasil; python test_inodepack.py"
-        - travis_wait 60 docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git;cd OS2018spring-projects-g10/yggdrasil; python test_partition.py"
+        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/yggdrasil; make; python test_waldisk.py"
+        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/yggdrasil; make; python test_xv6inode.py"
+        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/yggdrasil; make; python test_dirspec.py"
+        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/yggdrasil; make; python test_bitmap.py"
+        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/yggdrasil; make; python test_inodepack.py"
+        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/yggdrasil; make; python test_partition.py"
+
 
