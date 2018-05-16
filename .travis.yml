@@ -1,0 +1,18 @@
+sudo: required
+
+language: python
+
+services:
+        - docker
+
+before_install:
+        - docker pull amadeuschan/osproject
+
+script:
+        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/yggdrasil; make; python test_waldisk.py"
+        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/yggdrasil; make; python test_xv6inode.py"
+        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/yggdrasil; make; python test_dirspec.py"
+        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/yggdrasil; make; python test_bitmap.py"
+        - docker run -t amadeuschan/osproject /bin/sh -c "git clone https://github.com/AmadeusChan/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/yggdrasil; make; python test_partition.py"
+
+
