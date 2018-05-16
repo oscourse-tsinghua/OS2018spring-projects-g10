@@ -30,3 +30,5 @@ function doSomething()
         rm -f $retTmp
         return $retcode
 }
+
+doSomething
