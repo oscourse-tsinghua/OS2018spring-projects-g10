@@ -7,7 +7,6 @@ services:
 
 before_install:
         - docker pull amadeuschan/osproject
-        - docker run -i -t amadeuschan/osproject
 
 script:
-        - python verify.py
+        - bash test.sh

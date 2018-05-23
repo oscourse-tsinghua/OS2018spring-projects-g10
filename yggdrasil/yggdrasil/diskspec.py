@@ -24,6 +24,7 @@ class Machine(object):
         b = Bool(fresh_name(name))
 
         self._stacks[b.sexpr()] = traceback.extract_stack()[:-2]
+        # for counter-example visualization
 
         self._control.append(b)
         if self._on is not None:
@@ -436,3 +437,35 @@ class Allocator32(object):
     def alloc(self):
         return BitVec(fresh_name('alloc'), 32)
 
+# specification for xv6-fs
+
+class IDEDiskLayerSpec(object):
+    def __init__(self, mach, disk):
+        self._mach = mach
+        self._disk = disk
+
+    def ide_write(self, bid, data, guard = BoolVal(True)):
+        self._disk = self._disk.update(bid, data, guard)
+
+    def ide_read(self, bid):
+        return self._cache(bid)
+
+    def crash(self, mach):
+        return self.__class__(mach, self._disk)
+
+    def domain(self):
+        return self._disk.domain()
+
+"""
+class BufferCacheLayerSpec(object):
+    def __init__(self, mach, disk, buff):
+        self._mach = mach
+        self._disk = disk
+        self._buff = buff
+        self._dirty = []
+
+    def _modify_buffer(self, synced, bid, data, ):
+        pass
+"""
+
+class LoggingLayerSpec(object):
