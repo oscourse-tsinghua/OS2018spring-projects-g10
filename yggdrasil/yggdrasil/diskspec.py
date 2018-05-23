@@ -468,4 +468,4 @@ class BufferCacheLayerSpec(object):
         pass
 """
 
-class LoggingLayerSpec(object):
+#class LoggingLayerSpec(object):
