@@ -32,7 +32,7 @@ QUIET_CXX     = $(Q:@=@echo    '     C++      '$@;)
 QUIET_AR      = $(Q:@=@echo    '     AR       '$@;)
 QUIET_RANLIB  = $(Q:@=@echo    '     RANLIB   '$@;)
 
-CFLAGS       += -fno-PIE
+CFLAGS       += -fno-PIE 
 CFLAGS       += -ffreestanding -MD -MP
 CFLAGS       += -Wall
 CFLAGS       += -g
