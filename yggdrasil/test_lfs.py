@@ -130,46 +130,46 @@ class LFSRefinement(test.RefinementTest):
         assertion(name != 0)
         yield (parent, name, mode, mtime)
 
-    # test
+    #test
 
-    # def test_foo(self):
-    #     mach = Machine()
-    #     impl = self.create_impl(mach)
-    #
-    #     parent = BitVecVal(1, 64)
-    #     name = BitVecVal(0xdeadbeef, 64)
-    #     mode = BitVecVal(0x1337, 64)
-    #
-    #     sb = impl._disk.read(0)
-    #     imap = impl._disk.read(sb[2])
-    #
-    #     name0 = FreshSize('name')
-    #
-    #     pre = And(
-    #             # inode alloc
-    #             0 < sb[1], sb[1] < 512,
-    #
-    #             # allocated blocks are in range ]0..allocator[
-    #             0 < sb[2], sb[2] < sb[0],
-    #             0 < imap[1], imap[1] < sb[0],
-    #             0 < imap[1], sb[2] < imap[1],
-    #
-    #             # root dir inode has been allocated
-    #             1 < sb[1],
-    #
-    #             ForAll([name0],
-    #                 Implies(0 < impl.lookup(parent, name0),
-    #                     And(
-    #                         impl.lookup(parent, name0) < sb[1],
-    #                         imap[Extract(8, 0, impl.lookup(parent, name0))] < sb[0]))))
-    #
-    #     res = impl.mknod(parent, name, mode)
-    #     if res < 0:
-    #         pass
-    #     else:
-    #         ino = impl.lookup(parent, name)
-    #         v = impl.get_attr(ino)
-            # self.psolve(pre, v != mode)
+    def test_foo(self):
+        mach = Machine()
+        impl = self.create_impl(mach)
+    
+        parent = BitVecVal(1, 64)
+        name = BitVecVal(0xdeadbeef, 64)
+        mode = BitVecVal(0x1337, 64)
+    
+        sb = impl._disk.read(0)
+        imap = impl._disk.read(sb[2])
+    
+        name0 = FreshSize('name')
+    
+        pre = And(
+                # inode alloc
+                0 < sb[1], sb[1] < 512,
+    
+                # allocated blocks are in range ]0..allocator[
+                0 < sb[2], sb[2] < sb[0],
+                0 < imap[1], imap[1] < sb[0],
+                0 < imap[1], sb[2] < imap[1],
+    
+                # root dir inode has been allocated
+                1 < sb[1],
+    
+                ForAll([name0],
+                    Implies(0 < impl.lookup(parent, name0),
+                        And(
+                            impl.lookup(parent, name0) < sb[1],
+                            imap[Extract(8, 0, impl.lookup(parent, name0))] < sb[0]))))
+    
+        res = impl.mknod(parent, name, mode)
+        if res < 0:
+            pass
+        else:
+            ino = impl.lookup(parent, name)
+            v = impl.get_attr(ino)
+        self.psolve(pre, v != mode)
 
 
 

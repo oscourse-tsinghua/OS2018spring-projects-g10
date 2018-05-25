@@ -10,6 +10,10 @@ from yggdrasil.diskspec import *
 from yggdrasil import test
 
 
+# to verify that WALDisk is a crash-refinement of MultiTxnDisk
+# so, corresponding to layer2 transaction disk
+# ... I see... WALDisk is ... write-ahead logging disk (so transaction disk)
+
 class WALDiskTestRefinement(test.RefinementTest):
     def create_spec(self, mach):
         dataarray1 = FreshDiskArray('dataarray')
@@ -17,19 +21,25 @@ class WALDiskTestRefinement(test.RefinementTest):
         return MultiTxnDisk(mach, [dataarray1, dataarray2])
 
     def create_impl(self, mach, logarray=None):
+        # reuse the logarray (or a physical disk)
+        # i guess that FreshDiskArray is the specification of a physical block decice
         if logarray is None:
             logarray = ConstDiskArray(ConstBlock(0))
         dataarray1 = FreshDiskArray('dataarray')
         dataarray2 = FreshDiskArray('dataarray')
+        # a logdisk along with two data disk? so a transaction disk 
         logdisk = AsyncDisk(mach, logarray)
         datadisk1 = AsyncDisk(mach, dataarray1)
         datadisk2 = AsyncDisk(mach, dataarray2)
         return WALDisk(logdisk, [datadisk1, datadisk2], osync=False)
 
     def equivalence_volatile(self, spec, impl, **kwargs):
+        # (spec <=> impl) <=> (same content)
+        # I think that FreshSize of a wrapper of some Z3 class like BitVector
+        # disk-buffer 
         bid = FreshSize('bid')
         return ForAll([bid], And(
-            spec.read(0, bid) == impl.read(0, bid),
+            spec.read(0, bid) == impl.read(0, bid), # SMT encoding as output
             spec.read(1, bid) == impl.read(1, bid)))
 
     def equivalence_durable(self, spec, impl, **kwargs):
@@ -60,6 +70,7 @@ class WALDiskTestRefinement(test.RefinementTest):
         spec.commit_tx()
 
     def _gen_iov(self, *args, **kwargs):
+        # ?????
         for n in range(WALDisk.LOG_MAX_ENTRIES + 1):
             iov = []
             for i in range(n):
@@ -73,6 +84,7 @@ class WALDiskTestRefinement(test.RefinementTest):
     match_write_tx_nocommit.nocrash = True
 
     # recover-full(recover-partial(d)) = recover-full(d)
+    # entry function
     def test_idempotent_recovery(self):
         mach = Machine()
         logarray = FreshDiskArray('logarray')
@@ -80,6 +92,7 @@ class WALDiskTestRefinement(test.RefinementTest):
         assumption = mach.assumption
 
         # Recovery post-condition..
+        # to make sure that after the recovery, first entry if logdisk(count) is 0
         self.solve(assumption, mach._on,
                 d._logdisk._disk(0)[0] != 0)
 
@@ -92,8 +105,10 @@ class WALDiskTestRefinement(test.RefinementTest):
         y = d.crash(mach).read(0, i)
         assumption = And(assumption, mach.assumption)
 
+        # make sure that recovery operation is idempotent
         self.solve(assumption, Not(x == y))
 
+    # another entry function
     def test_atomic(self):
         for i in range(2):
             self.__test_atomic(i + 1)
@@ -116,9 +131,13 @@ class WALDiskTestRefinement(test.RefinementTest):
         d = d.crash(mach)
         anyvs = [d.read(0, bid) for bid in bids]
 
+        # prove the atomic of every transaction
         self.prove(Implies(assumption, Or(
             And(*[anyv == oldv for anyv, oldv in zip(anyvs, oldvs)]),
             And(*[anyv == x for anyv, x in zip(anyvs, xs)]))))
+        
+        # note that self.prove(X) is to prove that X is valid
+        # and self.solve(X) is to prove that X is never satisfied
 
 
 if __name__ == '__main__':
