@@ -1,5 +1,10 @@
 #include "fs.h"
 
+struct asyncdisk_buf {
+}; 
+
+uint8_t* get_asyncdisk_buffer();
+
 void iderw(struct buf *b)
 {
     if (!(b->flags & B_BUSY))
@@ -19,4 +24,20 @@ void iderw(struct buf *b)
 void ideflush()
 {
     unix_flush();
+}
+
+// Asyndisk Layer
+
+uint8_t* asyncdisk_read(uint bid) {
+	uint8_t *buf = get_asyncdisk_buffer();
+	unix_read(bid, buf);
+	return buf;
+}
+
+void asyncdisk_write(uint bid, uint8_t *data) {
+	unix_write(bid, data);
+}
+
+void asyncdisk_flush() {
+	unix_flush();
 }
