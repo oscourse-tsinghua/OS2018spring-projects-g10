@@ -28,6 +28,7 @@ void ideflush()
 
 // Asyndisk Layer
 
+/*
 uint8_t* asyncdisk_read(uint bid) {
 	uint8_t *buf = get_asyncdisk_buffer();
 	unix_read(bid, buf);
@@ -41,3 +42,4 @@ void asyncdisk_write(uint bid, uint8_t *data) {
 void asyncdisk_flush() {
 	unix_flush();
 }
+*/

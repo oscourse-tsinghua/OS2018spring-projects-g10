@@ -1,0 +1,313 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/c04ceb8/
+ADMINQ_SIZE	nvmedisk.c	/^#define ADMINQ_SIZE /;"	d	file:
+BBLOCK	fslayout.h	/^#define BBLOCK(/;"	d
+BLKSECTS	nvmedisk.c	/^#define BLKSECTS /;"	d	file:
+BPB	fslayout.h	/^#define BPB /;"	d
+BSIZE	fslayout.h	/^#define BSIZE /;"	d
+B_BUSY	fs.h	/^#define B_BUSY /;"	d
+B_DIRTY	fs.h	/^#define B_DIRTY /;"	d
+B_VALID	fs.h	/^#define B_VALID /;"	d
+DIRSIZ	fslayout.h	/^#define DIRSIZ /;"	d
+FSIPC_FSTAT	fs.h	/^    FSIPC_FSTAT,$/;"	e	enum:__anon7c96edb40103
+FSIPC_MEMBUF	fs.h	/^    FSIPC_MEMBUF,$/;"	e	enum:__anon7c96edb40103
+FSIPC_MKDIR	fs.h	/^    FSIPC_MKDIR,$/;"	e	enum:__anon7c96edb40103
+FSIPC_MKNOD	fs.h	/^    FSIPC_MKNOD,$/;"	e	enum:__anon7c96edb40103
+FSIPC_OPEN	fs.h	/^    FSIPC_OPEN = 1,$/;"	e	enum:__anon7c96edb40103
+FSIPC_PIPE	fs.h	/^    FSIPC_PIPE,$/;"	e	enum:__anon7c96edb40103
+FSIPC_PREAD	fs.h	/^    FSIPC_PREAD,$/;"	e	enum:__anon7c96edb40103
+FSIPC_PWRITE	fs.h	/^    FSIPC_PWRITE,$/;"	e	enum:__anon7c96edb40103
+FSIPC_UNLINK	fs.h	/^    FSIPC_UNLINK,$/;"	e	enum:__anon7c96edb40103
+HWBIGF	fslayout.h	/^#define HWBIGF$/;"	d
+IBLOCK	fslayout.h	/^#define IBLOCK(/;"	d
+IOQ_SIZE	nvmedisk.c	/^#define IOQ_SIZE /;"	d	file:
+IPB	fslayout.h	/^#define IPB /;"	d
+I_BUSY	fslayout.h	/^#define I_BUSY /;"	d
+I_VALID	fslayout.h	/^#define I_VALID /;"	d
+LOGSIZE	fslayout.h	/^#define LOGSIZE /;"	d
+MAXFILE	fslayout.h	/^#define MAXFILE /;"	d
+MAXOPBLOCKS	fslayout.h	/^#define MAXOPBLOCKS /;"	d
+NBUF	fslayout.h	/^#define NBUF /;"	d
+NDEV	fs.h	/^#define NDEV /;"	d
+NDINDIRECT	fslayout.h	/^#define NDINDIRECT /;"	d
+NDIRECT	fslayout.h	/^#define NDIRECT /;"	d
+NINDIRECT	fslayout.h	/^#define NINDIRECT /;"	d
+NINODE	fs.h	/^#define NINODE /;"	d
+NINODES	mkfs.c	/^#define NINODES /;"	d	file:
+PIPESIZE	pipe.c	/^#define PIPESIZE /;"	d	file:
+ROOTDEV	fs.h	/^#define ROOTDEV /;"	d
+ROOTINO	fslayout.h	/^#define ROOTINO /;"	d
+SIZE	mkfs.c	/^#define SIZE /;"	d	file:
+T_DEV	stat.h	/^#define T_DEV /;"	d
+T_DIR	stat.h	/^#define T_DIR /;"	d
+T_FILE	stat.h	/^#define T_FILE /;"	d
+__anon0f27d3d00108	bio.c	/^struct {$/;"	s	file:
+__anon7c96edb40103	fs.h	/^enum {$/;"	g
+__anon7c96edb4020a	fs.h	/^    union {$/;"	u	struct:fsipc_ping
+__anon7c96edb40308	fs.h	/^        struct {$/;"	s	union:fsipc_ping::__anon7c96edb4020a
+__anon7c96edb40408	fs.h	/^        struct {$/;"	s	union:fsipc_ping::__anon7c96edb4020a
+__anon7c96edb40508	fs.h	/^        struct {$/;"	s	union:fsipc_ping::__anon7c96edb4020a
+__anon7c96edb40608	fs.h	/^        struct {$/;"	s	union:fsipc_ping::__anon7c96edb4020a
+__anon7c96edb40708	fs.h	/^        struct {$/;"	s	union:fsipc_ping::__anon7c96edb4020a
+__anon7c96edb40808	fs.h	/^        struct {$/;"	s	union:fsipc_ping::__anon7c96edb4020a
+__anon7c96edb40908	fs.h	/^        struct {$/;"	s	union:fsipc_ping::__anon7c96edb4020a
+__anon9f0b27850108	inode.c	/^struct {$/;"	s	file:
+_binary_fs_img_end	memfs.S	/^_binary_fs_img_end:$/;"	l
+_binary_fs_img_start	memfs.S	/^_binary_fs_img_start:$/;"	l
+acquire	fs.h	/^static inline void acquire(struct spinlock *lk)$/;"	f	typeref:typename:void
+addrs	fslayout.h	/^    uint addrs[NDIRECT + 2]; \/* data block addresses *\/$/;"	m	struct:dinode	typeref:typename:uint[]
+addrs	fslayout.h	/^    uint addrs[NDIRECT + 2];$/;"	m	struct:inode	typeref:typename:uint[]
+adminq	nvmedisk.c	/^static struct nvme_queue adminq, ioq;$/;"	v	typeref:struct:nvme_queue	file:
+asyncdisk_buf	ide.c	/^struct asyncdisk_buf {$/;"	s	file:
+asyncdisk_flush	ide.c	/^void asyncdisk_flush() {$/;"	f	typeref:typename:void
+asyncdisk_read	ide.c	/^uint8_t* asyncdisk_read(uint bid) {$/;"	f	typeref:typename:uint8_t *
+asyncdisk_write	ide.c	/^void asyncdisk_write(uint bid, uint8_t *data) {$/;"	f	typeref:typename:void
+atime	fslayout.h	/^    int atime;$/;"	m	struct:dinode	typeref:typename:int
+atime	fslayout.h	/^    int atime;$/;"	m	struct:inode	typeref:typename:int
+atime	stat.h	/^    int atime;$/;"	m	struct:stat	typeref:typename:int
+balloc	inode.c	/^static uint balloc(uint dev)$/;"	f	typeref:typename:uint	file:
+balloc	mkfs.c	/^void balloc(int used)$/;"	f	typeref:typename:void
+bcache	bio.c	/^} bcache;$/;"	v	typeref:struct:__anon0f27d3d00108
+begin_op	log.c	/^void begin_op(void)$/;"	f	typeref:typename:void
+bfree	inode.c	/^static void bfree(int dev, uint b)$/;"	f	typeref:typename:void	file:
+bget	bio.c	/^static struct buf *bget(uint dev, uint sector)$/;"	f	typeref:struct:buf *	file:
+binit	bio.c	/^void binit(void)$/;"	f	typeref:typename:void
+bmap	inode.c	/^static uint bmap(struct inode *ip, uint bn)$/;"	f	typeref:typename:uint	file:
+bread	bio.c	/^struct buf *bread(uint dev, uint sector)$/;"	f	typeref:struct:buf *
+brelse	bio.c	/^void brelse(struct buf *b)$/;"	f	typeref:typename:void
+buf	bio.c	/^    struct buf buf[NBUF];$/;"	m	struct:__anon0f27d3d00108	typeref:struct:buf[]	file:
+buf	fs.h	/^            char buf[PAGE_SIZE - 24];$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40808	typeref:typename:char[]
+buf	fs.h	/^struct buf {$/;"	s
+bwrite	bio.c	/^void bwrite(struct buf *b)$/;"	f	typeref:typename:void
+commit	log.c	/^static void commit()$/;"	f	typeref:typename:void	file:
+committing	log.c	/^    int committing;  \/\/ in commit(), please wait.$/;"	m	struct:log	typeref:typename:int	file:
+consoleinit	fs.c	/^static void consoleinit(void)$/;"	f	typeref:typename:void	file:
+consoleread	fs.c	/^static int consoleread(struct inode *ip, char *buf, size_t count, size_t offset)$/;"	f	typeref:typename:int	file:
+consolewrite	fs.c	/^static int consolewrite(struct inode *ip, char *buf, size_t count)$/;"	f	typeref:typename:int	file:
+count	fs.h	/^            size_t count;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40408	typeref:typename:size_t
+count	fs.h	/^            size_t count;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40808	typeref:typename:size_t
+cq_hdbl	nvmedisk.c	/^    void *cq_hdbl;$/;"	m	struct:nvme_queue	typeref:typename:void *	file:
+cq_head	nvmedisk.c	/^    uint32_t cq_head;$/;"	m	struct:nvme_queue	typeref:typename:uint32_t	file:
+cq_phase	nvmedisk.c	/^    uint16_t cq_phase;$/;"	m	struct:nvme_queue	typeref:typename:uint16_t	file:
+cq_va	nvmedisk.c	/^    void *cq_va;$/;"	m	struct:nvme_queue	typeref:typename:void *	file:
+create	file.c	/^static struct inode *create(struct file *cwd, char *path, short type, short major, short minor)$/;"	f	typeref:struct:inode *	file:
+ctime	fslayout.h	/^    int ctime;$/;"	m	struct:dinode	typeref:typename:int
+ctime	fslayout.h	/^    int ctime;$/;"	m	struct:inode	typeref:typename:int
+ctime	stat.h	/^    int ctime;$/;"	m	struct:stat	typeref:typename:int
+data	fs.h	/^    uint8_t data[BSIZE];$/;"	m	struct:buf	typeref:typename:uint8_t[]
+data	pipe.c	/^    char data[PIPESIZE];$/;"	m	struct:pipe	typeref:typename:char[]	file:
+dev	fs.h	/^    uint dev;$/;"	m	struct:buf	typeref:typename:uint
+dev	fslayout.h	/^    uint dev;  \/* device number *\/$/;"	m	struct:inode	typeref:typename:uint
+dev	log.c	/^    int dev;$/;"	m	struct:log	typeref:typename:int	file:
+dev	stat.h	/^    int dev;       \/* file system's disk device *\/$/;"	m	struct:stat	typeref:typename:int
+devsw	fs.c	/^struct devsw devsw[NDEV];$/;"	v	typeref:struct:devsw[]
+devsw	fs.h	/^struct devsw {$/;"	s
+dinode	fslayout.h	/^struct dinode {$/;"	s
+dirent	fslayout.h	/^struct dirent {$/;"	s
+dirfd	fs.h	/^            int dirfd;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40308	typeref:typename:int
+dirfd	fs.h	/^            int dirfd;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40508	typeref:typename:int
+dirfd	fs.h	/^            int dirfd;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40608	typeref:typename:int
+dirfd	fs.h	/^            int dirfd;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40908	typeref:typename:int
+dirlink	inode.c	/^int dirlink(struct inode *dp, char *name, uint inum)$/;"	f	typeref:typename:int
+dirlookup	inode.c	/^struct inode *dirlookup(struct inode *dp, char *name, uint *poff)$/;"	f	typeref:struct:inode *
+do_fstat	fs.c	/^static int do_fstat(pid_t pid)$/;"	f	typeref:typename:int	file:
+do_membuf	fs.c	/^static int do_membuf(pid_t pid)$/;"	f	typeref:typename:int	file:
+do_mkdir	fs.c	/^static int do_mkdir(pid_t pid)$/;"	f	typeref:typename:int	file:
+do_mknod	fs.c	/^static int do_mknod(pid_t pid)$/;"	f	typeref:typename:int	file:
+do_open	fs.c	/^static int do_open(pid_t pid)$/;"	f	typeref:typename:int	file:
+do_pipe	fs.c	/^static int do_pipe(pid_t pid)$/;"	f	typeref:typename:int	file:
+do_pread	fs.c	/^static int do_pread(pid_t pid)$/;"	f	typeref:typename:int	file:
+do_pwrite	fs.c	/^static int do_pwrite(pid_t pid)$/;"	f	typeref:typename:int	file:
+do_unlink	fs.c	/^static int do_unlink(pid_t pid)$/;"	f	typeref:typename:int	file:
+end_op	log.c	/^void end_op(void)$/;"	f	typeref:typename:void
+fd	fs.h	/^            int fd;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40408	typeref:typename:int
+fd	fs.h	/^            int fd;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40708	typeref:typename:int
+fd	fs.h	/^            int fd;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40808	typeref:typename:int
+fd_lookup	fs.c	/^static struct file *fd_lookup(pid_t pid, int fd)$/;"	f	typeref:struct:file *	file:
+file_ip	fs.h	/^static inline struct inode *file_ip(struct file *f)$/;"	f	typeref:struct:inode *
+file_pipe	fs.h	/^static inline struct pipe *file_pipe(struct file *f)$/;"	f	typeref:struct:pipe *
+file_readable	fs.h	/^static inline int file_readable(struct file *f)$/;"	f	typeref:typename:int
+file_writable	fs.h	/^static inline int file_writable(struct file *f)$/;"	f	typeref:typename:int
+filemkdir	file.c	/^int filemkdir(struct file *cwd, char *path)$/;"	f	typeref:typename:int
+filemknod	file.c	/^int filemknod(struct file *cwd, char *path, short major, short minor)$/;"	f	typeref:typename:int
+fileopen	file.c	/^int fileopen(struct file *cwd, char *path, int omode)$/;"	f	typeref:typename:int
+filepread	file.c	/^int filepread(struct file *f, char *addr, size_t count, size_t offset)$/;"	f	typeref:typename:int
+filepwrite	file.c	/^int filepwrite(struct file *f, char *addr, size_t n, size_t offset)$/;"	f	typeref:typename:int
+filestat	file.c	/^int filestat(struct file *f, struct stat *st)$/;"	f	typeref:typename:int
+fileunlink	file.c	/^int fileunlink(struct file *cwd, char *path)$/;"	f	typeref:typename:int
+find_pci	nvmedisk.c	/^static size_t find_pci(void)$/;"	f	typeref:typename:size_t	file:
+flags	fs.h	/^            int flags;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40908	typeref:typename:int
+flags	fs.h	/^    int flags;$/;"	m	struct:buf	typeref:typename:int
+flags	fslayout.h	/^    int flags; \/* I_BUSY, I_VALID *\/$/;"	m	struct:inode	typeref:typename:int
+freeblock	mkfs.c	/^uint freeblock;$/;"	v	typeref:typename:uint
+freeinode	mkfs.c	/^uint freeinode = 1;$/;"	v	typeref:typename:uint
+fs_main	fs.c	/^noreturn void fs_main(void)$/;"	f	typeref:typename:noreturn void
+fsfd	mkfs.c	/^int fsfd;$/;"	v	typeref:typename:int
+fsipc_ping	fs.h	/^struct fsipc_ping {$/;"	s
+fsipc_pong	fs.h	/^struct fsipc_pong {$/;"	s
+fstat	fs.h	/^        } fstat;$/;"	m	union:fsipc_ping::__anon7c96edb4020a	typeref:struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40708
+gc	fs.c	/^static void gc(void)$/;"	f	typeref:typename:void	file:
+handler_t	fs.c	/^typedef int (*handler_t)(pid_t);$/;"	t	typeref:typename:int (*)(pid_t)	file:
+handlers	fs.c	/^static handler_t handlers[] = {$/;"	v	typeref:typename:handler_t[]	file:
+head	bio.c	/^    struct buf head;$/;"	m	struct:__anon0f27d3d00108	typeref:struct:buf	file:
+ialloc	inode.c	/^struct inode *ialloc(uint dev, short type)$/;"	f	typeref:struct:inode *
+ialloc	mkfs.c	/^uint ialloc(ushort type)$/;"	f	typeref:typename:uint
+iappend	mkfs.c	/^void iappend(uint inum, void *xp, int n)$/;"	f	typeref:typename:void
+icache	inode.c	/^} icache;$/;"	v	typeref:struct:__anon9f0b27850108
+id	nvmedisk.c	/^    uint16_t id;$/;"	m	struct:nvme_queue	typeref:typename:uint16_t	file:
+ideflush	ide.c	/^void ideflush()$/;"	f	typeref:typename:void
+iderw	ide.c	/^void iderw(struct buf *b)$/;"	f	typeref:typename:void
+idup	inode.c	/^struct inode *idup(struct inode *ip)$/;"	f	typeref:struct:inode *
+iget	inode.c	/^static struct inode *iget(uint dev, uint inum)$/;"	f	typeref:struct:inode *	file:
+iinit	inode.c	/^void iinit(void)$/;"	f	typeref:typename:void
+ilock	inode.c	/^void ilock(struct inode *ip)$/;"	f	typeref:typename:void
+initlock	fs.h	/^static inline void initlock(struct spinlock *lk, char *name)$/;"	f	typeref:typename:void
+initlog	log.c	/^void initlog(void)$/;"	f	typeref:typename:void
+ino	stat.h	/^    uint32_t ino;  \/* inode number *\/$/;"	m	struct:stat	typeref:typename:uint32_t
+inode	fslayout.h	/^struct inode {$/;"	s
+inode	inode.c	/^    struct inode inode[NINODE];$/;"	m	struct:__anon9f0b27850108	typeref:struct:inode[]	file:
+install_trans	log.c	/^static void install_trans(void)$/;"	f	typeref:typename:void	file:
+inum	fslayout.h	/^    uint inum; \/* inode number *\/$/;"	m	struct:inode	typeref:typename:uint
+inum	fslayout.h	/^    uint16_t inum;$/;"	m	struct:dirent	typeref:typename:uint16_t
+iommu_alloc_root	uiommu.c	/^pn_t iommu_alloc_root(size_t i, uintptr_t va, int bar)$/;"	f	typeref:typename:pn_t
+iommu_map	uiommu.c	/^void iommu_map(pn_t root, void *va, size_t n)$/;"	f	typeref:typename:void
+iommu_map_page	uiommu.c	/^static void iommu_map_page(pn_t root, void *p)$/;"	f	typeref:typename:void	file:
+ioq	nvmedisk.c	/^static struct nvme_queue adminq, ioq;$/;"	v	typeref:struct:nvme_queue	file:
+iput	inode.c	/^void iput(struct inode *ip)$/;"	f	typeref:typename:void
+isdirempty	file.c	/^static int isdirempty(struct inode *dp)$/;"	f	typeref:typename:int	file:
+itrunc	inode.c	/^void itrunc(struct inode *ip)$/;"	f	typeref:typename:void
+iunlock	inode.c	/^void iunlock(struct inode *ip)$/;"	f	typeref:typename:void
+iunlockput	inode.c	/^void iunlockput(struct inode *ip)$/;"	f	typeref:typename:void
+iupdate	inode.c	/^void iupdate(struct inode *ip)$/;"	f	typeref:typename:void
+lh	log.c	/^    struct logheader lh;$/;"	m	struct:log	typeref:struct:logheader	file:
+lock	bio.c	/^    struct spinlock lock;$/;"	m	struct:__anon0f27d3d00108	typeref:struct:spinlock	file:
+lock	inode.c	/^    struct spinlock lock;$/;"	m	struct:__anon9f0b27850108	typeref:struct:spinlock	file:
+lock	log.c	/^    struct spinlock lock;$/;"	m	struct:log	typeref:struct:spinlock	file:
+lock	pipe.c	/^    struct spinlock lock;$/;"	m	struct:pipe	typeref:struct:spinlock	file:
+locked	fs.h	/^    int locked;$/;"	m	struct:spinlock	typeref:typename:int
+log	log.c	/^struct log {$/;"	s	file:
+log_write	log.c	/^void log_write(struct buf *b)$/;"	f	typeref:typename:void
+logheader	log.c	/^struct logheader {$/;"	s	file:
+main	mkfs.c	/^int main(int argc, char *argv[])$/;"	f	typeref:typename:int
+major	fs.h	/^            short major;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40508	typeref:typename:short
+major	fslayout.h	/^    short major; \/* major device number (T_DEV only) *\/$/;"	m	struct:dinode	typeref:typename:short
+major	fslayout.h	/^    short major;$/;"	m	struct:inode	typeref:typename:short
+min	mkfs.c	/^#define min(/;"	d	file:
+minor	fs.h	/^            short minor;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40508	typeref:typename:short
+minor	fslayout.h	/^    short minor; \/* minor device number (T_DEV only) *\/$/;"	m	struct:dinode	typeref:typename:short
+minor	fslayout.h	/^    short minor;$/;"	m	struct:inode	typeref:typename:short
+mkdir	fs.h	/^        } mkdir;$/;"	m	union:fsipc_ping::__anon7c96edb4020a	typeref:struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40608
+mknod	fs.h	/^        } mknod;$/;"	m	union:fsipc_ping::__anon7c96edb4020a	typeref:struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40508
+mode	fs.h	/^            int mode;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40608	typeref:typename:int
+mtime	fslayout.h	/^    int mtime;$/;"	m	struct:dinode	typeref:typename:int
+mtime	fslayout.h	/^    int mtime;$/;"	m	struct:inode	typeref:typename:int
+mtime	stat.h	/^    int mtime;$/;"	m	struct:stat	typeref:typename:int
+n	log.c	/^    int n;$/;"	m	struct:logheader	typeref:typename:int	file:
+name	fslayout.h	/^    char name[DIRSIZ];$/;"	m	struct:dirent	typeref:typename:char[]
+namecmp	inode.c	/^int namecmp(const char *s, const char *t)$/;"	f	typeref:typename:int
+namei	inode.c	/^struct inode *namei(struct file *cwd, char *path)$/;"	f	typeref:struct:inode *
+nameiparent	inode.c	/^struct inode *nameiparent(struct file *cwd, char *path, char *name)$/;"	f	typeref:struct:inode *
+namex	inode.c	/^static struct inode *namex(struct file *cwd, char *path, int nameiparent, char *name)$/;"	f	typeref:struct:inode *	file:
+nbitmap	mkfs.c	/^int nbitmap = SIZE \/ (BSIZE * 8) + 1;$/;"	v	typeref:typename:int
+nblocks	fslayout.h	/^    uint nblocks; \/* number of data blocks *\/$/;"	m	struct:superblock	typeref:typename:uint
+nblocks	mkfs.c	/^int nblocks; \/\/ Number of data blocks$/;"	v	typeref:typename:int
+next	fs.h	/^    struct buf *next;$/;"	m	struct:buf	typeref:struct:buf *
+ninodeblocks	mkfs.c	/^int ninodeblocks = NINODES \/ IPB + 1;$/;"	v	typeref:typename:int
+ninodes	fslayout.h	/^    uint ninodes; \/* number of inodes *\/$/;"	m	struct:superblock	typeref:typename:uint
+nlink	fslayout.h	/^    short nlink; \/* number of links to inode in file system *\/$/;"	m	struct:dinode	typeref:typename:short
+nlink	fslayout.h	/^    short nlink;$/;"	m	struct:inode	typeref:typename:short
+nlink	stat.h	/^    short nlink;   \/* number of links to file *\/$/;"	m	struct:stat	typeref:typename:short
+nlog	fslayout.h	/^    uint nlog;    \/* number of log blocks *\/$/;"	m	struct:superblock	typeref:typename:uint
+nlog	mkfs.c	/^int nlog = LOGSIZE;$/;"	v	typeref:typename:int
+nmeta	mkfs.c	/^int nmeta;   \/\/ Number of meta blocks (inode, bitmap, and 2 extra)$/;"	v	typeref:typename:int
+nread	pipe.c	/^    uint nread;    \/* number of bytes read *\/$/;"	m	struct:pipe	typeref:typename:uint	file:
+nvme_queue	nvmedisk.c	/^struct nvme_queue {$/;"	s	file:
+nvme_queue_create	nvmedisk.c	/^static void nvme_queue_create(struct nvme_queue *q)$/;"	f	typeref:typename:void	file:
+nvme_queue_init	nvmedisk.c	/^static void nvme_queue_init(struct nvme_queue *q, void *sq, void *cq, void *base, uint16_t id,$/;"	f	typeref:typename:void	file:
+nvme_queue_submit	nvmedisk.c	/^static int nvme_queue_submit(struct nvme_queue *q, void *cmd)$/;"	f	typeref:typename:int	file:
+nwrite	pipe.c	/^    uint nwrite;   \/* number of bytes written *\/$/;"	m	struct:pipe	typeref:typename:uint	file:
+offset	fs.h	/^            off_t offset;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40408	typeref:typename:off_t
+offset	fs.h	/^            off_t offset;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40808	typeref:typename:off_t
+omode	fs.h	/^            int omode;$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40308	typeref:typename:int
+open	fs.h	/^        } open;$/;"	m	union:fsipc_ping::__anon7c96edb4020a	typeref:struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40308
+outstanding	log.c	/^    int outstanding; \/\/ how many FS sys calls are executing.$/;"	m	struct:log	typeref:typename:int	file:
+path	fs.h	/^            char path[MAXPATH];$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40308	typeref:typename:char[]
+path	fs.h	/^            char path[MAXPATH];$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40508	typeref:typename:char[]
+path	fs.h	/^            char path[MAXPATH];$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40608	typeref:typename:char[]
+path	fs.h	/^            char path[MAXPATH];$/;"	m	struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40908	typeref:typename:char[]
+ping	fs.c	/^static struct fsipc_ping *ping = (void *)ping_buf;$/;"	v	typeref:struct:fsipc_ping *	file:
+pipe	pipe.c	/^struct pipe {$/;"	s	file:
+pipealloc	pipe.c	/^int pipealloc(int fds[2])$/;"	f	typeref:typename:int
+pipeclose	pipe.c	/^void pipeclose(struct pipe *p, int writable)$/;"	f	typeref:typename:void
+piperead	pipe.c	/^int piperead(struct pipe *p, char *addr, int n)$/;"	f	typeref:typename:int
+pipewrite	pipe.c	/^int pipewrite(struct pipe *p, char *addr, int n)$/;"	f	typeref:typename:int
+pong	fs.c	/^static struct fsipc_pong *pong = (void *)pong_buf;$/;"	v	typeref:struct:fsipc_pong *	file:
+pread	fs.h	/^        } pread;$/;"	m	union:fsipc_ping::__anon7c96edb4020a	typeref:struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40408
+prev	fs.h	/^    struct buf *prev; \/* LRU cache list *\/$/;"	m	struct:buf	typeref:struct:buf *
+pwrite	fs.h	/^        } pwrite;$/;"	m	union:fsipc_ping::__anon7c96edb4020a	typeref:struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40808
+qnext	fs.h	/^    struct buf *qnext; \/* disk queue *\/$/;"	m	struct:buf	typeref:struct:buf *
+read	fs.h	/^    int (*read)(struct inode *, char *, size_t n, size_t off);$/;"	m	struct:devsw	typeref:typename:int (*)(struct inode *,char *,size_t n,size_t off)
+read_head	log.c	/^static void read_head(void)$/;"	f	typeref:typename:void	file:
+readi	inode.c	/^int readi(struct inode *ip, char *dst, uint off, uint n)$/;"	f	typeref:typename:int
+readopen	pipe.c	/^    int readopen;  \/* read fd is still open *\/$/;"	m	struct:pipe	typeref:typename:int	file:
+readsb	inode.c	/^void readsb(int dev, struct superblock *sb)$/;"	f	typeref:typename:void
+recover_from_log	log.c	/^static void recover_from_log(void)$/;"	f	typeref:typename:void	file:
+ref	fslayout.h	/^    int ref;   \/* reference count *\/$/;"	m	struct:inode	typeref:typename:int
+release	fs.h	/^static inline void release(struct spinlock *lk)$/;"	f	typeref:typename:void
+rinode	mkfs.c	/^void rinode(uint inum, struct dinode *ip)$/;"	f	typeref:typename:void
+rsect	mkfs.c	/^void rsect(uint sec, void *buf)$/;"	f	typeref:typename:void
+sb	mkfs.c	/^struct superblock sb;$/;"	v	typeref:struct:superblock
+sector	fs.h	/^    uint sector;$/;"	m	struct:buf	typeref:typename:uint
+sector	log.c	/^    int sector[LOGSIZE];$/;"	m	struct:logheader	typeref:typename:int[]	file:
+size	fslayout.h	/^    uint size;    \/* size of file system image (blocks) *\/$/;"	m	struct:superblock	typeref:typename:uint
+size	fslayout.h	/^    uint size;   \/* size of file (bytes) *\/$/;"	m	struct:dinode	typeref:typename:uint
+size	fslayout.h	/^    uint size;$/;"	m	struct:inode	typeref:typename:uint
+size	log.c	/^    int size;$/;"	m	struct:log	typeref:typename:int	file:
+size	nvmedisk.c	/^    size_t size;$/;"	m	struct:nvme_queue	typeref:typename:size_t	file:
+size	stat.h	/^    uint32_t size; \/* size of file in bytes *\/$/;"	m	struct:stat	typeref:typename:uint32_t
+skipelem	inode.c	/^static char *skipelem(char *path, char *name)$/;"	f	typeref:typename:char *	file:
+sleep	fs.h	/^static inline void sleep(void *addr, struct spinlock *lk)$/;"	f	typeref:typename:void
+spinlock	fs.h	/^struct spinlock {$/;"	s
+sq_tail	nvmedisk.c	/^    uint32_t sq_tail;$/;"	m	struct:nvme_queue	typeref:typename:uint32_t	file:
+sq_tdbl	nvmedisk.c	/^    void *sq_tdbl;$/;"	m	struct:nvme_queue	typeref:typename:void *	file:
+sq_va	nvmedisk.c	/^    void *sq_va;$/;"	m	struct:nvme_queue	typeref:typename:void *	file:
+start	log.c	/^    int start;$/;"	m	struct:log	typeref:typename:int	file:
+stat	mkfs.c	/^#define stat /;"	d	file:
+stat	stat.h	/^struct stat {$/;"	s
+stati	inode.c	/^void stati(struct inode *ip, struct stat *st)$/;"	f	typeref:typename:void
+superblock	fslayout.h	/^struct superblock {$/;"	s
+thelog	log.c	/^struct log thelog;$/;"	v	typeref:struct:log
+type	fslayout.h	/^    short type;  \/* file type *\/$/;"	m	struct:dinode	typeref:typename:short
+type	fslayout.h	/^    short type; \/* copy of disk inode *\/$/;"	m	struct:inode	typeref:typename:short
+type	stat.h	/^    short type;    \/* type of file *\/$/;"	m	struct:stat	typeref:typename:short
+uchar	fslayout.h	/^typedef unsigned char uchar;$/;"	t	typeref:typename:unsigned char
+uint	fslayout.h	/^typedef unsigned int uint;$/;"	t	typeref:typename:unsigned int
+unix_flush	memdisk.c	/^void unix_flush(void)$/;"	f	typeref:typename:void
+unix_flush	nvmedisk.c	/^void unix_flush(void)$/;"	f	typeref:typename:void
+unix_init	memdisk.c	/^void unix_init(void)$/;"	f	typeref:typename:void
+unix_init	nvmedisk.c	/^void unix_init(void)$/;"	f	typeref:typename:void
+unix_read	memdisk.c	/^void unix_read(uint64_t block, void *buf)$/;"	f	typeref:typename:void
+unix_read	nvmedisk.c	/^void unix_read(uint64_t block, void *buf)$/;"	f	typeref:typename:void
+unix_time	fs.c	/^int unix_time(void)$/;"	f	typeref:typename:int
+unix_write	memdisk.c	/^void unix_write(uint64_t block, const void *buf)$/;"	f	typeref:typename:void
+unix_write	nvmedisk.c	/^void unix_write(uint64_t block, const void *buf)$/;"	f	typeref:typename:void
+unlink	fs.h	/^        } unlink;$/;"	m	union:fsipc_ping::__anon7c96edb4020a	typeref:struct:fsipc_ping::__anon7c96edb4020a::__anon7c96edb40908
+ushort	fslayout.h	/^typedef unsigned short ushort;$/;"	t	typeref:typename:unsigned short
+wakeup	fs.h	/^static inline void wakeup(void *addr)$/;"	f	typeref:typename:void
+winode	mkfs.c	/^void winode(uint inum, struct dinode *ip)$/;"	f	typeref:typename:void
+write	fs.h	/^    int (*write)(struct inode *, char *, size_t n);$/;"	m	struct:devsw	typeref:typename:int (*)(struct inode *,char *,size_t n)
+write_head	log.c	/^static void write_head(void)$/;"	f	typeref:typename:void	file:
+write_log	log.c	/^static void write_log(void)$/;"	f	typeref:typename:void	file:
+writei	inode.c	/^int writei(struct inode *ip, char *src, uint off, uint n)$/;"	f	typeref:typename:int
+writeopen	pipe.c	/^    int writeopen; \/* write fd is still open *\/$/;"	m	struct:pipe	typeref:typename:int	file:
+wsect	mkfs.c	/^void wsect(uint sec, void *buf)$/;"	f	typeref:typename:void
+xint	mkfs.c	/^uint xint(uint x)$/;"	f	typeref:typename:uint
+xshort	mkfs.c	/^ushort xshort(ushort x)$/;"	f	typeref:typename:ushort
+xv6_bzero	inode.c	/^static void xv6_bzero(int dev, int bno)$/;"	f	typeref:typename:void	file:
+zeroes	mkfs.c	/^char zeroes[BSIZE];$/;"	v	typeref:typename:char[]
+zeroi	inode.c	/^void zeroi(struct inode *ip, uint off, uint n)$/;"	f	typeref:typename:void
