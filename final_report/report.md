@@ -68,7 +68,7 @@
 
 假设，f0是规范中描述的操作，而f1是实现中描述的操作，而他们所对应的系统不变量分别为I0, I1，则认为f1在上述情况下符合f0的要求（称之为f1是f0的一个crash-refinement without recovery）需要满足如下条件：
 
-![Uploading file..._0fy360tik]()
+![def2](def2.png)
 
 #### Definition 3
 
@@ -78,7 +78,7 @@
 
 假设r是一个恢复函数，则其满足幂等性需要满足以下条件：
 
-![Uploading file..._nk4t5r7k1]()
+![def3](def3.png)
 
 #### Definition 4
 
@@ -86,13 +86,13 @@
 
 假设f0是规范中定义的某一个操作，而f1是实现中定义的与f0相对应的操作，而I0，I1分别是指这两个操作所需要满足的系统不变量，而r是幂等的恢复操作，而f0,f1本身在不考虑系统奔溃的情况下是等价的，则f1是满足了f0要求的实现（记为f1是f0的一个crash-refinement），则需要还满足的条件有：
 
-![Uploading file..._zsorjsjec]()
+![def4](def4.png)
 
 #### Definition 5
 
 由于存在某些操作不会对磁盘状态造成影响，因此对这些操作进行形式化定义如下：
 
-![Uploading file..._49fcg1ekb]()
+![def5](def5.png)
 
 #### Definition 6
 
