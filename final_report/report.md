@@ -255,7 +255,7 @@ test_atomic函数：证明Def 6，也即crash之后再恢复的状态为crash之
 ## 工作计划
 1. 将hv6FS的代码做irpy产生符号化执行图
 2. 将1.中的执行图在Yggdrasil中做验证（难点）
-3. 将Yggdrasil的FS port到hv6中
+3. 将Yggdrasil的FS port到hv6中（难点）
 4. 验证新写出的FS代码
 
 ## 参考文献
