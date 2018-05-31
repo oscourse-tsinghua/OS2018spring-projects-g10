@@ -252,12 +252,16 @@ test_atomic函数：证明Def 6，也即crash之后再恢复的状态为crash之
     3. name(llvm::Value) get the name of Value
     4. get(llvm::Value) if Value is an instruction, it returns ctx.stack["name(i)"]; if Value is a constant, it returns visitConstant(Value); if Value is am Argument, it returns ctx.stack["name(i)"]; if Value is an InlineAsm, it returns python function call asm + asmstring with quote.
 
-### hv6文件系统
-
 ## 工作计划
-
-## 任务分工
-
-## 实验收获
+1. 将hv6FS的代码做irpy产生符号化执行图
+2. 将1.中的执行图在Yggdrasil中做验证（难点）
+3. 将Yggdrasil的FS port到hv6中
+4. 验证新写出的FS代码
 
 ## 参考文献
+
+* Sigurbjarnarson, Helgi, et al. "Push-Button Verification of File Systems via Crash Refinement." OSDI. Vol. 16. 2016.
+* Nelson, Luke, et al. "Hyperkernel: Push-Button Verification of an OS Kernel." Proceedings of the 26th Symposium on Operating Systems Principles. ACM, 2017.
+* Joshi, Rajeev, and Gerard J. Holzmann. "A mini challenge: Build a verifiable filesystem." In Verified Software: Theories, Tools, Experiments, pp. 49-56. Springer, Berlin, Heidelberg, 2008.
+* Chen, Haogang, Tej Chajed, Alex Konradi, Stephanie Wang, Atalay İleri, Adam Chlipala, M. Frans Kaashoek, and Nickolai Zeldovich. "Verifying a high-performance crash-safe file system using a tree specification." In Proceedings of the 26th Symposium on Operating Systems Principles, pp. 270-286. ACM, 2017.
+* T. S. Pillai, V. Chidambaram, R. Alagappan, S. AlKiswany, A. C. Arpaci-Dusseau, and R. H. ArpaciDusseau. All file systems are not created equal: On the complexity of crafting crash-consistent applications. In Proceedings of the 11th Symposium on Operating Systems Design and Implementation (OSDI), pages 433–448, Broomfield, CO, Oct. 2014.
