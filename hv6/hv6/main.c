@@ -43,7 +43,11 @@ void main(void)
     print_version();
     check_invariants();
 
-    run_current();
+    pr_info("main");
+
+    //pr_info("range fs:%d, %d: %d\n", _binary_fs_img_start, _binary_fs_img_end, _binary_fs_img_end - _binary_fs_img_end);
+
+    //run_current();
     panic(NULL);
 }
 

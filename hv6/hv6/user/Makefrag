@@ -140,7 +140,7 @@ $(HV6_LWIP_OBJS): CFLAGS += -I hv6 -I hv6/user/lwip/include -I hv6/user/fs -I hv
 $(O)/hv6/user/fs/memfs.o: $(O)/hv6/fs.img
 
 $(O)/hv6/fs.img: $(O)/hv6/user/fs/mkfs $(HV6_UPROGS) $(HV6_LINUX_UPROGS) README.md
-	$(QUIET_GEN)$(O)/hv6/user/fs/mkfs $@ $(HV6_UPROGS) $(HV6_LINUX_UPROGS) README.md > /dev/null
+	$(O)/hv6/user/fs/mkfs $@ $(HV6_UPROGS) $(HV6_LINUX_UPROGS) README.md > /dev/null
 
 $(O)/hv6/user/fs/mkfs: hv6/user/fs/mkfs.c
 	$(QUIET_GEN)$(HOST_CC) -o $@ $<

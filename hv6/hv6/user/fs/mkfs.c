@@ -9,12 +9,20 @@
 #define stat xv6_stat
 #include "stat.h"
 
-#define SIZE 1000
+#define SIZE 2000
+//#define NINODES 4000
+//#define NINODES 3500
 #define NINODES 4000
 
 // Disk layout:
 // [ boot block | sb block | inode blocks | bit map | data blocks | log ]
 
+// by amadeus chan
+// there are 7 logically seperated disks used in Yxv6fs, including log(WAL) disk, block-bitmap disk, inode meta-data disk, inode-bitmap disk, data disk, orphan inode disk, block-pointer(Virtual WAL) disk
+// okay, so I have to rewrite this makefs tool
+// nbitmap: number of block bitmap blocks
+// ninodeblocks: number of inode meta-data blocks
+// nlog: number of log blocks
 int nbitmap = SIZE / (BSIZE * 8) + 1;
 int ninodeblocks = NINODES / IPB + 1;
 int nlog = LOGSIZE;
@@ -87,6 +95,8 @@ int main(int argc, char *argv[])
     sb.nblocks = xint(nblocks); // so whole disk is size sectors
     sb.ninodes = xint(NINODES);
     sb.nlog = xint(nlog);
+
+    printf("fs layout: size: %d, nblocks: %d, ninodes: %d, nlog: %d, IPB: %d\n", SIZE, nblocks, NINODES, nlog, IPB);
 
     printf("nmeta %d (boot, super, inode blocks %u, bitmap blocks %u) "
            "blocks %d log %u total %d\n",

@@ -40,6 +40,9 @@ noreturn void fs_main(void)
 
     set_proc_name("fs");
 
+    cprintf("now we are in fs_main!!!\n");
+    cprintf("size of fs img %d - %d = %d bytes\n", _binary_fs_img_end, _binary_fs_img_start, _binary_fs_img_end - _binary_fs_img_start);
+
     unix_init();
     consoleinit();
     binit();

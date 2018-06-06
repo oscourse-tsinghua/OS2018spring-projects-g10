@@ -41,9 +41,9 @@ CFLAGS       += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
 CFLAGS       += -DCOMMIT_HASH=$(shell git rev-parse --short --verify HEAD)
 CFLAGS       += -DCOMMIT_BRANCH=$(shell git rev-parse --abbrev-ref --verify HEAD)
 CFLAGS       += -imacros kernel/config.h
-CFLAGS       += -I include -I $(O)/include
+CFLAGS       += -I include -I $(O)/include 
 
-KERNEL_CFLAGS = $(CFLAGS) -DNR_CPUS=$(NR_CPUS) -fwrapv -I $(PROJECT) -I kernel -I kernel/include
+KERNEL_CFLAGS = $(CFLAGS) -DNR_CPUS=$(NR_CPUS) -fwrapv -I $(PROJECT) -I kernel -I kernel/include 
 
 USER_CFLAGS   = $(CFLAGS)
 
