@@ -7,6 +7,8 @@ __all__ = ['WALDisk']
 
 # This class implements TxnDisk using write-head logging.
 # commit() is both atomic and persistent.
+# typical use:
+# begin_tx() -> write_tx() x N -> flush()
 class WALDisk(object):
     LOG_MAX_ENTRIES = 10
 
