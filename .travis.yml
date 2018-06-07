@@ -9,4 +9,6 @@ before_install:
         - docker pull amadeuschan/osproject_with_hv6
 
 script:
+        - bash test_hv6_syscalls0.sh
+        - bash test_hv6_syscalls1.sh
         - bash test.sh
