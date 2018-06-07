@@ -10,6 +10,8 @@ before_install:
 
 script:
         - docker run -t amadeuschan/osproject_with_hv6 /bin/sh -c "git clone https://github.com/oscourse-tsinghua/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/hv6; make > /dev/null; make hv6-verify -- -v --failfast HV6.test_sys_map_pml4"
+        - docker ps 
+        - docker images
         - docker run -t amadeuschan/osproject_with_hv6 /bin/sh -c "git clone https://github.com/oscourse-tsinghua/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/hv6; make > /dev/null; make hv6-verify -- -v --failfast HV6.test_sys_map_page_desc"
         - docker run -t amadeuschan/osproject_with_hv6 /bin/sh -c "git clone https://github.com/oscourse-tsinghua/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/hv6; make > /dev/null; make hv6-verify -- -v --failfast HV6.test_sys_map_proc"
         - docker run -t amadeuschan/osproject_with_hv6 /bin/sh -c "git clone https://github.com/oscourse-tsinghua/OS2018spring-projects-g10.git; cd OS2018spring-projects-g10/hv6; make > /dev/null; make hv6-verify -- -v --failfast HV6.test_sys_map_dev"
