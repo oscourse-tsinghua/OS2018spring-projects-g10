@@ -3,6 +3,7 @@ import disk
 from waldisk import *
 import unittest
 import itertools
+from waldisk import TripleList
 
 from yggdrasil.ufarray import *
 from yggdrasil.util import *
@@ -122,7 +123,12 @@ class WALDiskTestRefinement(test.RefinementTest):
         iov = zip(itertools.repeat(0), bids, xs)
 
         oldvs = [d.read(0, bid) for bid in bids]
-        d.writev(iov)
+
+        iov_list = TripleList()
+        iov_list._is_none = False
+        iov_list._txn = iov
+
+        d.writev(iov_list)
 
         assumption = And(Distinct(*bids), mach.assumption)
 
