@@ -54,3 +54,8 @@ dkms.conf
 .DS_Store
 
 *.swp
+
+./seasnake/*
+seasnake/*
+./seasnake
+seasnake
