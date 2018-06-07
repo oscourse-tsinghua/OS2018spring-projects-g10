@@ -2,8 +2,8 @@
 
 #include <uapi/machine/io.h>
 
-//#define NPAGE 8192  /* maximum number of pages */
-#define NPAGE 16384  /* maximum number of pages */
+#define NPAGE 8192  /* maximum number of pages */
+//#define NPAGE 16384  /* maximum number of pages */
 #define NDMAPAGE 512 /* maximum number of DMA pages */
 #define NPROC 64    /* maximum number of processes */
 #define NTSLICE 128 /* Number of scheduler timeslices */
