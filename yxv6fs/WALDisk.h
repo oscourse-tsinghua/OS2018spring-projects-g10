@@ -14,40 +14,31 @@ class WALDisk {
 
 		int _osync;
 		PartitionAsyncDisk *_logdisk;
-		List *_datadisks;
-		List *_txn;
-		Dict *_cache;
+		TripleList *_txn;
+		PartitionAsyncDiskList *_datadisks;
+		CacheDict *_cache;
 
-		void __recover() {
-		}
+		WALDisk(PartitionAsyncDisk *logdisk, PartitionAsyncDiskList *datadisks, int osync);
 
-		WALDisk(PartitionAsyncDisk *logdisk, List *datadisks, int osync);
+		void begin_tx();
 
-		void begin_tx() {
-			if ((! _osync) && _txn->isNotNone()) {
-				return ;
-			}
-			_txn->clear();
-			_cache = new Dict();
-		}
+		void write_tx(uint64_t dev, uint64_t bid, Block *data);
 
-		void write_tx(uint64_t dev, uint64_t bid, Block *data) {
+		void write(uint64_t dev, uint64_t bid, Block *data);
 
-		}
+		void flush();
 
-		void flush() {
-		}
+		void commit_tx(int force);
 
-		void commit_tx(int force) {
-		}
+		void writev(TripleList *);
 
-		void writev(List *) {
-		}
+		void __commit();
 
-		void __commit() {
-		}
+		Block* read(uint64_t dev, uint64_t bid);
 
-		Block *read(uint64_t dev, uint64_t bid) {
-		}
+		Block* _read(uint64_t dev, uint64_t bid);
+
+		void __recover();
+
 };
 
