@@ -10,7 +10,7 @@ class WALDisk {
 		uint64_t LOG_DEV_HEADER_BLOCK;
 		uint64_t LOG_HEADER_BLOCK;
 		uint64_t PER_BLOCK;
-		uint64_t LOG_MAX_ENTRIES;
+		static uint64_t LOG_MAX_ENTRIES;
 
 		int _osync;
 		PartitionAsyncDisk *_logdisk;
@@ -18,7 +18,7 @@ class WALDisk {
 		PartitionAsyncDiskList *_datadisks;
 		CacheDict *_cache;
 
-		WALDisk(PartitionAsyncDisk *logdisk, PartitionAsyncDiskList *datadisks, int osync);
+		WALDisk(PartitionAsyncDisk *logdisk, PartitionAsyncDiskList *datadisks, int osync = true);
 
 		void begin_tx();
 
@@ -28,7 +28,7 @@ class WALDisk {
 
 		void flush();
 
-		void commit_tx(int force);
+		void commit_tx(int force = false);
 
 		void writev(TripleList *);
 

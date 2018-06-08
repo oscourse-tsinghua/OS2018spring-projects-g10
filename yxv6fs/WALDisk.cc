@@ -1,7 +1,8 @@
 #include "WALDisk.h"
 
-WALDisk::WALDisk(PartitionAsyncDisk *logdisk, PartitionAsyncDiskList *datadisks, int osync = true) {
-	LOG_MAX_ENTRIES = 10;
+uint64_t WALDisk::LOG_MAX_ENTRIES = 10;
+
+WALDisk::WALDisk(PartitionAsyncDisk *logdisk, PartitionAsyncDiskList *datadisks, int osync) {
 	LOG_BID_HEADER_BLOCK = 0;
 	LOG_DEV_HEADER_BLOCK = 2;
 	LOG_HEADER_BLOCK = 3;
@@ -123,10 +124,10 @@ void WALDisk::__recover() {
 		uint64_t bid = 0;
 		if (i < PER_BLOCK) {
 			dev = hdr_dev1->__getitem__(1 + i);
-			bid = hdr_dev1->__getitem__(1 + i);
+			bid = hdr_bid1->__getitem__(1 + i);
 		} else {
-			dev = hdr_dev1->__getitem__(i - PER_BLOCK);
-			bid = hdr_dev1->__getitem__(i - PER_BLOCK);
+			dev = hdr_dev2->__getitem__(i - PER_BLOCK);
+			bid = hdr_bid1->__getitem__(i - PER_BLOCK);
 		}
 		Block *data = _logdisk->read(LOG_HEADER_BLOCK + i + 1);
 		for (uint64_t k = 0; k < _datadisks->__len__(); ++ k) {

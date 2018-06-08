@@ -91,8 +91,9 @@ uint64_t = int
 
 
 class WALDisk:
-    def __init__(self, logdisk, datadisks, osync):
-        self.LOG_MAX_ENTRIES = 10
+    LOG_MAX_ENTRIES = None
+
+    def __init__(self, logdisk, datadisks, osync=True):
         self.LOG_BID_HEADER_BLOCK = 0
         self.LOG_DEV_HEADER_BLOCK = 2
         self.LOG_HEADER_BLOCK = 3
@@ -121,10 +122,10 @@ class WALDisk:
     def flush(self):
         self.commit_tx(True)
 
-    def commit_tx(self, force):
+    def commit_tx(self, force=False):
         if self._txn.isNone():
             return
-        if not self._osync and not force and self._txn.length() <= self.LOG_MAX_ENTRIES - 10:
+        if not self._osync and not force and self._txn.length() <= WALDisk.LOG_MAX_ENTRIES - 10:
             return
         txn = self._txn.copy()
         self.writev(txn)
@@ -198,15 +199,15 @@ class WALDisk:
         hdr_dev2 = self._logdisk.read(self.LOG_DEV_HEADER_BLOCK + 1)
         n = hdr_bid1.__getitem__(0)
         i = 0
-        while i < self.LOG_MAX_ENTRIES:
+        while i < WALDisk.LOG_MAX_ENTRIES:
             dev = 0
             bid = 0
             if i < self.PER_BLOCK:
                 dev = hdr_dev1.__getitem__(1 + i)
-                bid = hdr_dev1.__getitem__(1 + i)
+                bid = hdr_bid1.__getitem__(1 + i)
             else:
-                dev = hdr_dev1.__getitem__(i - self.PER_BLOCK)
-                bid = hdr_dev1.__getitem__(i - self.PER_BLOCK)
+                dev = hdr_dev2.__getitem__(i - self.PER_BLOCK)
+                bid = hdr_bid1.__getitem__(i - self.PER_BLOCK)
             data = self._logdisk.read(self.LOG_HEADER_BLOCK + i + 1)
             k = 0
             while k < self._datadisks.__len__():
@@ -214,3 +215,6 @@ class WALDisk:
                 k += 1
             i += 1
         self.__commit()
+
+
+WALDisk.LOG_MAX_ENTRIES = 10
