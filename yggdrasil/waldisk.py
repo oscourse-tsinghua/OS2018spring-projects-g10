@@ -252,7 +252,8 @@ class WALDisk(object):
         hdr_bid2 = ConstBlock(0)
         hdr_dev2 = ConstBlock(0)
 
-        hdr_bid1[0] = iov_len
+        #hdr_bid1[0] = iov_len
+        hdr_bid1.__setitem__(0, iov_len)
 
         for i in range(iov_len):
             #(dev, bid, data) = iov[i]
@@ -318,15 +319,24 @@ class WALDisk(object):
         hdr_bid2 = self._logdisk.read(self.LOG_BID_HEADER_BLOCK + 1)
         hdr_dev2 = self._logdisk.read(self.LOG_DEV_HEADER_BLOCK + 1)
 
-        n = hdr_bid1[0]
+        #n = hdr_bid1[0]
+        n = hdr_bid1.__getitem__(0)
         # n is symbolic; instead of looping over n, loop over a constant
         for i in range(self.LOG_MAX_ENTRIES):
             if i < self.PER_BLOCK:
+                """
                 dev = hdr_dev1[1 + i]
                 bid = hdr_bid1[1 + i]
+                """
+                dev = hdr_dev1.__getitem__(1 + i)
+                bid = hdr_bid1.__getitem__(1 + i)
             else:
+                """
                 dev = hdr_dev2[i - self.PER_BLOCK]
                 bid = hdr_bid2[i - self.PER_BLOCK]
+                """
+                dev = hdr_dev2.__getitem__(i - self.PER_BLOCK)
+                bid = hdr_bid2.__getitem__(i - self.PER_BLOCK)
 
             data = self._logdisk.read(self.LOG_HEADER_BLOCK + i + 1)
             """

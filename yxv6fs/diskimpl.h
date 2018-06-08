@@ -2,7 +2,37 @@
 
 typedef unsigned long long uint64_t;
 
+inline int And(int a = 1, int b = 1, int c = 1) {
+	return (a && b) && c;
+}
+
+inline int ULT(uint64_t a, uint64_t b) {
+	return a < b;
+}
+
+class Block {
+	public:
+		void __setitem__(uint64_t key, uint64_t val) {
+		}
+		uint64_t __getitem__(uint64_t key) {
+		}
+		void set(uint64_t key, uint64_t val) {
+		}
+};
+
+Block *ConstBlock(uint64_t val) {
+	return new Block();
+}
+
 class PartitionAsyncDisk {
+	public:
+		void write(uint64_t blknum, Block *block, int cond = 1) {
+		}
+		Block* read(uint64_t blknum) {
+			return new Block();
+		}
+		void flush() {
+		}
 };
 
 /*
@@ -76,12 +106,9 @@ class TripleList {
 
 class CacheDict {
 	public:
-		Block *get3(uint64_t dev, uint64_t bid, BLock *dresult) {
+		Block *get3(uint64_t dev, uint64_t bid, Block *dresult) {
 			return dresult;
 		}
 		void set3(uint64_t dev, uint64_t bid, Block *data) {
 		}
-};
-
-class Block {
 };
