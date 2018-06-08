@@ -59,6 +59,7 @@ URem = _native(diskimpl.URem, z3.URem)
 UDiv = _native(diskimpl.UDiv, z3.UDiv)
 LShR = _native(diskimpl.LShR, z3.LShR)
 Dict = _native(diskimpl.Dict, symbolicmap.SymbolicMap)
+#CacheDict = _native(diskimpl.CacheDict, symbolicmap.SymbolicCacheDict)
 UMax = _native(None, util.UMax)
 
 def debug(msg, *var):

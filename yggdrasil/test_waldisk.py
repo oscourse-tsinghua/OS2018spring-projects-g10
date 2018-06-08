@@ -55,6 +55,8 @@ class WALDiskTestRefinement(test.RefinementTest):
         impl.begin_tx()
         spec.begin_tx()
 
+        #print "*************"
+        #print type(args)
         for arg in args[0]:
             impl.write_tx(*arg)
             spec.write_tx(*arg)
@@ -76,11 +78,13 @@ class WALDiskTestRefinement(test.RefinementTest):
             iov = []
             for i in range(n):
                 iov.append((1, FreshSize('i'), FreshBlock('x')))
-            yield (iov,)
+            iov_list = TripleList(iov)
+            #yield (iov,)
+            yield (iov_list,)
 
     # Verify writev
-    match_writev = _gen_iov
-    match_write_tx = _gen_iov
+    #match_writev = _gen_iov
+    #match_write_tx = _gen_iov
     match_write_tx_nocommit = lambda self, *args, **kwargs: self._gen_iov(*args, **kwargs)
     match_write_tx_nocommit.nocrash = True
 
@@ -124,11 +128,17 @@ class WALDiskTestRefinement(test.RefinementTest):
 
         oldvs = [d.read(0, bid) for bid in bids]
 
-        iov_list = TripleList()
+        iov_list = TripleList(iov)
+        """
         iov_list._is_none = False
+        iov_list.__len__ = len(iov)
         iov_list._txn = iov
+        """
 
         d.writev(iov_list)
+        """
+        d.writev(iov)
+        """
 
         assumption = And(Distinct(*bids), mach.assumption)
 

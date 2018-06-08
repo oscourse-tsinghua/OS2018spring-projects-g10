@@ -4,12 +4,16 @@ if not cython.compiled:
 
 __all__ = ['WALDisk']
 
-class TripleList:
+class TripleList(object):
 
-    def __init__(self):
-        self._txn = None
-        self._is_none = True
-        self.__len__ = 0
+    start = 0
+
+    def __init__(self, _txn = None):
+        self._txn = _txn
+        if _txn == None:
+            self._is_none = True
+        else:
+            self._is_none = False
 
     def setNone(self, _is_none):
         self._is_none = _is_none
@@ -23,29 +27,133 @@ class TripleList:
     def clear(self):
         self._is_none = False
         self._txn = []
-        self.__len__ = 0
 
     def length(self):
         return len(self._txn)
 
-    def append(self, dev, bid, data):
-        self._txn.append([dev, bid, data])
-        self.__len__ += 1
+    def append(self, val):
+        self._txn.append(val)
+    
+    def append_triple(self, dev, bid, data):
+        self.append([dev, bid, data])
 
     def get(self, idx):
         return self._txn[idx]
+
+    def get_dev(self, idx):
+        return self._txn[idx][0]
+
+    def get_bid(self, idx):
+        return self._txn[idx][1]
+
+    def get_data(self, idx):
+        return self._txn[idx][2]
 
     def copy(self):
         new_copy = TripleList()
         new_copy._is_none = self._is_none
         new_copy._txn = self._txn
-        new_copy.__len__ = self.__len__
         return new_copy
 
-# This class implements TxnDisk using write-head logging.
-# commit() is both atomic and persistent.
-# typical use:
-# begin_tx() -> write_tx() x N -> flush()
+    def __iter__(self):
+        self.start = 0
+        return self
+
+    def next(self):
+        if self.start >= len(self._txn):
+            raise StopIteration
+        else:
+            self.start += 1
+            return self._txn[self.start - 1]
+
+    def __len__(self):
+        return len(self._txn)
+
+    def __getitem__(self, key):
+        return self._txn[key]
+
+    def __setitem__(self,key,value):
+        self._txn[key] = value
+
+class CacheDict(object):
+    def __init__(self):
+        self._map = []
+
+    def get(self, gkey, dresult):
+        for key, value in self._map:
+            try:
+                cond = And(*[a == b for a, b in zip(gkey, key)])
+            except:
+                cond = gkey == key
+
+            dresult = If(cond, value, dresult)
+        return dresult
+
+    def has_key(self, gkey):
+        res = BoolVal(False)
+        for key, _ in self._map:
+            try:
+                cond = And(*[a == b for a, b in zip(gkey, key)])
+            except:
+                cond = gkey == key
+
+            res = Or(cond, res)
+
+        return res
+
+    def __setitem__(self, key, value):
+        self._map.append((key, value))
+
+    def get3(self, dev, bid, default):
+        return self.get((dev, bid), default)
+
+    def set3(self, dev, bid, data):
+        return self.__setitem__((dev, bid), data)
+
+"""
+class CacheDict(object):
+
+    def __init__(self):
+        self._map = dict()
+
+    def __setitem__(self, key, value):
+        self._map[key] = value
+
+    def set3(self, dev, bid, data):
+        self._map[(dev, bid)] = data
+
+    def get3(self, dev, bid, default):
+        if self._map.has_key((dev, bid)):
+            return self._map[(dev, bid)]
+        else:
+            return default
+
+    def get(self, key, default):
+        if self._map.has_key(key):
+            return self._map[key]
+        return default
+
+    def has_key(self, key):
+        return self._map.has_key(key)
+"""
+
+"""
+class CacheDict(object):
+    def __init__(self):
+        self._map = dict()
+
+    def get(self, gkey, dresult):
+        if self._map.has_key(gkey):
+            return self._map[gkey]
+        return dresult
+
+    def has_key(self, gkey):
+        return self._map.has_key(gkey)
+
+    def __setitem__(self, key, value):
+        self._map[key] = value
+"""
+
 class WALDisk(object):
     LOG_MAX_ENTRIES = 10
 
@@ -59,14 +167,14 @@ class WALDisk(object):
 
         self._osync = osync
         self._logdisk = logdisk
-        self._datadisks = datadisks[:]
+        self._datadisks = datadisks
         #print "*********** init WALDisk"
         self.__recover()
+        self._txn = TripleList()
         """
         self._txn = None
         """
-        self._txn = TripleList()
-        self._cache = Dict()
+        self._cache = CacheDict()
 
     def begin_tx(self):
         """
@@ -80,22 +188,24 @@ class WALDisk(object):
         assert self._txn is None
         """
 
+        self._txn.clear()
         """
         self._txn = []
         """
-        self._txn.clear()
-        self._cache = Dict()
+        self._cache = CacheDict()
 
     def write_tx(self, dev, bid, data):
         """
         self._txn.append((dev, bid, data))
         """
-        self._txn.append(dev, bid, data)
+        self._txn.append_triple(dev, bid, data)
         """
         self._logdisk.write(self.LOG_HEADER_BLOCK + len(self._txn), data)
         """
         self._logdisk.write(self.LOG_HEADER_BLOCK + self._txn.length(), data)
-        self._cache[(dev, bid)] = data
+        #self._cache[(dev, bid)] = data
+        self._cache.set3(dev, bid, data)
+
 
     def write(self, dev, bid, data):
         self._datadisks[dev].write(bid, data)
@@ -111,6 +221,7 @@ class WALDisk(object):
         if self._txn.isNone():
             return 
 
+        #if not self._osync and not force and len(self._txn) <= self.LOG_MAX_ENTRIES - 10:
         if not self._osync and not force and self._txn.length() <= self.LOG_MAX_ENTRIES - 10:
             return
 
@@ -140,6 +251,12 @@ class WALDisk(object):
     @cython.locals(i='unsigned long long')
     @cython.locals(dd='PartitionAsyncDisk')
     def writev(self, iov):
+        #print type(iov)
+        """
+        if getattr(iov, 'length', False) == False:
+            iov = TripleList(iov)
+        
+        """
         """
         iov_len = len(iov)
         """
@@ -151,7 +268,7 @@ class WALDisk(object):
             """
             dev, bid, data = iov[0]
             """
-            dev, bid, data = iov.get(0)
+            dev, bid, data = iov.get_dev(0), iov.get_bid(0), iov.get_data(0)
             dd = self._datadisks[dev]
             dd.write(bid, data)
             # self._datadisks[dev].flush()
@@ -167,14 +284,16 @@ class WALDisk(object):
         hdr_bid1[0] = iov_len
 
         for i in range(iov_len):
-            """
-            (dev, bid, data) = iov[i]
+            #(dev, bid, data) = iov[i]
+            dev, bid, data = iov.get_dev(i), iov.get_bid(i), iov.get_data(i)
             """
             (dev, bid, data) = iov.get(i)
             """
-            if not self._txn:
             """
             if self._txn.isNone():
+            """
+            #if not self._txn:
+            if self._txn.isNone() or self._txn.length() == 0:
                 self._logdisk.write(self.LOG_HEADER_BLOCK + 1 + i, data)
 
             if i < self.PER_BLOCK:
@@ -196,10 +315,11 @@ class WALDisk(object):
 
         # apply log to data disk
         for i in range(iov_len):
-            """
-            dev, bid, data = iov[i]
+            #dev, bid, data = iov[i]
+            dev, bid, data = iov.get_dev(i), iov.get_bid(i), iov.get_data(i)
             """
             dev, bid, data = iov.get(i)
+            """
             # for k in range(len(self._datadisks)):
             #     self._datadisks[dev].write(bid, data, And(dev == k))
             self._datadisks[dev].write(bid, data)
@@ -240,7 +360,8 @@ class WALDisk(object):
     @cython.locals(rdata='Block')
     def read(self, dev, bid):
         rdata = self._datadisks[dev].read(bid)
-        return self._cache.get((dev, bid), rdata)
+        #return self._cache.get((dev, bid), rdata)
+        return self._cache.get3(dev, bid, rdata)
 
     def _read(self, dev, bid):
         return self.read(dev, bid)
@@ -248,3 +369,73 @@ class WALDisk(object):
     def crash(self, mach):
         return self.__class__(self._logdisk.crash(mach),
                 map(lambda x: x.crash(mach), self._datadisks))
+
+"""
+# This class implements TxnDisk using write-head logging.
+# commit() is both atomic and persistent.
+# typical use:
+# begin_tx() -> write_tx() x N -> flush()
+class WALDisk(object):
+    LOG_MAX_ENTRIES = 10
+
+    def __init__(self, logdisk, datadisks, osync=True):
+        self.LOG_BID_HEADER_BLOCK = 0
+        self.LOG_DEV_HEADER_BLOCK = 2
+        self.LOG_HEADER_BLOCK = 3
+        self.PER_BLOCK = 511
+
+        self.disk = WALDiskImpl(logdisk, datadisks, osync)
+
+    def begin_tx(self):
+        self.disk.begin_tx()
+
+    def write_tx(self, dev, bid, data):
+        self.disk.write_tx(dev, bid, data)
+
+    def write(self, dev, bid, data):
+        self.disk.write(dev, bid, data)
+
+    def flush(self):
+        self.disk.flush()
+
+    def commit_tx(self, force=False):
+        self.disk.commit_tx(force)
+
+    def writev(self, iov):
+        iov_list = TripleList()
+        if iov is not None:
+            if type(iov) == 'list':
+                iov_list._is_none = False
+                iov_list._txn = iov
+                self.disk.writev(iov_list)
+            else:
+                self.disk.writev(iov)
+
+    def __commit(self):
+        self.disk.__commit()
+
+    def __recover(self):
+        self.disk.__recover()
+
+    def read(self, dev, bid):
+        return self.disk.read(dev, bid)
+
+    def _read(self, dev, bid):
+        return self.disk._read(dev, bid)
+
+    def crash(self, mach):
+        return self.disk.crash(mach)
+"""
+
+if __name__ == "__main__":
+    # just test 
+    z = [[1, 2, 3], [4, 5, 6], [1, 1, 1]]
+    z_list = TripleList(z)
+    print len(z_list)
+
+    z[1] = [3, 3, 3]
+
+    for a, b, c in z_list:
+        print a, b, c
+
+    print z[2]

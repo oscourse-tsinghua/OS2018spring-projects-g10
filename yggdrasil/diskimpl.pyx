@@ -136,7 +136,7 @@ cdef class AsyncDisk:
         fsync(self.fd)
 
 
-cdef class Dict(object):
+cdef class CacheDict(object):
     def __init__(self):
         self._map = dict()
 
@@ -151,6 +151,29 @@ cdef class Dict(object):
     def __setitem__(self, key, value):
         self._map[key] = value
 
+    def set3(self, dev, bid, data):
+        self._map[(dev, bid)] = data
+
+    def get3(self, dev, bid, default):
+        if self._map.has_key((dev, bid)):
+            return self._map[(dev, bid)]
+        else:
+            return default
+
+cdef class Dict(object):
+    def __init__(self):
+        self._map = dict()
+
+    cpdef get(self, gkey, dresult):
+        if self._map.has_key(gkey):
+            return self._map[gkey]
+        return dresult
+
+    cpdef has_key(self, gkey):
+        return self._map.has_key(gkey)
+
+    def __setitem__(self, key, value):
+        self._map[key] = value
 
 cdef class PartitionAsyncDisk:
     def __cinit__(self, AsyncDisk adisk, uint64_t start, uint64_t end, bint debug):
