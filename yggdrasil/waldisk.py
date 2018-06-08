@@ -4,6 +4,19 @@ if not cython.compiled:
 
 __all__ = ['WALDisk']
 
+class PartitionAsyncDiskList(object):
+
+    start = 0
+
+    def __init__(self, datadisks):
+        self.datadisks = datadisks
+
+    def __len__(self):
+        return len(self.datadisks)
+
+    def __getitem__(self, key):
+        return self.datadisks[key]
+
 class TripleList(object):
 
     start = 0
@@ -110,50 +123,6 @@ class CacheDict(object):
     def set3(self, dev, bid, data):
         return self.__setitem__((dev, bid), data)
 
-"""
-class CacheDict(object):
-
-    def __init__(self):
-        self._map = dict()
-
-    def __setitem__(self, key, value):
-        self._map[key] = value
-
-    def set3(self, dev, bid, data):
-        self._map[(dev, bid)] = data
-
-    def get3(self, dev, bid, default):
-        if self._map.has_key((dev, bid)):
-            return self._map[(dev, bid)]
-        else:
-            return default
-
-    def get(self, key, default):
-        if self._map.has_key(key):
-            return self._map[key]
-        return default
-
-    def has_key(self, key):
-        return self._map.has_key(key)
-"""
-
-"""
-class CacheDict(object):
-    def __init__(self):
-        self._map = dict()
-
-    def get(self, gkey, dresult):
-        if self._map.has_key(gkey):
-            return self._map[gkey]
-        return dresult
-
-    def has_key(self, gkey):
-        return self._map.has_key(gkey)
-
-    def __setitem__(self, key, value):
-        self._map[key] = value
-"""
-
 class WALDisk(object):
     LOG_MAX_ENTRIES = 10
 
@@ -208,7 +177,8 @@ class WALDisk(object):
 
 
     def write(self, dev, bid, data):
-        self._datadisks[dev].write(bid, data)
+        #self._datadisks[dev].write(bid, data)
+        self._datadisks.__getitem__(dev).write(bid,data)
 
     def flush(self):
         self.commit_tx(True)
@@ -269,7 +239,8 @@ class WALDisk(object):
             dev, bid, data = iov[0]
             """
             dev, bid, data = iov.get_dev(0), iov.get_bid(0), iov.get_data(0)
-            dd = self._datadisks[dev]
+            #dd = self._datadisks[dev]
+            dd = self._datadisks.__getitem__(dev)
             dd.write(bid, data)
             # self._datadisks[dev].flush()
             return
@@ -322,14 +293,19 @@ class WALDisk(object):
             """
             # for k in range(len(self._datadisks)):
             #     self._datadisks[dev].write(bid, data, And(dev == k))
-            self._datadisks[dev].write(bid, data)
+            #self._datadisks[dev].write(bid, data)
+            self._datadisks.__getitem__(dev).write(bid,data)
         self.__commit()
 
     @cython.locals(hdr='Block')
     def __commit(self):
         # make sure data reach disk
+        """
         for k in range(len(self._datadisks)):
             self._datadisks[k].flush()
+        """
+        for k in range(self._datadisks.__len__()):
+            self._datadisks.__getitem__(k).flush()
         # delete log
         hdr = ConstBlock(0)
         self._logdisk.write(self.LOG_BID_HEADER_BLOCK, hdr)
@@ -353,13 +329,18 @@ class WALDisk(object):
                 bid = hdr_bid2[i - self.PER_BLOCK]
 
             data = self._logdisk.read(self.LOG_HEADER_BLOCK + i + 1)
+            """
             for k in range(len(self._datadisks)):
                 self._datadisks[k].write(bid, data, And(dev == k, ULT(i, n)))
+            """
+            for k in range(self._datadisks.__len__()):
+                self._datadisks.__getitem__(k).write(bid, data, And(dev == k, ULT(i, n)))
         self.__commit()
 
     @cython.locals(rdata='Block')
     def read(self, dev, bid):
-        rdata = self._datadisks[dev].read(bid)
+        #rdata = self._datadisks[dev].read(bid)
+        rdata = self._datadisks.__getitem__(dev).read(bid)
         #return self._cache.get((dev, bid), rdata)
         return self._cache.get3(dev, bid, rdata)
 
@@ -383,6 +364,7 @@ class WALDisk(object):
         self.LOG_DEV_HEADER_BLOCK = 2
         self.LOG_HEADER_BLOCK = 3
         self.PER_BLOCK = 511
+
 
         self.disk = WALDiskImpl(logdisk, datadisks, osync)
 

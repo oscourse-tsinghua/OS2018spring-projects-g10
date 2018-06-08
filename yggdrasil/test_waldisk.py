@@ -3,7 +3,7 @@ import disk
 from waldisk import *
 import unittest
 import itertools
-from waldisk import TripleList
+from waldisk import TripleList, PartitionAsyncDiskList
 
 from yggdrasil.ufarray import *
 from yggdrasil.util import *
@@ -32,7 +32,7 @@ class WALDiskTestRefinement(test.RefinementTest):
         logdisk = AsyncDisk(mach, logarray)
         datadisk1 = AsyncDisk(mach, dataarray1)
         datadisk2 = AsyncDisk(mach, dataarray2)
-        return WALDisk(logdisk, [datadisk1, datadisk2], osync=False)
+        return WALDisk(logdisk, PartitionAsyncDiskList([datadisk1, datadisk2]), osync=False)
 
     def equivalence_volatile(self, spec, impl, **kwargs):
         # (spec <=> impl) <=> (same content)
@@ -83,8 +83,8 @@ class WALDiskTestRefinement(test.RefinementTest):
             yield (iov_list,)
 
     # Verify writev
-    #match_writev = _gen_iov
-    #match_write_tx = _gen_iov
+    match_writev = _gen_iov
+    match_write_tx = _gen_iov
     match_write_tx_nocommit = lambda self, *args, **kwargs: self._gen_iov(*args, **kwargs)
     match_write_tx_nocommit.nocrash = True
 
