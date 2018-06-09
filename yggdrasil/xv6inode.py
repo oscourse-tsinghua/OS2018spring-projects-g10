@@ -4,6 +4,7 @@ import time
 import argparse
 from collections import namedtuple
 from stat import S_IFDIR
+from yggdrasil.diskspec import *
 
 import cython
 if not cython.compiled:
@@ -18,10 +19,22 @@ if not cython.compiled:
 __all__ = ['InodeDisk', 'IndirectInodeDisk']
 
 
-Disk = namedtuple('Disk', ['read', 'write'])
+#Disk = namedtuple('Disk', ['read', 'write'])
 
+class Disk(object):
+    def __init__(self, dev, _txndisk):
+        #super(Disk, self).__init__()
+        self.dev = dev
+        self._txndisk = _txndisk
+
+    def read(self, bid):
+        return self._txndisk.read(self.dev, bid)
+
+    def write(self, bid, data):
+        self._txndisk.write_tx(self.dev, bid, data)
 
 class InodeDisk(object):
+    '''
     FREEDISK = 0
     INODEMETADISK = 1
     INODEDATADISK = 2
@@ -30,20 +43,28 @@ class InodeDisk(object):
     # Number of direct blocks
     NDIRECT = 11
 
-    def __init__(self, txndisk, Allocator, Bitmap, Inode):
+    def __init__(self, txndisk):
         self._INODEDATADISK = InodeDisk.INODEDATADISK
         self._NDIRECT = InodeDisk.NDIRECT
 
         self._txndisk = txndisk
 
+        """
         self._Bitmap = Bitmap
-        self._Allocator = Allocator
-        self._Inode = Inode
+        self._Allocator = Allocator64
+        self._Inode = InodePack
+        """
 
-        self._allocator = Allocator(
+        """
+        # Allocator is not verified
+        self._allocator = Allocator64(
                 lambda n: self._txndisk.read(self.FREEDISK, n),
                 0, 1024)
+        """
+        self._allocator = Allocator64(self._txndisk, self.FREEDISK, 0, 1024)
 
+        
+        """
         freedisk = Disk(write=lambda bid, data: self._txndisk.write_tx(self.FREEDISK, bid, data),
                         read=lambda bid: self._txndisk.read(self.FREEDISK, bid))
 
@@ -52,10 +73,36 @@ class InodeDisk(object):
 
         inodedata = Disk(write=lambda bid, data: self._txndisk.write_tx(self._INODEDATADISK, bid, data),
                          read=lambda bid: self._txndisk.read(self._INODEDATADISK, bid))
+        """
+
+        freedisk = Disk(self.FREEDISK, self._txndisk)
+        inodemeta = Disk(self.INODEMETADISK, self._txndisk)
+        inodedata = Disk(self.INODEDATADISK, self._txndisk)
 
         self._bitmap = Bitmap(freedisk)
-        self._inode = Inode(inodemeta, inodedata)
+        self._inode = InodePack(inodemeta, inodedata)
+    '''
 
+    FREEDISK = None
+    INODEMETADISK = None
+    INODEDATADISK = None
+    DATADISK = None
+    NDIRECT = None
+
+    # auto-generated
+    def __init__(self, txndisk):
+        self._INODEDATADISK = InodeDisk.INODEDATADISK
+        self._NDIRECT = InodeDisk.NDIRECT
+        self._txndisk = txndisk
+        self._allocator = Allocator64(self._txndisk, InodeDisk.FREEDISK, 0, 1024)
+        freedisk = Disk(InodeDisk.FREEDISK, self._txndisk)
+        inodemeta = Disk(InodeDisk.INODEMETADISK, self._txndisk)
+        inodedata = Disk(InodeDisk.INODEDATADISK, self._txndisk)
+        self._bitmap = Bitmap(freedisk)
+        self._inode = InodePack(inodemeta, inodedata)
+
+
+    '''
     def set_iattr(self, ino, attr):
         self._inode.set_iattr(ino, attr)
 
@@ -76,6 +123,30 @@ class InodeDisk(object):
 
     def write(self, lbn, data):
         self._txndisk.write_tx(self.DATADISK, lbn, data)
+    '''
+
+    # ============start=============
+    def begin_tx(self):
+        self._txndisk.begin_tx()
+
+    def commit_tx(self):
+        self._txndisk.commit_tx()
+
+    def get_iattr(self, ino):
+        return self._inode.get_iattr(ino)
+
+    def set_iattr(self, ino, attr):
+        self._inode.set_iattr(ino, attr)
+
+    def read(self, lbn):
+        return self._txndisk.read(InodeDisk.DATADISK, lbn)
+
+    def write_tx(self, lbn, data):
+        self._txndisk.write_tx(InodeDisk.DATADISK, lbn, data)
+
+    def write(self, lbn, data):
+        self._txndisk.write_tx(InodeDisk.DATADISK, lbn, data)
+    # =============end==============
 
     @cython.locals(ino='unsigned long long')
     @cython.locals(off='unsigned long long')
@@ -162,10 +233,13 @@ class InodeDisk(object):
             self._inode.set_mapping(ino, eoff, 0, block=iblock)
 
     def crash(self, mach):
+        '''
         return self.__class__(self._txndisk.crash(mach),
                               self._Allocator,
                               self._Bitmap,
                               self._Inode)
+        '''
+        return self.__class__(self._txndisk.crash(mach))
 
     def mkfs(self):
         self._bitmap.mkfs()
@@ -394,3 +468,13 @@ def create_fuse_inode(args):
     mkfs(fdisk)
 
     return fdisk
+
+InodeDisk.FREEDISK = 0
+
+InodeDisk.INODEMETADISK = 1
+
+InodeDisk.INODEDATADISK = 2
+
+InodeDisk.DATADISK = 3
+
+InodeDisk.NDIRECT = 11

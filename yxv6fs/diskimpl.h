@@ -112,3 +112,4 @@ class CacheDict {
 		void set3(uint64_t dev, uint64_t bid, Block *data) {
 		}
 };
+

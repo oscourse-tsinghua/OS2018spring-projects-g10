@@ -373,7 +373,7 @@ class SyncDisk:
         return self.__class__(mach, self._disk)
 
 
-class BitmapSpec(object):
+class Bitmap(object):
     def __init__(self, disk):
         self._disk = disk
 
@@ -390,7 +390,7 @@ class BitmapSpec(object):
         return BitmapSpec(self._disk.crash(mach))
 
 
-class InodePackSpec(object):
+class InodePack(object):
     def __init__(self, metadisk, datadisk):
         self._metadisk = metadisk
         self._datadisk = datadisk
@@ -422,8 +422,17 @@ class InodePackSpec(object):
         return self.__class__(self._metadisk.crash(mach), self._datadisk.crash(mach))
 
 
+"""
 class Allocator64(object):
     def __init__(self, _readfn, _start, _end):
+        pass
+
+    def alloc(self):
+        return BitVec(fresh_name('alloc'), 64)
+"""
+
+class Allocator64(object):
+    def __init__(self, _txndisk, _dev, _start, _end):
         pass
 
     def alloc(self):

@@ -10,9 +10,11 @@ cdef class InodeDisk:
     cdef readonly uint64_t _NDIRECT
 
     cdef WALDisk _txndisk
+    """
     cdef object _Bitmap
     cdef object _Allocator
     cdef object _Inode
+    """
     cdef Allocator _allocator
     cdef readonly BitmapDisk _bitmap
     cdef InodePackDisk _inode

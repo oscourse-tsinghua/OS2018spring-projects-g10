@@ -35,7 +35,7 @@ class InodeDiskRefinement(test.RefinementTest):
         inodedataarray = FreshDiskArray('inodedataarray', domain=BitVecSort(32))
         diskarray = FreshDiskArray('diskarray')
         txndisk = MultiTxnDisk(mach, [freemaparray, inodemetaarray, inodedataarray, diskarray])
-        return InodeDisk(txndisk, Allocator64, BitmapSpec, InodePackSpec)
+        return InodeDisk(txndisk)
 
     # this function is not called?
     def pre_post(self, spec, impl, fnargs, *args, **kwargs):
@@ -160,6 +160,7 @@ class InodeDiskRefinement(test.RefinementTest):
         self.prove(Implies(pre, post))
 
 
+'''
 class IndirectInodeDiskRefinement(test.RefinementTest):
     def create_spec(self, mach):
         mappedarray = FreshDiskArray('mappedarray')
@@ -173,7 +174,7 @@ class IndirectInodeDiskRefinement(test.RefinementTest):
         inodedataarray = FreshDiskArray('inodedataarray', domain=BitVecSort(32))
         diskarray = FreshDiskArray('diskarray')
         txndisk = MultiTxnDisk(mach, [freemaparray, inodemetaarray, inodedataarray, diskarray])
-        inodedisk = InodeDisk(txndisk, Allocator64, BitmapSpec, InodePackSpec)
+        inodedisk = InodeDisk(txndisk, Allocator64, Bitmap, InodePack)
         return IndirectInodeDisk(inodedisk)
 
     def pre_post(self, spec, impl, fnargs, *args, **kwargs):
@@ -265,6 +266,7 @@ class IndirectInodeDiskRefinement(test.RefinementTest):
     # match_bunmap.debug = True
     match_bmap = _create_bid
     # match_bmap.debug = True
+'''
 
 
 if __name__ == '__main__':
