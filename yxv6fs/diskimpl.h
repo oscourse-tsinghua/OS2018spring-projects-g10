@@ -2,6 +2,8 @@
 
 typedef unsigned long long uint64_t;
 
+inline uint64_t USub(uint64_t a, uint64_t b);
+
 inline uint64_t If(int cond, uint64_t a, uint64_t b) {
 	if (cond) {
 		return a;

@@ -612,14 +612,3 @@ def create_fuse_inode(args):
 
     return fdisk
 
-'''
-InodeDisk.FREEDISK = 0
-
-InodeDisk.INODEMETADISK = 1
-
-InodeDisk.INODEDATADISK = 2
-
-InodeDisk.DATADISK = 3
-
-InodeDisk.NDIRECT = 11
-'''
