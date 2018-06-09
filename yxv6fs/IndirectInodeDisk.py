@@ -2,6 +2,18 @@
 uint64_t = int
 
 
+def Or(a, b):
+    return a | b
+
+
+def USub(a, b):
+    return a - b
+
+
+def Concat32(a, b):
+    return (a << 32) | b
+
+
 def If(cond, a, b):
     if cond:
         return a
@@ -28,6 +40,9 @@ class Block:
         pass
 
     def set(self, key, val):
+        pass
+
+    def get(self, key):
         pass
 
 
@@ -264,7 +279,7 @@ class IndirectInodeDisk:
         self._idisk = idisk
 
     def begin_tx(self):
-        self._idisk.commit_tx()
+        self._idisk.begin_tx()
 
     def commit_tx(self):
         self._idisk.commit_tx()
@@ -276,7 +291,7 @@ class IndirectInodeDisk:
         self._idisk.set_iattr(ino, attr)
 
     def read(self, lbn):
-        pass
+        return self._idisk.read(lbn)
 
     def write_tx(self, lbn, data):
         self._idisk.write_tx(lbn, data)
@@ -285,19 +300,59 @@ class IndirectInodeDisk:
         self._idisk.write_tx(lbn, data)
 
     def mappingi(self, vbn):
-        pass
+        ndir = self._idisk._NDIRECT
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        is_direct = ULT(off, ndir)
+        off = USub(off, ndir)
+        vbnm = Concat32(ino, BitVecVal(ndir - 1, 32))
+        ind_mapped = self._idisk.is_mapped(vbnm)
+        ind_mapping = self._idisk.mappingi(vbnm)
+        ind_block = self._idisk.read(ind_mapping)
+        return If(is_direct, self._idisk.mappingi(vbn), If(And(ULT(off, self._NINDIRECT), ind_mapped), ind_block.get(Extract(8, 0, off)), 0))
 
     def is_mapped(self, vbn):
-        pass
+        return self.mappingi(vbn) != 0
 
-    def is_free(self, vbn):
-        pass
+    def is_free(self, lbn):
+        return self._idisk.is_free(lbn)
 
     def bmap(self, vbn):
-        pass
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, USub(off, self._idisk._NDIRECT))
+        if ULT(off, self._idisk._NDIRECT):
+            return self._idisk.bmap(vbn)
+        if Not(ULT(off, self._idisk._NDIRECT + self._NINDIRECT)):
+            return 0
+        mapping = self._idisk.bmap(Concat32(ino, BitVecVal(self._idisk._NDIRECT - 1, 32)))
+        imap = self._idisk.read(mapping)
+        old_lbn = imap.__getitem__(eoff)
+        if old_lbn == 0:
+            lbn = self._idisk.alloc()
+            self.write_tx(lbn, ConstBlock(0))
+            imap.__setitem__(eoff, lbn)
+            self.write_tx(mapping, imap)
+            return lbn
+        return old_lbn
 
     def bunmap(self, vbn):
-        pass
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, USub(vbn, self._idisk._NDIRECT))
+        if Not(ULT(off, self._idisk._NDIRECT + self._NINDIRECT)):
+            return
+        if ULT(off, self._idisk._NDIRECT):
+            self._idisk.bunmap(vbn)
+            return
+        mapping = self._idisk.mappingi(Concat32(ino, BitVecVal(self._idisk._NDIRECT - 1, 32)))
+        imap = self._idisk.read(mapping)
+        if Or(mapping == 0, imap.__getitem__(eoff) == 0):
+            return
+        lbn = imap.__getitem__(eoff)
+        imap.__setitem__(eoff, 0)
+        self._idisk.free(lbn)
+        self.write_tx(mapping, imap)
 
 
 IndirectInodeDisk.NINDIRECT = 512

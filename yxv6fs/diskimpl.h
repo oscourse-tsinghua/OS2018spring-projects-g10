@@ -2,7 +2,19 @@
 
 typedef unsigned long long uint64_t;
 
-inline uint64_t USub(uint64_t a, uint64_t b);
+inline int Or(int a, int b) {
+	return a | b;
+}
+
+inline uint64_t BitVecVal(uint64_t val, uint64_t size);
+
+inline uint64_t USub(uint64_t a, uint64_t b) {
+	return a - b;
+}
+
+inline uint64_t Concat32(uint64_t a, uint64_t b) {
+	return (a << 32) | b;
+}
 
 inline uint64_t If(int cond, uint64_t a, uint64_t b) {
 	if (cond) {
@@ -33,6 +45,7 @@ class Block {
 		}
 		void set(uint64_t key, uint64_t val) {
 		}
+		uint64_t get(uint64_t key);
 };
 
 Block *ConstBlock(uint64_t val) {

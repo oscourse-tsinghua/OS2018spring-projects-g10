@@ -22,7 +22,6 @@ def attr_eq(a, b):
                a.mode == b.mode)
 
 
-'''
 class InodeDiskRefinement(test.RefinementTest):
     def create_spec(self, mach):
         mappedarray = FreshDiskArray('mappedarray')
@@ -160,7 +159,6 @@ class InodeDiskRefinement(test.RefinementTest):
 
         self.prove(Implies(pre, post))
 
-'''
 
 class IndirectInodeDiskRefinement(test.RefinementTest):
     def create_spec(self, mach):

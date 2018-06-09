@@ -33,6 +33,7 @@ class Disk(object):
     def write(self, bid, data):
         self._txndisk.write_tx(self.dev, bid, data)
 
+# note: this class is auto-generated
 class InodeDisk:
     FREEDISK = None
     INODEMETADISK = None
@@ -388,7 +389,93 @@ class InodeDisk(object):
         self._inode.mkfs()
 '''
 
+'''
 class IndirectInodeDisk(object):
+    # ==========begin============
+    NINDIRECT = None
+
+    def __init__(self, idisk):
+        self._NINDIRECT = IndirectInodeDisk.NINDIRECT
+        self._idisk = idisk
+
+    def begin_tx(self):
+        self._idisk.begin_tx()
+
+    def commit_tx(self):
+        self._idisk.commit_tx()
+
+    def get_iattr(self, ino):
+        return self._idisk.get_iattr(ino)
+
+    def set_iattr(self, ino, attr):
+        self._idisk.set_iattr(ino, attr)
+
+    def read(self, lbn):
+        return self._idisk.read(lbn)
+
+    def write_tx(self, lbn, data):
+        self._idisk.write_tx(lbn, data)
+
+    def write(self, lbn, data):
+        self._idisk.write_tx(lbn, data)
+
+    def mappingi(self, vbn):
+        ndir = self._idisk._NDIRECT
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        is_direct = ULT(off, ndir)
+        off = USub(off, ndir)
+        vbnm = Concat32(ino, BitVecVal(ndir - 1, 32))
+        ind_mapped = self._idisk.is_mapped(vbnm)
+        ind_mapping = self._idisk.mappingi(vbnm)
+        ind_block = self._idisk.read(ind_mapping)
+        return If(is_direct, self._idisk.mappingi(vbn), If(And(ULT(off, self._NINDIRECT), ind_mapped), ind_block.get(Extract(8, 0, off)), 0))
+
+    def is_mapped(self, vbn):
+        return self.mappingi(vbn) != 0
+
+    def is_free(self, lbn):
+        return self._idisk.is_free(lbn)
+
+    def bmap(self, vbn):
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, USub(off, self._idisk._NDIRECT))
+        if ULT(off, self._idisk._NDIRECT):
+            return self._idisk.bmap(vbn)
+        if Not(ULT(off, self._idisk._NDIRECT + self._NINDIRECT)):
+            return 0
+        mapping = self._idisk.bmap(Concat32(ino, BitVecVal(self._idisk._NDIRECT - 1, 32)))
+        imap = self._idisk.read(mapping)
+        old_lbn = imap.__getitem__(eoff)
+        if old_lbn == 0:
+            lbn = self._idisk.alloc()
+            self.write_tx(lbn, ConstBlock(0))
+            imap.__setitem__(eoff, lbn)
+            self.write_tx(mapping, imap)
+            return lbn
+        return old_lbn
+
+    def bunmap(self, vbn):
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, USub(vbn, self._idisk._NDIRECT))
+        if Not(ULT(off, self._idisk._NDIRECT + self._NINDIRECT)):
+            return
+        if ULT(off, self._idisk._NDIRECT):
+            self._idisk.bunmap(vbn)
+            return
+        mapping = self._idisk.mappingi(Concat32(ino, BitVecVal(self._idisk._NDIRECT - 1, 32)))
+        imap = self._idisk.read(mapping)
+        if Or(mapping == 0, imap.__getitem__(eoff) == 0):
+            return
+        lbn = imap.__getitem__(eoff)
+        imap.__setitem__(eoff, 0)
+        self._idisk.free(lbn)
+        self.write_tx(mapping, imap)
+
+    # ===========end=============
+
     NINDIRECT = 512
 
     def __init__(self, idisk):
@@ -475,7 +562,7 @@ class IndirectInodeDisk(object):
 
         imap = self._idisk.read(mapping)
 
-        old_lbn = imap[eoff]
+        old_lbn = imap.__getitem__(eoff)
 
         # Off is not-mapped
         if old_lbn == 0:
@@ -484,7 +571,8 @@ class IndirectInodeDisk(object):
 
             self.write_tx(lbn, ConstBlock(0))
 
-            imap[eoff] = lbn
+            #imap[eoff] = lbn
+            imap.__setitem__(eoff, lbn)
             self.write_tx(mapping, imap)
 
             return lbn
@@ -517,12 +605,14 @@ class IndirectInodeDisk(object):
         imap = self._idisk.read(mapping)
 
         # Off is not mapped
-        if Or(mapping == 0, imap[eoff] == 0):
+        if Or(mapping == 0, imap.__getitem__(eoff) == 0):
             return
 
-        lbn = imap[eoff]
+        #lbn = imap[eoff]
+        lbn = imap.__getitem__(eoff)
 
-        imap[eoff] = 0
+        #imap[eoff] = 0
+        imap.__setitem__(eoff, 0)
 
         self._idisk.free(lbn)
         self.write_tx(mapping, imap)
@@ -531,8 +621,99 @@ class IndirectInodeDisk(object):
     def crash(self, mach):
         return self.__class__(self._idisk.crash(mach))
 
+IndirectInodeDisk.NINDIRECT = 512
+'''
 
+# note: this class is auto-generated
+class IndirectInodeDisk:
+    NINDIRECT = None
 
+    def __init__(self, idisk):
+        self._NINDIRECT = IndirectInodeDisk.NINDIRECT
+        self._idisk = idisk
+
+    def begin_tx(self):
+        self._idisk.begin_tx()
+
+    def commit_tx(self):
+        self._idisk.commit_tx()
+
+    def get_iattr(self, ino):
+        return self._idisk.get_iattr(ino)
+
+    def set_iattr(self, ino, attr):
+        self._idisk.set_iattr(ino, attr)
+
+    def read(self, lbn):
+        return self._idisk.read(lbn)
+
+    def write_tx(self, lbn, data):
+        self._idisk.write_tx(lbn, data)
+
+    def write(self, lbn, data):
+        self._idisk.write_tx(lbn, data)
+
+    def mappingi(self, vbn):
+        ndir = self._idisk._NDIRECT
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        is_direct = ULT(off, ndir)
+        off = USub(off, ndir)
+        vbnm = Concat32(ino, BitVecVal(ndir - 1, 32))
+        ind_mapped = self._idisk.is_mapped(vbnm)
+        ind_mapping = self._idisk.mappingi(vbnm)
+        ind_block = self._idisk.read(ind_mapping)
+        return If(is_direct, self._idisk.mappingi(vbn), If(And(ULT(off, self._NINDIRECT), ind_mapped), ind_block.get(Extract(8, 0, off)), 0))
+
+    def is_mapped(self, vbn):
+        return self.mappingi(vbn) != 0
+
+    def is_free(self, lbn):
+        return self._idisk.is_free(lbn)
+
+    def bmap(self, vbn):
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, USub(off, self._idisk._NDIRECT))
+        if ULT(off, self._idisk._NDIRECT):
+            return self._idisk.bmap(vbn)
+        if Not(ULT(off, self._idisk._NDIRECT + self._NINDIRECT)):
+            return 0
+        mapping = self._idisk.bmap(Concat32(ino, BitVecVal(self._idisk._NDIRECT - 1, 32)))
+        imap = self._idisk.read(mapping)
+        old_lbn = imap.__getitem__(eoff)
+        if old_lbn == 0:
+            lbn = self._idisk.alloc()
+            self.write_tx(lbn, ConstBlock(0))
+            imap.__setitem__(eoff, lbn)
+            self.write_tx(mapping, imap)
+            return lbn
+        return old_lbn
+
+    def bunmap(self, vbn):
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, USub(vbn, self._idisk._NDIRECT))
+        if Not(ULT(off, self._idisk._NDIRECT + self._NINDIRECT)):
+            return
+        if ULT(off, self._idisk._NDIRECT):
+            self._idisk.bunmap(vbn)
+            return
+        mapping = self._idisk.mappingi(Concat32(ino, BitVecVal(self._idisk._NDIRECT - 1, 32)))
+        imap = self._idisk.read(mapping)
+        if Or(mapping == 0, imap.__getitem__(eoff) == 0):
+            return
+        lbn = imap.__getitem__(eoff)
+        imap.__setitem__(eoff, 0)
+        self._idisk.free(lbn)
+        self.write_tx(mapping, imap)
+
+    def crash(self, mach):
+        return self.__class__(self._idisk.crash(mach))
+
+IndirectInodeDisk.NINDIRECT = 512
+
+'''
 @cython.locals(fdisk='DirImpl')
 @cython.locals(inode='IndirectInodeDisk')
 @cython.locals(root_attr='Stat')
@@ -612,3 +793,4 @@ def create_fuse_inode(args):
 
     return fdisk
 
+'''
