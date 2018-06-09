@@ -2,6 +2,19 @@
 
 typedef unsigned long long uint64_t;
 
+inline uint64_t If(int cond, uint64_t a, uint64_t b) {
+	if (cond) {
+		return a;
+	} 
+	return b;
+}
+
+inline int Not(int a);
+
+inline uint64_t Extract(int hi, int lo, uint64_t val) {
+    return val >> lo & (((uint64_t)1 << (hi - lo + 1)) - (uint64_t)1);
+}
+
 inline int And(int a = 1, int b = 1, int c = 1) {
 	return (a && b) && c;
 }

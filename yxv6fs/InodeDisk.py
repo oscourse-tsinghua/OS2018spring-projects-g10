@@ -2,6 +2,16 @@
 uint64_t = int
 
 
+def If(cond, a, b):
+    if cond:
+        return a
+    return b
+
+
+def Extract(hi, lo, val):
+    return val >> lo & ((1 << (hi - lo + 1)) - 1)
+
+
 def And(a=1, b=1, c=1):
     return (a and b) and c
 
@@ -150,6 +160,18 @@ class Bitmap:
     def __init__(self, _disk):
         pass
 
+    def is_set(self, lbn):
+        pass
+
+    def set_bit(self, lbn):
+        pass
+
+    def unset_bit(self, lbn):
+        pass
+
+    def mkfs(self):
+        pass
+
 
 class Stat:
     pass
@@ -163,6 +185,18 @@ class InodePack:
         pass
 
     def set_iattr(self, ino, attr):
+        pass
+
+    def get_mapping(self, ino, eoff, block=0):
+        pass
+
+    def set_mapping(self, ino, off, ptr, block=0):
+        pass
+
+    def read(self, ino):
+        pass
+
+    def mkfs(self):
         pass
 
 
@@ -206,25 +240,58 @@ class InodeDisk:
         self._txndisk.write_tx(InodeDisk.DATADISK, lbn, data)
 
     def mappingi(self, vbn):
-        pass
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, vbn)
+        return If(ULT(off, self._NDIRECT), self._inode.get_mapping(ino, eoff), 0)
 
     def is_mapped(self, vbn):
-        pass
+        return self.mappingi(vbn) != 0
 
-    def is_free(self, vbn):
-        pass
+    def is_free(self, lbn):
+        return Not(self._bitmap.is_set(lbn))
 
     def alloc(self):
-        pass
+        lbn = self._allocator.alloc()
+        assertion(lbn != 0)
+        assertion(self.is_free(lbn))
+        self._bitmap.set_bit(lbn)
+        return lbn
 
     def free(self, lbn):
-        pass
+        return self._bitmap.unset_bit(lbn)
 
     def bmap(self, vbn):
-        pass
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, vbn)
+        iblock = self._inode.read(ino)
+        old_lbn = self._inode.get_mapping(ino, eoff, iblock)
+        valid = And(old_lbn == 0, ULT(off, self._NDIRECT))
+        if valid:
+            lbn = self.alloc()
+            self.write_tx(lbn, ConstBlock(0))
+            self._inode.set_mapping(ino, eoff, lbn, iblock)
+            return lbn
+        if ULT(off, self._NDIRECT):
+            return old_lbn
+        return 0
 
     def bunmap(self, vbn):
-        pass
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, vbn)
+        if Not(ULT(off, self._NDIRECT)):
+            return
+        iblock = self._inode.read(ino)
+        lbn = self._inode.get_mapping(ino, eoff, iblock)
+        if lbn != 0:
+            self.free(lbn)
+            self._inode.set_mapping(ino, eoff, 0, iblock)
+
+    def mkfs(self):
+        self._bitmap.mkfs()
+        self._inode.mkfs()
 
 
 InodeDisk.FREEDISK = 0

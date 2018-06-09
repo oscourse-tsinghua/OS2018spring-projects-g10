@@ -3,6 +3,8 @@
 #include "diskimpl.h"
 #include "WALDisk.h"
 
+void assertion(int cond, char *msg = 0);
+
 class Disk {
 	public:
 		Disk(uint64_t _dev, WALDisk *_txndisk);
@@ -19,6 +21,10 @@ class Allocator64 {
 class Bitmap {
 	public:
 		Bitmap(Disk *_disk);
+		int is_set(uint64_t lbn);
+		void set_bit(uint64_t lbn);
+		void unset_bit(uint64_t lbn);
+		void mkfs();
 };
 
 class Stat {
@@ -29,6 +35,11 @@ class InodePack {
 		InodePack(Disk *_inodemeta, Disk *inodedata);
 		Stat *get_iattr(uint64_t ino);
 		void set_iattr(uint64_t ino, Stat *attr);
+		uint64_t get_mapping(uint64_t ino, uint64_t eoff, Block *block = 0);
+
+		void set_mapping(uint64_t ino, uint64_t off, uint64_t ptr, Block *block = 0);
+		Block *read(uint64_t ino);
+		void mkfs();
 };
 
 class InodeDisk {
@@ -65,4 +76,5 @@ class InodeDisk {
 		void free(uint64_t lbn);
 		uint64_t bmap(uint64_t vbn);
 		void bunmap(uint64_t vbn);
+		void mkfs();
 };

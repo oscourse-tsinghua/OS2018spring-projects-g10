@@ -33,8 +33,114 @@ class Disk(object):
     def write(self, bid, data):
         self._txndisk.write_tx(self.dev, bid, data)
 
+class InodeDisk:
+    FREEDISK = None
+    INODEMETADISK = None
+    INODEDATADISK = None
+    DATADISK = None
+    NDIRECT = None
+
+    def __init__(self, txndisk):
+        self._INODEDATADISK = InodeDisk.INODEDATADISK
+        self._NDIRECT = InodeDisk.NDIRECT
+        self._txndisk = txndisk
+        self._allocator = Allocator64(self._txndisk, InodeDisk.FREEDISK, 0, 1024)
+        freedisk = Disk(InodeDisk.FREEDISK, self._txndisk)
+        inodemeta = Disk(InodeDisk.INODEMETADISK, self._txndisk)
+        inodedata = Disk(InodeDisk.INODEDATADISK, self._txndisk)
+        self._bitmap = Bitmap(freedisk)
+        self._inode = InodePack(inodemeta, inodedata)
+
+    def begin_tx(self):
+        self._txndisk.begin_tx()
+
+    def commit_tx(self):
+        self._txndisk.commit_tx()
+
+    def get_iattr(self, ino):
+        return self._inode.get_iattr(ino)
+
+    def set_iattr(self, ino, attr):
+        self._inode.set_iattr(ino, attr)
+
+    def read(self, lbn):
+        return self._txndisk.read(InodeDisk.DATADISK, lbn)
+
+    def write_tx(self, lbn, data):
+        self._txndisk.write_tx(InodeDisk.DATADISK, lbn, data)
+
+    def write(self, lbn, data):
+        self._txndisk.write_tx(InodeDisk.DATADISK, lbn, data)
+
+    def mappingi(self, vbn):
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, vbn)
+        return If(ULT(off, self._NDIRECT), self._inode.get_mapping(ino, eoff), 0)
+
+    def is_mapped(self, vbn):
+        return self.mappingi(vbn) != 0
+
+    def is_free(self, lbn):
+        return Not(self._bitmap.is_set(lbn))
+
+    def alloc(self):
+        lbn = self._allocator.alloc()
+        assertion(lbn != 0)
+        assertion(self.is_free(lbn))
+        self._bitmap.set_bit(lbn)
+        return lbn
+
+    def free(self, lbn):
+        return self._bitmap.unset_bit(lbn)
+
+    def bmap(self, vbn):
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, vbn)
+        iblock = self._inode.read(ino)
+        old_lbn = self._inode.get_mapping(ino, eoff, iblock)
+        valid = And(old_lbn == 0, ULT(off, self._NDIRECT))
+        if valid:
+            lbn = self.alloc()
+            self.write_tx(lbn, ConstBlock(0))
+            self._inode.set_mapping(ino, eoff, lbn, iblock)
+            return lbn
+        if ULT(off, self._NDIRECT):
+            return old_lbn
+        return 0
+
+    def bunmap(self, vbn):
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, vbn)
+        if Not(ULT(off, self._NDIRECT)):
+            return
+        iblock = self._inode.read(ino)
+        lbn = self._inode.get_mapping(ino, eoff, iblock)
+        if lbn != 0:
+            self.free(lbn)
+            self._inode.set_mapping(ino, eoff, 0, iblock)
+
+    def mkfs(self):
+        self._bitmap.mkfs()
+        self._inode.mkfs()
+
+    def crash(self, mach):
+        return self.__class__(self._txndisk.crash(mach))
+
+InodeDisk.FREEDISK = 0
+
+InodeDisk.INODEMETADISK = 1
+
+InodeDisk.INODEDATADISK = 2
+
+InodeDisk.DATADISK = 3
+
+InodeDisk.NDIRECT = 11
+
+'''
 class InodeDisk(object):
-    '''
     FREEDISK = 0
     INODEMETADISK = 1
     INODEDATADISK = 2
@@ -81,7 +187,6 @@ class InodeDisk(object):
 
         self._bitmap = Bitmap(freedisk)
         self._inode = InodePack(inodemeta, inodedata)
-    '''
 
     FREEDISK = None
     INODEMETADISK = None
@@ -102,7 +207,6 @@ class InodeDisk(object):
         self._inode = InodePack(inodemeta, inodedata)
 
 
-    '''
     def set_iattr(self, ino, attr):
         self._inode.set_iattr(ino, attr)
 
@@ -123,7 +227,6 @@ class InodeDisk(object):
 
     def write(self, lbn, data):
         self._txndisk.write_tx(self.DATADISK, lbn, data)
-    '''
 
     # ============start=============
     def begin_tx(self):
@@ -146,6 +249,45 @@ class InodeDisk(object):
 
     def write(self, lbn, data):
         self._txndisk.write_tx(InodeDisk.DATADISK, lbn, data)
+
+    def mappingi(self, vbn):
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, vbn)
+        return If(ULT(off, self._NDIRECT), self._inode.get_mapping(ino, eoff), 0)
+
+    def is_mapped(self, vbn):
+        return self.mappingi(vbn) != 0
+
+    def is_free(self, lbn):
+        return Not(self._bitmap.is_set(lbn))
+
+    def alloc(self):
+        lbn = self._allocator.alloc()
+        assertion(lbn != 0)
+        assertion(self.is_free(lbn))
+        self._bitmap.set_bit(lbn)
+        return lbn
+
+    def free(self, lbn):
+        return self._bitmap.unset_bit(lbn)
+
+    def bmap(self, vbn):
+        ino = Extract(64 - 1, 32, vbn)
+        off = Extract(32 - 1, 0, vbn)
+        eoff = Extract(9 - 1, 0, vbn)
+        iblock = self._inode.read(ino)
+        old_lbn = self._inode.get_mapping(ino, eoff, iblock)
+        valid = And(old_lbn == 0, ULT(off, self._NDIRECT))
+        if valid:
+            lbn = self.alloc()
+            self.write_tx(lbn, ConstBlock(0))
+            self._inode.set_mapping(ino, eoff, lbn, iblock)
+            return lbn
+        if ULT(off, self._NDIRECT):
+            return old_lbn
+        return 0
+
     # =============end==============
 
     @cython.locals(ino='unsigned long long')
@@ -233,17 +375,18 @@ class InodeDisk(object):
             self._inode.set_mapping(ino, eoff, 0, block=iblock)
 
     def crash(self, mach):
-        '''
+        """
         return self.__class__(self._txndisk.crash(mach),
                               self._Allocator,
                               self._Bitmap,
                               self._Inode)
-        '''
+        """
         return self.__class__(self._txndisk.crash(mach))
 
     def mkfs(self):
         self._bitmap.mkfs()
         self._inode.mkfs()
+'''
 
 class IndirectInodeDisk(object):
     NINDIRECT = 512
@@ -469,6 +612,7 @@ def create_fuse_inode(args):
 
     return fdisk
 
+'''
 InodeDisk.FREEDISK = 0
 
 InodeDisk.INODEMETADISK = 1
@@ -478,3 +622,4 @@ InodeDisk.INODEDATADISK = 2
 InodeDisk.DATADISK = 3
 
 InodeDisk.NDIRECT = 11
+'''
