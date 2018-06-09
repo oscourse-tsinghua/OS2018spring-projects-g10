@@ -387,7 +387,7 @@ class Bitmap(object):
         return self._disk.write(bit, ConstBlock(0))
 
     def crash(self, mach):
-        return BitmapSpec(self._disk.crash(mach))
+        return Bitmap(self._disk.crash(mach))
 
 
 class InodePack(object):

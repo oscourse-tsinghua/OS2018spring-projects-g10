@@ -23,7 +23,7 @@ class InodePackDiskRefinement(RefinementTest):
         datadisk = AsyncDisk(mach, dataarray)
         metaarray = FreshDiskArray('metaarray', domain=BitVecSort(32))
         metadisk = AsyncDisk(mach, metaarray)
-        return InodePackSpec(metadisk, datadisk)
+        return InodePack(metadisk, datadisk)
 
     def create_impl(self, mach):
         array = FreshDiskArray('array', domain=BitVecSort(32))

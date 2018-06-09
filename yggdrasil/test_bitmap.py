@@ -15,7 +15,7 @@ class TestBitmapDisk(test.RefinementTest):
 
     def create_spec(self, mach):
         array = FreshDiskArray('spec')
-        return BitmapSpec(AsyncDisk(mach, array))
+        return Bitmap(AsyncDisk(mach, array))
 
     def equivalence(self, spec, impl, *args, **kwargs):
         i = BitVec(fresh_name('i'), SizeSort.size())
