@@ -5,8 +5,16 @@
 #include "InodeDisk.h"
 #include "IndirectInodeDisk.h"
 
-class DirLookup {
+class errno {
+	public:
+		static uint64_t ENOSPC;
+		static uint64_t ENOENT;
+		static uint64_t ENOTDIR;
 };
+
+uint64_t errno::ENOSPC;
+uint64_t errno::ENOENT;
+uint64_t errno::ENOTDIR;
 
 class Allocator32 {
 	public:
@@ -97,8 +105,47 @@ class MyPIno {
 
 };
 
+class Tuple2 {
+	public:
+		Tuple2(uint64_t _a, uint64_t _b);
+		uint64_t __getitem__(uint64_t idx);
+};
+
+class Tuple3 {
+	public:
+		Tuple3(Block *block, uint64_t _bid, uint64_t _off);
+		uint64_t get_bid();
+		uint64_t get_off();
+		Block *get_block();
+};
+
+class Tuple4 {
+	public:
+		Tuple4(Block *block, uint64_t _bid, uint64_t _off, int _valid);
+		uint64_t get_bid();
+		uint64_t get_off();
+		Block *get_block();
+		int get_valid();
+};
+
+class NameType {
+	public:
+		uint64_t __getitem__(uint64_t idx);
+};
+
+class DirLook {
+	public:
+		DirLook(MyPIno *pino);
+		Tuple2* locate_dentry_ino(uint64_t ino, NameType *name);
+		Tuple2* locate_empty_slot_ino(uint64_t ino);
+};
+
 class DirImpl {
 	public:
+		static uint64_t NBLOCKS;
+		static uint64_t IFREEDISK;
+		static uint64_t ORPHANS;
+
 		WALDisk *_txndisk;
 		IndirectInodeDisk *_inode;
 
@@ -107,7 +154,35 @@ class DirImpl {
 
 		Bitmap *_ibitmap;
 
-		DirLookup *_dirloop;
+		DirLook *_dirlook;
 
-		Disk *_orphans;
+		Orphans *_orphans;
+
+		DirImpl(WALDisk *txndisk, IndirectInodeDisk *inode);
+		Tuple4 *locate_dentry_ino(uint64_t ino, NameType *name);
+		Tuple3 *locate_empty_dentry_slot_ino(uint64_t ino);
+		Tuple4 *locate_empty_dentry_slot_err_ino(uint64_t ino);
+		void write_dentry(Block *block, uint64_t off, uint64_t ino, NameType *name);
+		void clear_dentry(Block *block, uint64_t off);
+		uint64_t ialloc();
+		int is_ifree(uint64_t ino);
+		int is_valid(uint64_t ino);
+		int is_gcable(uint64_t ino);
+		int is_dir(uint64_t ino);
+		int is_regular(uint64_t ino);
+		Stat *get_iattr(uint64_t ino);
+		void set_iattr(uint64_t ino, Stat *attr);
+		Block* read(uint64_t ino, uint64_t blocknum);
+		void truncate(uint64_t ino, uint64_t fsize);
+		uint64_t write(uint64_t ino, uint64_t blocknum, Block *v, uint64_t size = BitVecVal(4096, 32));
+		uint64_t lookup(uint64_t parent, NameType *name);
+		Tuple2 *mknod(uint64_t parent, NameType *name, uint64_t mode, uint64_t mtime);
+		uint64_t unlink(uint64_t parent, NameType *name);
+		Tuple2 *rmdir(uint64_t parent, NameType *name);
+		uint64_t rename(uint64_t oparent, NameType *oname, uint64_t nparent, NameType *nname);
+		void forget(uint64_t ino);
+		void fsync();
+		void gc1(uint64_t orph_index, uint64_t off);
+		void gc2(uint64_t orph_index);
+		void gc3();
 };

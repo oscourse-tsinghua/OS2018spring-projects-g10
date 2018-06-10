@@ -28,6 +28,13 @@ class Bitmap {
 };
 
 class Stat {
+	public:
+		Stat(uint64_t size, uint64_t mtime, uint64_t mode, uint64_t nlink);
+		uint64_t nlink;
+		uint64_t mode;
+		uint64_t bsize;
+		uint64_t size;
+		uint64_t fsize;
 };
 
 class InodePack {

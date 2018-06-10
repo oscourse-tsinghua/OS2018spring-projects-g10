@@ -6,11 +6,18 @@ inline int Or(int a, int b) {
 	return a | b;
 }
 
+inline int Extend(uint64_t a, uint64_t b);
+
+inline int ULE(uint64_t a, uint64_t b);
+inline int UGE(uint64_t a, uint64_t b);
+
 inline uint64_t BitVecVal(uint64_t val, uint64_t size);
 
 inline uint64_t USub(uint64_t a, uint64_t b) {
 	return a - b;
 }
+
+inline uint64_t UGT(uint64_t a, uint64_t b);
 
 inline uint64_t Concat32(uint64_t a, uint64_t b) {
 	return (a << 32) | b;
@@ -23,7 +30,6 @@ inline uint64_t If(int cond, uint64_t a, uint64_t b) {
 	return b;
 }
 
-inline int Not(int a);
 
 inline uint64_t Extract(int hi, int lo, uint64_t val) {
     return val >> lo & (((uint64_t)1 << (hi - lo + 1)) - (uint64_t)1);
