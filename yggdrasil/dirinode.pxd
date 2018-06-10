@@ -9,14 +9,14 @@ cdef class DirImpl:
     cdef WALDisk _txndisk
     cdef IndirectInodeDisk _inode
 
-    cdef object _Allocator
+    #cdef object _Allocator
     cdef object _iallocator
     cdef object _ifree
 
-    cdef object _Bitmap
+    #cdef object _Bitmap
     cdef object _ibitmap
 
-    cdef object _DirLookup
+    #cdef object _DirLookup
     cdef DentryLookup _dirlook
 
     cdef object _orphans

@@ -439,10 +439,19 @@ class Allocator64(object):
         return BitVec(fresh_name('alloc'), 64)
 
 
+"""
 class Allocator32(object):
     def __init__(self, _readfn, _start, _end):
         pass
 
+    def alloc(self):
+        return BitVec(fresh_name('alloc'), 32)
+"""
+
+class Allocator32(object):
+    def __init__(self, _disk, _start, _end):
+        pass
+    
     def alloc(self):
         return BitVec(fresh_name('alloc'), 32)
 

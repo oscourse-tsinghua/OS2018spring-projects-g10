@@ -23,7 +23,8 @@ class DirRefinementTest(test.RefinementTest):
         orphans = FreshDiskArray('orphans')
 
         inode = InodeSpec(mach, [mappedarray, attr_array, diskarray, None, ifreearray, orphans])
-        return DirImpl(inode, inode, Allocator32, Bitmap, DirLook)
+        #return DirImpl(inode, inode, Allocator32, Bitmap, DirLook)
+        return DirImpl(inode, inode)
 
     def equivalence(self, spec, impl, **kwargs):
         ino = FreshIno('ino-pre')
@@ -169,7 +170,8 @@ class DirRefinement(test.RefinementTest):
         orphans = FreshDiskArray('orphans')
 
         inode = InodeSpec(mach, [mappedarray, attr_array, diskarray, None, ifreearray, orphans])
-        return DirImpl(inode, inode, Allocator32, Bitmap, DirLook)
+        #return DirImpl(inode, inode, Allocator32, Bitmap, DirLook)
+        return DirImpl(inode, inode)
 
     def test_match_write(self):
         spec_mach = Machine()

@@ -6,28 +6,42 @@ if not cython.compiled:
 import errno
 from stat import S_IFDIR
 from collections import namedtuple
+#from diskspec import Bitmap, DirLookup, Allocator32
+from dirspec import *
 
+#Disk = namedtuple('Disk', ['read', 'write'])
 
-Disk = namedtuple('Disk', ['read', 'write'])
+class Disk(object):
+    def __init__(self, dev, _txndisk):
+        #super(Disk, self).__init__()
+        self.dev = dev
+        self._txndisk = _txndisk
 
+    def read(self, bid):
+        return self._txndisk._read(self.dev, bid)
 
+    def write(self, bid, data):
+        self._txndisk.write_tx(self.dev, bid, data)
+
+'''
 class Orphans(object):
     def __init__(self, orphandisk):
         self._orphandisk = orphandisk
 
     def size(self):
-        return self._orphandisk.read(0)[0]
+        return self._orphandisk.read(0).__getitem__(0)
 
     def index(self, idx):
         orphanblock = self._orphandisk.read(0)
-        n = orphanblock[0]
+        #n = orphanblock[0]
+        n = orphanblock.__getitem__(0)
 
         assertion(0 <= n, "orphan index: n is negative")
         assertion(n < 511, "orphan index: n >= 511")
 
         np = Extract(8, 0, idx)
 
-        return orphanblock[np + 1]
+        return orphanblock.__getitem__(np + 1)
 
     def reset(self):
         self._orphandisk.write(0, ConstBlock(0))
@@ -35,23 +49,89 @@ class Orphans(object):
     def clear(self, idx):
         orphanblock = self._orphandisk.read(0)
         np = Extract(8, 0, idx)
-        orphanblock[np] = 0
+        #orphanblock[np] = 0
+        orphanblock.__setitem__(np, 0)
         self._orphandisk.write(0, orphanblock)
 
     def append(self, value):
         orphanblock = self._orphandisk.read(0)
-        n = orphanblock[0]
+        #n = orphanblock[0]
+        n = orphanblock.__getitem__(0)
 
         assertion(0 <= n, "orphan index: n is negative")
         assertion(n < 511, "orphan index: n >= 511")
 
         np = Extract(8, 0, n)
 
+        """
         orphanblock[np + 1] = value
         orphanblock[0] = n + 1
+        """
+        orphanblock.__setitem__(np + 1, value)
+        orphanblock.__setitem__(0, n + 1)
 
         self._orphandisk.write(0, orphanblock)
+'''
 
+# this class is auto-generated from cpp code
+class Orphans:
+    def __init__(self, orphandisk):
+        self._orphandisk = orphandisk
+
+    def size(self):
+        return self._orphandisk.read(0).__getitem__(0)
+
+    def index(self, idx):
+        orphanblock = self._orphandisk.read(0)
+        n = orphanblock.__getitem__(0)
+        assertion(0 <= n)
+        assertion(n < 511)
+        np = Extract(8, 0, idx)
+        return orphanblock.__getitem__(np + 1)
+
+    def reset(self):
+        self._orphandisk.write(0, ConstBlock(0))
+
+    def clear(self, idx):
+        orphanblock = self._orphandisk.read(0)
+        np = Extract(8, 0, idx)
+        orphanblock.__setitem__(np, 0)
+        self._orphandisk.write(0, orphanblock)
+
+    def append(self, value):
+        orphanblock = self._orphandisk.read(0)
+        n = orphanblock.__getitem__(0)
+        assertion(0 <= n)
+        assertion(n < 511)
+        np = Extract(8, 0, n)
+        orphanblock.__setitem__(np + 1, value)
+        orphanblock.__setitem__(0, n + 1)
+        self._orphandisk.write(0, orphanblock)
+
+class MyPIno(object):
+
+    def __init__(self, inode):
+        self.inode = inode
+
+    def is_mapped(self, vbn, inode = None):
+        if inode == None:
+            return self.inode.is_mapped(vbn)
+        return inode.is_mapped(vbn)
+
+    def mappingi(self, vbn, inode = None):
+        if inode == None:
+            return self.inode.mappingi(vbn)
+        return inode.mappingi(vbn)
+    
+    def read(self, bid, inode = None):
+        if inode == None:
+            return self.inode.read(bid)
+        return inode.read(bid)
+
+    def bmap(self, bid, inode = None):
+        if inode == None:
+            return self.inode.bmap(bid)
+        return inode.bmap(bid)
 
 
 class DirImpl(object):
@@ -61,23 +141,29 @@ class DirImpl(object):
     ORPHANS =  5
 
     @cython.locals(inode='IndirectInodeDisk')
-    def __init__(self, txndisk, inode, Allocator, Bitmap, DirLookup):
+    def __init__(self, txndisk, inode):
         self._txndisk = txndisk
         self._inode = inode
 
+        """
         self._Allocator = Allocator
         self._Bitmap = Bitmap
         self._DirLookup = DirLookup
+        """
 
-        PIno = namedtuple('Inode', ['is_mapped', 'mappingi', 'read', 'bmap'])
+        #PIno = namedtuple('Inode', ['is_mapped', 'mappingi', 'read', 'bmap'])
 
+        """
         self._dirlook = DirLookup(PIno(
             is_mapped=lambda vbn, inode=inode: inode.is_mapped(vbn),
             mappingi=lambda vbn, inode=inode: inode.mappingi(vbn),
             read=lambda bid, inode=inode: inode.read(bid),
             bmap=lambda bid, inode=inode: inode.bmap(bid),
         ))
+        """
+        self._dirlook = DirLook(MyPIno(inode))
 
+        """
         self._ifree = Disk(
             write=lambda bid, data: self._txndisk.write_tx(self.IFREEDISK, bid, data),
             read=lambda bid: self._txndisk._read(self.IFREEDISK, bid))
@@ -85,10 +171,17 @@ class DirImpl(object):
         orphandisk = Disk(
             write=lambda bid, data: self._txndisk.write_tx(self.ORPHANS, bid, data),
             read=lambda bid: self._txndisk._read(self.ORPHANS, bid))
+        """
 
+        self._ifree = Disk(self.IFREEDISK, self._txndisk)
+        orphandisk = Disk(self.ORPHANS, self._txndisk)
+
+        """
         self._iallocator = Allocator(
                 lambda n: self._ifree.read(n),
                 0, 1024)
+        """
+        self._iallocator = Allocator32(self._ifree, 0, 1024)
 
         self._ibitmap = Bitmap(self._ifree)
         self._orphans = Orphans(orphandisk)
@@ -99,9 +192,11 @@ class DirImpl(object):
         assertion(ioff != 10, "locate_dentry_ino: invalid ioff")
         bid = self._inode.bmap(Concat32(ino, ioff))
         block = self._inode.read(bid)
-        valid = And(bid != 0, off % 16 == 0, Extract(31, 0, block[off]) != 0)
+        #valid = And(bid != 0, off % 16 == 0, Extract(31, 0, block[off]) != 0)
+        valid = And(bid != 0, off % 16 == 0, Extract(31, 0, block.__getitem__(off)) != 0)
         for i in range(15):
-            valid = And(valid, block[off + i + 1] == name[i])
+            #valid = And(valid, block[off + i + 1] == name[i])
+            valid = And(valid, block.__getitem__(off + i + 1) == name.__getitem__(i))
         return block, bid, off, valid
 
     def locate_empty_dentry_slot_ino(self, ino):
@@ -112,7 +207,8 @@ class DirImpl(object):
         block = self._inode.read(bid)
         assertion(bid != 0, "locate_empty_dentry_slot: invalid bid")
         assertion(off % 16 == 0, "locate_empty_dentry_slot: invalid offset")
-        assertion(block[off] == 0, "locate_empty_dentry_slot: slot not empty")
+        #assertion(block[off] == 0, "locate_empty_dentry_slot: slot not empty")
+        assertion(block.__getitem__(off) == 0, "locate_empty_dentry_slot: slot not empty")
         return block, bid, off
 
     def locate_empty_dentry_slot_err_ino(self, ino):
@@ -121,16 +217,20 @@ class DirImpl(object):
         assertion(ioff != 10, "locate_dentry_ino: invalid ioff")
         bid = self._inode.bmap(Concat32(ino, ioff))
         block = self._inode.read(bid)
-        return block, bid, off, And(bid != 0, off % 16 == 0, block[off] == 0)
+        #return block, bid, off, And(bid != 0, off % 16 == 0, block[off] == 0)
+        return block, bid, off, And(bid != 0, off % 16 == 0, block.__getitem__(off) == 0)
 
     def write_dentry(self, block, off, ino, name):
-        block[off] = ino
+        #block[off] = ino
+        block.__setitem__(off, ino)
         for i in range(15):
-            block[off + i + 1] = name[i]
+            #block[off + i + 1] = name[i]
+            block.__setitem__(off + i + 1, name.__getitem__(i))
 
     def clear_dentry(self, block, off):
         for i in range(16):
-            block[off + i] = 0
+            #block[off + i] = 0
+            block.__setitem__(off + i, 0)
 
     def ialloc(self):
         # black box allocator returns a vbn
@@ -232,11 +332,13 @@ class DirImpl(object):
         parent_block, _, off, valid = self.locate_dentry_ino(parent, name)
         self._inode.commit_tx()
 
-        return If(valid, Extract(31, 0, parent_block[off]), 0)
+        #return If(valid, Extract(31, 0, parent_block[off]), 0)
+        return If(valid, Extract(31, 0, parent_block.__getitem__(off)), 0)
 
     def mknod(self, parent, name, mode, mtime):
         assertion(self.is_dir(parent), "mknod: parent is not a directory")
-        assertion(name[0] != 0, "mknod: name is null")
+        #assertion(name[0] != 0, "mknod: name is null")
+        assertion(name.__getitem__(0) != 0, "mknod: name is null")
 
         self._inode.begin_tx()
 
@@ -260,7 +362,8 @@ class DirImpl(object):
         self._inode.set_iattr(parent, attr)
 
         self.write_dentry(parent_block, off, ino, name)
-        parent_block[off] = ino
+        #parent_block[off] = ino
+        parent_block.__setitem__(off, ino)
 
         self._inode.write(parent_bid, parent_block)
 
@@ -270,7 +373,8 @@ class DirImpl(object):
 
     def unlink(self, parent, name):
         assertion(self.is_dir(parent), "unlink: not a dir")
-        assertion(name[0] != 0, "unlink: name is null")
+        #assertion(name[0] != 0, "unlink: name is null")
+        assertion(name.__getitem__(0) != 0, "unlink: name is null")
 
         self._inode.begin_tx()
 
@@ -283,7 +387,8 @@ class DirImpl(object):
         attr.nlink -= 1
         self._inode.set_iattr(parent, attr)
 
-        ino = Extract(31, 0, parent_block[off])
+        #ino = Extract(31, 0, parent_block[off])
+        ino = Extract(31, 0, parent_block.__getitem__(off))
 
         attr = self._inode.get_iattr(ino)
         attr.nlink = 1
@@ -302,7 +407,8 @@ class DirImpl(object):
 
     def rmdir(self, parent, name):
         assertion(self.is_dir(parent), "rmdir: parent is not a directory")
-        assertion(name[0] != 0, "rmdir: name is null")
+        #assertion(name[0] != 0, "rmdir: name is null")
+        assertion(name.__getitem__(0) != 0, "rmdir: name is null")
 
         self._inode.begin_tx()
         parent_block, parent_bid, off, valid = self.locate_dentry_ino(parent, name)
@@ -312,7 +418,8 @@ class DirImpl(object):
 
         assertion(valid, "rmdir: dentry off not valid")
 
-        ino = Extract(31, 0, parent_block[off])
+        #ino = Extract(31, 0, parent_block[off])
+        ino = Extract(31, 0, parent_block.__getitem__(off))
         if Not(self.is_dir(ino)):
             self._inode.commit_tx()
             return 0, errno.ENOTDIR
@@ -359,8 +466,10 @@ class DirImpl(object):
         assertion(self.is_dir(oparent), "rename: oparent is not dir")
         assertion(self.is_dir(nparent), "rename: nparent is not dir")
 
-        assertion(oname[0] != 0, "rename: oname is null")
-        assertion(nname[0] != 0, "rename: nname is null")
+        #assertion(oname[0] != 0, "rename: oname is null")
+        #assertion(nname[0] != 0, "rename: nname is null")
+        assertion(oname.__getitem__(0) != 0, "rename: oname is null")
+        assertion(nname.__getitem__(0) != 0, "rename: nname is null")
 
         self._inode.begin_tx()
 
@@ -379,7 +488,8 @@ class DirImpl(object):
         # Find target and wipe from parent block
         oparent_block, oparent_bid, ooff, ovalid  = self.locate_dentry_ino(oparent, oname)
         assertion(ovalid, "rename: ooff is not valid")
-        ino = oparent_block[ooff]
+        #ino = oparent_block[ooff]
+        ino = oparent_block.__getitem__(ooff)
         self.clear_dentry(oparent_block, ooff)
         self._inode.write(oparent_bid, oparent_block)
 
@@ -388,7 +498,8 @@ class DirImpl(object):
 
         if nvalid:
             # append the dst inode to the orphan list
-            self._orphans.append(nparent_block[noff])
+            #self._orphans.append(nparent_block[noff])
+            self._orphans.append(nparent_block.__getitem__(noff))
             self.clear_dentry(nparent_block, noff)
 
         nparent_block, nparent_bid, noff = self.locate_empty_dentry_slot_ino(nparent)
@@ -440,4 +551,5 @@ class DirImpl(object):
         self._inode.commit_tx()
 
     def crash(self, mach):
-        return self.__class__(self._txndisk.crash(mach), self._inode.crash(mach), self._Allocator, self._Bitmap, self._DirLookup)
+        #return self.__class__(self._txndisk.crash(mach), self._inode.crash(mach), self._Allocator, self._Bitmap, self._DirLookup)
+        return self.__class__(self._txndisk.crash(mach), self._inode.crash(mach))
