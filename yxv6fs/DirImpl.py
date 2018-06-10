@@ -361,4 +361,29 @@ class Orphans:
         self._orphandisk.write(0, orphanblock)
 
 
+class MyPIno:
+    def __init__(self, _inode):
+        self.inode = _inode
+
+    def is_mapped(self, vbn, _inode=0):
+        if _inode == 0:
+            return self.inode.is_mapped(vbn)
+        return _inode.is_mapped(vbn)
+
+    def mappingi(self, vbn, _inode=0):
+        if _inode == 0:
+            return self.inode.mappingi(vbn)
+        return _inode.mappingi(vbn)
+
+    def read(self, bid, _inode=0):
+        if _inode == 0:
+            return self.inode.read(bid)
+        return _inode.read(bid)
+
+    def bmap(self, bid, _inode=0):
+        if _inode == 0:
+            return self.inode.bmap(bid)
+        return _inode.bmap(bid)
+
+
 class DirImpl:

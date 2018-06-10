@@ -108,6 +108,7 @@ class Orphans:
         orphanblock.__setitem__(0, n + 1)
         self._orphandisk.write(0, orphanblock)
 
+'''
 class MyPIno(object):
 
     def __init__(self, inode):
@@ -132,6 +133,109 @@ class MyPIno(object):
         if inode == None:
             return self.inode.bmap(bid)
         return inode.bmap(bid)
+'''
+
+# this class is auto-generated from cpp code
+class MyPIno:
+    def __init__(self, _inode):
+        self.inode = _inode
+
+    def is_mapped(self, vbn, _inode=0):
+        if _inode == 0:
+            return self.inode.is_mapped(vbn)
+        return _inode.is_mapped(vbn)
+
+    def mappingi(self, vbn, _inode=0):
+        if _inode == 0:
+            return self.inode.mappingi(vbn)
+        return _inode.mappingi(vbn)
+
+    def read(self, bid, _inode=0):
+        if _inode == 0:
+            return self.inode.read(bid)
+        return _inode.read(bid)
+
+    def bmap(self, bid, _inode=0):
+        if _inode == 0:
+            return self.inode.bmap(bid)
+        return _inode.bmap(bid)
+
+class Tuple2(object):
+    def __init__(self, _a, _b):
+        self.a = _a
+        self.b = _b
+        self.start = 0
+    
+    def __getitem__(self, key):
+        if key == 0:
+            return self.a
+        return self.b
+
+    def __iter__(self):
+        self.start = 0
+        return self
+
+    def next(self):
+        if self.start >= 2:
+            raise StopIteration    
+        else:
+            self.start += 1
+            return self.__getitem__(self.start - 1)
+
+
+class Tuple3(object):
+    def __init__(self, _block, _bid, _off):
+        self.block = _block
+        self.bid = _bid
+        self.off = _off
+        self.start = 0
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.block
+        if key == 1:
+            return self.bid
+        return self.off
+
+    def __iter__(self):
+        self.start = 0
+        return self
+
+    def next(self):
+        if self.start >= 3:
+            raise StopIteration    
+        else:
+            self.start += 1
+            return self.__getitem__(self.start - 1)
+
+
+class Tuple4(object):
+    def __init__(self, _block, _bid, _off, _valid):
+        self.block = _block
+        self.bid = _bid
+        self.off = _off
+        self.valid = _valid
+        self.start = 0
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.block
+        if key == 1:
+            return self.bid
+        if key == 2:
+            return self.off
+        return self.valid
+
+    def __iter__(self):
+        self.start = 0
+        return self
+
+    def next(self):
+        if self.start >= 4:
+            raise StopIteration    
+        else:
+            self.start += 1
+            return self.__getitem__(self.start - 1)
 
 
 class DirImpl(object):
@@ -197,7 +301,8 @@ class DirImpl(object):
         for i in range(15):
             #valid = And(valid, block[off + i + 1] == name[i])
             valid = And(valid, block.__getitem__(off + i + 1) == name.__getitem__(i))
-        return block, bid, off, valid
+        #return block, bid, off, valid
+        return Tuple4(block, bid, off, valid)
 
     def locate_empty_dentry_slot_ino(self, ino):
         ioff, off = self._dirlook.locate_empty_slot_ino(ino)
@@ -209,7 +314,8 @@ class DirImpl(object):
         assertion(off % 16 == 0, "locate_empty_dentry_slot: invalid offset")
         #assertion(block[off] == 0, "locate_empty_dentry_slot: slot not empty")
         assertion(block.__getitem__(off) == 0, "locate_empty_dentry_slot: slot not empty")
-        return block, bid, off
+        #return block, bid, off
+        return Tuple3(block, bid, off)
 
     def locate_empty_dentry_slot_err_ino(self, ino):
         ioff, off = self._dirlook.locate_empty_slot_ino(ino)
@@ -218,7 +324,8 @@ class DirImpl(object):
         bid = self._inode.bmap(Concat32(ino, ioff))
         block = self._inode.read(bid)
         #return block, bid, off, And(bid != 0, off % 16 == 0, block[off] == 0)
-        return block, bid, off, And(bid != 0, off % 16 == 0, block.__getitem__(off) == 0)
+        #return block, bid, off, And(bid != 0, off % 16 == 0, block.__getitem__(off) == 0)
+        return Tuple4(block, bid, off, And(bid != 0, off % 16 == 0, block.__getitem__(off) == 0))
 
     def write_dentry(self, block, off, ino, name):
         #block[off] = ino
@@ -345,7 +452,8 @@ class DirImpl(object):
         parent_block, parent_bid, off, valid = self.locate_empty_dentry_slot_err_ino(parent)
         if Not(valid):
             self._inode.commit_tx()
-            return 0, errno.ENOSPC
+            #return 0, errno.ENOSPC
+            return Tuple2(0, errno.ENOSPC)
 
         ino = self.ialloc()
 
@@ -369,7 +477,8 @@ class DirImpl(object):
 
         self._inode.commit_tx()
 
-        return ino, 0
+        #return ino, 0
+        return Tuple2(ino, 0)
 
     def unlink(self, parent, name):
         assertion(self.is_dir(parent), "unlink: not a dir")
@@ -414,7 +523,8 @@ class DirImpl(object):
         parent_block, parent_bid, off, valid = self.locate_dentry_ino(parent, name)
         if Not(valid):
             self._inode.commit_tx()
-            return 0, errno.ENOENT
+            #return 0, errno.ENOENT
+            return Tuple2(0, errno.ENOENT)
 
         assertion(valid, "rmdir: dentry off not valid")
 
@@ -422,14 +532,16 @@ class DirImpl(object):
         ino = Extract(31, 0, parent_block.__getitem__(off))
         if Not(self.is_dir(ino)):
             self._inode.commit_tx()
-            return 0, errno.ENOTDIR
+            #return 0, errno.ENOTDIR
+            return Tuple2(0, errno.ENOTDIR)
 
         assertion(self.is_dir(ino), "rmdir: ino is not dir")
 
         attr = self._inode.get_iattr(ino)
         if UGT(attr.nlink, 2):
             self._inode.commit_tx()
-            return BitVecVal(0, 32), errno.ENOTEMPTY
+            #return BitVecVal(0, 32), errno.ENOTEMPTY
+            return Tuple2(BitVecVal(0, 32), errno.ENOTEMPTY)
 
         attr = self._inode.get_iattr(parent)
         assertion(UGE(attr.nlink, 2), "rmdir: nlink is not greater than 1: " + str(attr.nlink))
@@ -448,7 +560,8 @@ class DirImpl(object):
 
         self._inode.commit_tx()
 
-        return ino, 0
+        #return ino, 0
+        return Tuple2(ino, 0)
 
     def forget(self, ino):
         if Or(self.get_iattr(ino).mode & S_IFDIR != 0, self.get_iattr(ino).nlink != 1):

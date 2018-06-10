@@ -59,6 +59,44 @@ class Orphans {
 
 };
 
+class MyPIno {
+	public: 
+		IndirectInodeDisk *inode;
+
+		MyPIno(IndirectInodeDisk *_inode) {
+			inode = _inode;
+		}
+
+		int is_mapped(uint64_t vbn, IndirectInodeDisk *_inode = 0) {
+			if (_inode == 0) {
+				return inode->is_mapped(vbn);
+			}
+			return _inode->is_mapped(vbn);
+		}
+
+		uint64_t mappingi(uint64_t vbn, IndirectInodeDisk *_inode = 0) {
+			if (_inode == 0) {
+				return inode->mappingi(vbn);
+			}
+			return _inode->mappingi(vbn);
+		}
+
+		Block *read(uint64_t bid, IndirectInodeDisk *_inode = 0) {
+			if (_inode == 0) {
+				return inode->read(bid);
+			}
+			return _inode->read(bid);
+		}
+
+		uint64_t bmap(uint64_t bid, IndirectInodeDisk *_inode = 0) {
+			if (_inode == 0) {
+				return inode->bmap(bid);
+			}
+			return _inode->bmap(bid);
+		}
+
+};
+
 class DirImpl {
 	public:
 		WALDisk *_txndisk;

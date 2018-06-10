@@ -1,0 +1,547 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Allocator32	DirImpl.h	/^class Allocator32 {$/;"	c
+Allocator32	DirImpl.py	/^class Allocator32:$/;"	c
+Allocator64	DirImpl.py	/^class Allocator64:$/;"	c
+Allocator64	IndirectInodeDisk.py	/^class Allocator64:$/;"	c
+Allocator64	InodeDisk.h	/^class Allocator64 {$/;"	c
+Allocator64	InodeDisk.py	/^class Allocator64:$/;"	c
+And	DirImpl.py	/^def And(a=1, b=1, c=1):$/;"	f
+And	IndirectInodeDisk.py	/^def And(a=1, b=1, c=1):$/;"	f
+And	InodeDisk.py	/^def And(a=1, b=1, c=1):$/;"	f
+And	WALDisk.py	/^def And(a=1, b=1, c=1):$/;"	f
+And	diskimpl.h	/^inline int And(int a = 1, int b = 1, int c = 1) {$/;"	f
+And	output.py	/^def And(a=1, b=1, c=1):$/;"	f
+Bitmap	DirImpl.py	/^class Bitmap:$/;"	c
+Bitmap	IndirectInodeDisk.py	/^class Bitmap:$/;"	c
+Bitmap	InodeDisk.h	/^class Bitmap {$/;"	c
+Bitmap	InodeDisk.py	/^class Bitmap:$/;"	c
+Block	DirImpl.py	/^class Block:$/;"	c
+Block	IndirectInodeDisk.py	/^class Block:$/;"	c
+Block	InodeDisk.py	/^class Block:$/;"	c
+Block	WALDisk.py	/^class Block:$/;"	c
+Block	diskimpl.h	/^class Block {$/;"	c
+Block	output.py	/^class Block:$/;"	c
+CacheDict	DirImpl.py	/^class CacheDict:$/;"	c
+CacheDict	IndirectInodeDisk.py	/^class CacheDict:$/;"	c
+CacheDict	InodeDisk.py	/^class CacheDict:$/;"	c
+CacheDict	WALDisk.py	/^class CacheDict:$/;"	c
+CacheDict	diskimpl.h	/^class CacheDict {$/;"	c
+CacheDict	output.py	/^class CacheDict:$/;"	c
+Concat32	DirImpl.py	/^def Concat32(a, b):$/;"	f
+Concat32	IndirectInodeDisk.py	/^def Concat32(a, b):$/;"	f
+Concat32	diskimpl.h	/^inline uint64_t Concat32(uint64_t a, uint64_t b) {$/;"	f
+ConstBlock	DirImpl.py	/^def ConstBlock(val):$/;"	f
+ConstBlock	IndirectInodeDisk.py	/^def ConstBlock(val):$/;"	f
+ConstBlock	InodeDisk.py	/^def ConstBlock(val):$/;"	f
+ConstBlock	WALDisk.py	/^def ConstBlock(val):$/;"	f
+ConstBlock	diskimpl.h	/^Block *ConstBlock(uint64_t val) {$/;"	f
+ConstBlock	output.py	/^def ConstBlock(val):$/;"	f
+DATADISK	DirImpl.py	/^    DATADISK = None$/;"	v	class:InodeDisk
+DATADISK	IndirectInodeDisk.py	/^    DATADISK = None$/;"	v	class:InodeDisk
+DATADISK	InodeDisk.cc	/^uint64_t InodeDisk::DATADISK = 3;$/;"	m	class:InodeDisk	file:
+DATADISK	InodeDisk.h	/^		static uint64_t DATADISK;$/;"	m	class:InodeDisk
+DATADISK	InodeDisk.py	/^    DATADISK = None$/;"	v	class:InodeDisk
+DirImpl	DirImpl.h	/^class DirImpl {$/;"	c
+DirImpl	DirImpl.py	/^class DirImpl:$/;"	c
+DirLookup	DirImpl.h	/^class DirLookup {$/;"	c
+DirLookup	DirImpl.py	/^class DirLookup:$/;"	c
+Disk	DirImpl.py	/^class Disk:$/;"	c
+Disk	IndirectInodeDisk.py	/^class Disk:$/;"	c
+Disk	InodeDisk.h	/^class Disk {$/;"	c
+Disk	InodeDisk.py	/^class Disk:$/;"	c
+Extract	DirImpl.py	/^def Extract(hi, lo, val):$/;"	f
+Extract	IndirectInodeDisk.py	/^def Extract(hi, lo, val):$/;"	f
+Extract	InodeDisk.py	/^def Extract(hi, lo, val):$/;"	f
+Extract	diskimpl.h	/^inline uint64_t Extract(int hi, int lo, uint64_t val) {$/;"	f
+FREEDISK	DirImpl.py	/^    FREEDISK = None$/;"	v	class:InodeDisk
+FREEDISK	IndirectInodeDisk.py	/^    FREEDISK = None$/;"	v	class:InodeDisk
+FREEDISK	InodeDisk.cc	/^uint64_t InodeDisk::FREEDISK = 0;$/;"	m	class:InodeDisk	file:
+FREEDISK	InodeDisk.h	/^		static uint64_t FREEDISK;$/;"	m	class:InodeDisk
+FREEDISK	InodeDisk.py	/^    FREEDISK = None$/;"	v	class:InodeDisk
+INODEDATADISK	DirImpl.py	/^    INODEDATADISK = None$/;"	v	class:InodeDisk
+INODEDATADISK	IndirectInodeDisk.py	/^    INODEDATADISK = None$/;"	v	class:InodeDisk
+INODEDATADISK	InodeDisk.cc	/^uint64_t InodeDisk::INODEDATADISK = 2;$/;"	m	class:InodeDisk	file:
+INODEDATADISK	InodeDisk.h	/^		static uint64_t INODEDATADISK;$/;"	m	class:InodeDisk
+INODEDATADISK	InodeDisk.py	/^    INODEDATADISK = None$/;"	v	class:InodeDisk
+INODEMETADISK	DirImpl.py	/^    INODEMETADISK = None$/;"	v	class:InodeDisk
+INODEMETADISK	IndirectInodeDisk.py	/^    INODEMETADISK = None$/;"	v	class:InodeDisk
+INODEMETADISK	InodeDisk.cc	/^uint64_t InodeDisk::INODEMETADISK = 1;$/;"	m	class:InodeDisk	file:
+INODEMETADISK	InodeDisk.h	/^		static uint64_t INODEMETADISK;$/;"	m	class:InodeDisk
+INODEMETADISK	InodeDisk.py	/^    INODEMETADISK = None$/;"	v	class:InodeDisk
+If	DirImpl.py	/^def If(cond, a, b):$/;"	f
+If	IndirectInodeDisk.py	/^def If(cond, a, b):$/;"	f
+If	InodeDisk.py	/^def If(cond, a, b):$/;"	f
+If	diskimpl.h	/^inline uint64_t If(int cond, uint64_t a, uint64_t b) {$/;"	f
+IndirectInodeDisk	DirImpl.py	/^class IndirectInodeDisk:$/;"	c
+IndirectInodeDisk	IndirectInodeDisk.cc	/^IndirectInodeDisk::IndirectInodeDisk(InodeDisk *idisk) {$/;"	f	class:IndirectInodeDisk
+IndirectInodeDisk	IndirectInodeDisk.h	/^class IndirectInodeDisk {$/;"	c
+IndirectInodeDisk	IndirectInodeDisk.py	/^class IndirectInodeDisk:$/;"	c
+InodeDisk	DirImpl.py	/^class InodeDisk:$/;"	c
+InodeDisk	IndirectInodeDisk.py	/^class InodeDisk:$/;"	c
+InodeDisk	InodeDisk.cc	/^InodeDisk::InodeDisk(WALDisk *txndisk) {$/;"	f	class:InodeDisk
+InodeDisk	InodeDisk.h	/^class InodeDisk {$/;"	c
+InodeDisk	InodeDisk.py	/^class InodeDisk:$/;"	c
+InodePack	DirImpl.py	/^class InodePack:$/;"	c
+InodePack	IndirectInodeDisk.py	/^class InodePack:$/;"	c
+InodePack	InodeDisk.h	/^class InodePack {$/;"	c
+InodePack	InodeDisk.py	/^class InodePack:$/;"	c
+LOG_BID_HEADER_BLOCK	WALDisk.h	/^		uint64_t LOG_BID_HEADER_BLOCK;$/;"	m	class:WALDisk
+LOG_DEV_HEADER_BLOCK	WALDisk.h	/^		uint64_t LOG_DEV_HEADER_BLOCK;$/;"	m	class:WALDisk
+LOG_HEADER_BLOCK	WALDisk.h	/^		uint64_t LOG_HEADER_BLOCK;$/;"	m	class:WALDisk
+LOG_MAX_ENTRIES	DirImpl.py	/^    LOG_MAX_ENTRIES = None$/;"	v	class:WALDisk
+LOG_MAX_ENTRIES	IndirectInodeDisk.py	/^    LOG_MAX_ENTRIES = None$/;"	v	class:WALDisk
+LOG_MAX_ENTRIES	InodeDisk.py	/^    LOG_MAX_ENTRIES = None$/;"	v	class:WALDisk
+LOG_MAX_ENTRIES	WALDisk.cc	/^uint64_t WALDisk::LOG_MAX_ENTRIES = 10;$/;"	m	class:WALDisk	file:
+LOG_MAX_ENTRIES	WALDisk.h	/^		static uint64_t LOG_MAX_ENTRIES;$/;"	m	class:WALDisk
+LOG_MAX_ENTRIES	WALDisk.py	/^    LOG_MAX_ENTRIES = None$/;"	v	class:WALDisk
+LOG_MAX_ENTRIES	output.py	/^    LOG_MAX_ENTRIES = None$/;"	v	class:WALDisk
+MyPIno	DirImpl.h	/^		MyPIno(IndirectInodeDisk *_inode) {$/;"	f	class:MyPIno
+MyPIno	DirImpl.h	/^class MyPIno {$/;"	c
+NDIRECT	DirImpl.py	/^    NDIRECT = None$/;"	v	class:InodeDisk
+NDIRECT	IndirectInodeDisk.py	/^    NDIRECT = None$/;"	v	class:InodeDisk
+NDIRECT	InodeDisk.cc	/^uint64_t InodeDisk::NDIRECT = 11;$/;"	m	class:InodeDisk	file:
+NDIRECT	InodeDisk.h	/^		static uint64_t NDIRECT;$/;"	m	class:InodeDisk
+NDIRECT	InodeDisk.py	/^    NDIRECT = None$/;"	v	class:InodeDisk
+NINDIRECT	DirImpl.py	/^    NINDIRECT = None$/;"	v	class:IndirectInodeDisk
+NINDIRECT	IndirectInodeDisk.cc	/^uint64_t IndirectInodeDisk::NINDIRECT = 512;$/;"	m	class:IndirectInodeDisk	file:
+NINDIRECT	IndirectInodeDisk.h	/^		static uint64_t NINDIRECT;$/;"	m	class:IndirectInodeDisk
+NINDIRECT	IndirectInodeDisk.py	/^    NINDIRECT = None$/;"	v	class:IndirectInodeDisk
+Or	DirImpl.py	/^def Or(a, b):$/;"	f
+Or	IndirectInodeDisk.py	/^def Or(a, b):$/;"	f
+Or	diskimpl.h	/^inline int Or(int a, int b) {$/;"	f
+Orphans	DirImpl.h	/^		Orphans(Disk *orphandisk) {$/;"	f	class:Orphans
+Orphans	DirImpl.h	/^class Orphans {$/;"	c
+Orphans	DirImpl.py	/^class Orphans:$/;"	c
+PER_BLOCK	WALDisk.h	/^		uint64_t PER_BLOCK;$/;"	m	class:WALDisk
+PartitionAsyncDisk	DirImpl.py	/^class PartitionAsyncDisk:$/;"	c
+PartitionAsyncDisk	IndirectInodeDisk.py	/^class PartitionAsyncDisk:$/;"	c
+PartitionAsyncDisk	InodeDisk.py	/^class PartitionAsyncDisk:$/;"	c
+PartitionAsyncDisk	WALDisk.py	/^class PartitionAsyncDisk:$/;"	c
+PartitionAsyncDisk	diskimpl.h	/^class PartitionAsyncDisk {$/;"	c
+PartitionAsyncDisk	output.py	/^class PartitionAsyncDisk:$/;"	c
+PartitionAsyncDiskList	DirImpl.py	/^class PartitionAsyncDiskList:$/;"	c
+PartitionAsyncDiskList	IndirectInodeDisk.py	/^class PartitionAsyncDiskList:$/;"	c
+PartitionAsyncDiskList	InodeDisk.py	/^class PartitionAsyncDiskList:$/;"	c
+PartitionAsyncDiskList	WALDisk.py	/^class PartitionAsyncDiskList:$/;"	c
+PartitionAsyncDiskList	diskimpl.h	/^class PartitionAsyncDiskList {$/;"	c
+PartitionAsyncDiskList	output.py	/^class PartitionAsyncDiskList:$/;"	c
+Stat	DirImpl.py	/^class Stat:$/;"	c
+Stat	IndirectInodeDisk.py	/^class Stat:$/;"	c
+Stat	InodeDisk.h	/^class Stat {$/;"	c
+Stat	InodeDisk.py	/^class Stat:$/;"	c
+TripleList	DirImpl.py	/^class TripleList:$/;"	c
+TripleList	IndirectInodeDisk.py	/^class TripleList:$/;"	c
+TripleList	InodeDisk.py	/^class TripleList:$/;"	c
+TripleList	WALDisk.py	/^class TripleList:$/;"	c
+TripleList	diskimpl.h	/^class TripleList {$/;"	c
+TripleList	output.py	/^class TripleList:$/;"	c
+ULT	DirImpl.py	/^def ULT(a, b):$/;"	f
+ULT	IndirectInodeDisk.py	/^def ULT(a, b):$/;"	f
+ULT	InodeDisk.py	/^def ULT(a, b):$/;"	f
+ULT	WALDisk.py	/^def ULT(a, b):$/;"	f
+ULT	diskimpl.h	/^inline int ULT(uint64_t a, uint64_t b) {$/;"	f
+ULT	output.py	/^def ULT(a, b):$/;"	f
+USub	DirImpl.py	/^def USub(a, b):$/;"	f
+USub	IndirectInodeDisk.py	/^def USub(a, b):$/;"	f
+USub	diskimpl.h	/^inline uint64_t USub(uint64_t a, uint64_t b) {$/;"	f
+WALDisk	DirImpl.py	/^class WALDisk:$/;"	c
+WALDisk	IndirectInodeDisk.py	/^class WALDisk:$/;"	c
+WALDisk	InodeDisk.py	/^class WALDisk:$/;"	c
+WALDisk	WALDisk.cc	/^WALDisk::WALDisk(PartitionAsyncDisk *logdisk, PartitionAsyncDiskList *datadisks, int osync) {$/;"	f	class:WALDisk
+WALDisk	WALDisk.h	/^class WALDisk {$/;"	c
+WALDisk	WALDisk.py	/^class WALDisk:$/;"	c
+WALDisk	output.py	/^class WALDisk:$/;"	c
+_INODEDATADISK	InodeDisk.h	/^		uint64_t _INODEDATADISK;$/;"	m	class:InodeDisk
+_NDIRECT	InodeDisk.h	/^		uint64_t _NDIRECT;$/;"	m	class:InodeDisk
+_NINDIRECT	IndirectInodeDisk.h	/^		uint64_t _NINDIRECT;$/;"	m	class:IndirectInodeDisk
+__commit	DirImpl.py	/^    def __commit(self):$/;"	m	class:WALDisk	file:
+__commit	IndirectInodeDisk.py	/^    def __commit(self):$/;"	m	class:WALDisk	file:
+__commit	InodeDisk.py	/^    def __commit(self):$/;"	m	class:WALDisk	file:
+__commit	WALDisk.cc	/^void WALDisk::__commit() {$/;"	f	class:WALDisk
+__commit	WALDisk.py	/^    def __commit(self):$/;"	m	class:WALDisk	file:
+__commit	output.py	/^    def __commit(self):$/;"	m	class:WALDisk	file:
+__getitem__	DirImpl.py	/^    def __getitem__(self, key):$/;"	m	class:Block	file:
+__getitem__	DirImpl.py	/^    def __getitem__(self, key):$/;"	m	class:PartitionAsyncDiskList	file:
+__getitem__	IndirectInodeDisk.py	/^    def __getitem__(self, key):$/;"	m	class:Block	file:
+__getitem__	IndirectInodeDisk.py	/^    def __getitem__(self, key):$/;"	m	class:PartitionAsyncDiskList	file:
+__getitem__	InodeDisk.py	/^    def __getitem__(self, key):$/;"	m	class:Block	file:
+__getitem__	InodeDisk.py	/^    def __getitem__(self, key):$/;"	m	class:PartitionAsyncDiskList	file:
+__getitem__	WALDisk.py	/^    def __getitem__(self, key):$/;"	m	class:Block	file:
+__getitem__	WALDisk.py	/^    def __getitem__(self, key):$/;"	m	class:PartitionAsyncDiskList	file:
+__getitem__	diskimpl.h	/^		PartitionAsyncDisk* __getitem__(uint64_t key) {$/;"	f	class:PartitionAsyncDiskList
+__getitem__	diskimpl.h	/^		uint64_t __getitem__(uint64_t key) {$/;"	f	class:Block
+__getitem__	output.py	/^    def __getitem__(self, key):$/;"	m	class:Block	file:
+__getitem__	output.py	/^    def __getitem__(self, key):$/;"	m	class:PartitionAsyncDiskList	file:
+__init__	DirImpl.py	/^    def __init__(self, _dev, _txndisk):$/;"	m	class:Disk
+__init__	DirImpl.py	/^    def __init__(self, _disk):$/;"	m	class:Bitmap
+__init__	DirImpl.py	/^    def __init__(self, _disk, _start, _end):$/;"	m	class:Allocator32
+__init__	DirImpl.py	/^    def __init__(self, _inodemeta, inodedata):$/;"	m	class:InodePack
+__init__	DirImpl.py	/^    def __init__(self, _txndisk, _dev, _start, _end):$/;"	m	class:Allocator64
+__init__	DirImpl.py	/^    def __init__(self, idisk):$/;"	m	class:IndirectInodeDisk
+__init__	DirImpl.py	/^    def __init__(self, logdisk, datadisks, osync=True):$/;"	m	class:WALDisk
+__init__	DirImpl.py	/^    def __init__(self, orphandisk):$/;"	m	class:Orphans
+__init__	DirImpl.py	/^    def __init__(self, txndisk):$/;"	m	class:InodeDisk
+__init__	IndirectInodeDisk.py	/^    def __init__(self, _dev, _txndisk):$/;"	m	class:Disk
+__init__	IndirectInodeDisk.py	/^    def __init__(self, _disk):$/;"	m	class:Bitmap
+__init__	IndirectInodeDisk.py	/^    def __init__(self, _inodemeta, inodedata):$/;"	m	class:InodePack
+__init__	IndirectInodeDisk.py	/^    def __init__(self, _txndisk, _dev, _start, _end):$/;"	m	class:Allocator64
+__init__	IndirectInodeDisk.py	/^    def __init__(self, idisk):$/;"	m	class:IndirectInodeDisk
+__init__	IndirectInodeDisk.py	/^    def __init__(self, logdisk, datadisks, osync=True):$/;"	m	class:WALDisk
+__init__	IndirectInodeDisk.py	/^    def __init__(self, txndisk):$/;"	m	class:InodeDisk
+__init__	InodeDisk.py	/^    def __init__(self, _dev, _txndisk):$/;"	m	class:Disk
+__init__	InodeDisk.py	/^    def __init__(self, _disk):$/;"	m	class:Bitmap
+__init__	InodeDisk.py	/^    def __init__(self, _inodemeta, inodedata):$/;"	m	class:InodePack
+__init__	InodeDisk.py	/^    def __init__(self, _txndisk, _dev, _start, _end):$/;"	m	class:Allocator64
+__init__	InodeDisk.py	/^    def __init__(self, logdisk, datadisks, osync=True):$/;"	m	class:WALDisk
+__init__	InodeDisk.py	/^    def __init__(self, txndisk):$/;"	m	class:InodeDisk
+__init__	WALDisk.py	/^    def __init__(self, logdisk, datadisks, osync=True):$/;"	m	class:WALDisk
+__init__	output.py	/^    def __init__(self, logdisk, datadisks, osync=True):$/;"	m	class:WALDisk
+__len__	DirImpl.py	/^    def __len__(self):$/;"	m	class:PartitionAsyncDiskList	file:
+__len__	DirImpl.py	/^    def __len__(self):$/;"	m	class:TripleList	file:
+__len__	IndirectInodeDisk.py	/^    def __len__(self):$/;"	m	class:PartitionAsyncDiskList	file:
+__len__	IndirectInodeDisk.py	/^    def __len__(self):$/;"	m	class:TripleList	file:
+__len__	InodeDisk.py	/^    def __len__(self):$/;"	m	class:PartitionAsyncDiskList	file:
+__len__	InodeDisk.py	/^    def __len__(self):$/;"	m	class:TripleList	file:
+__len__	WALDisk.py	/^    def __len__(self):$/;"	m	class:PartitionAsyncDiskList	file:
+__len__	WALDisk.py	/^    def __len__(self):$/;"	m	class:TripleList	file:
+__len__	diskimpl.h	/^		uint64_t __len__() {$/;"	f	class:PartitionAsyncDiskList
+__len__	diskimpl.h	/^		uint64_t __len__() {$/;"	f	class:TripleList
+__len__	output.py	/^    def __len__(self):$/;"	m	class:PartitionAsyncDiskList	file:
+__len__	output.py	/^    def __len__(self):$/;"	m	class:TripleList	file:
+__recover	DirImpl.py	/^    def __recover(self):$/;"	m	class:WALDisk	file:
+__recover	IndirectInodeDisk.py	/^    def __recover(self):$/;"	m	class:WALDisk	file:
+__recover	InodeDisk.py	/^    def __recover(self):$/;"	m	class:WALDisk	file:
+__recover	WALDisk.cc	/^void WALDisk::__recover() {$/;"	f	class:WALDisk
+__recover	WALDisk.py	/^    def __recover(self):$/;"	m	class:WALDisk	file:
+__recover	output.py	/^    def __recover(self):$/;"	m	class:WALDisk	file:
+__setitem__	DirImpl.py	/^    def __setitem__(self, key, val):$/;"	m	class:Block	file:
+__setitem__	IndirectInodeDisk.py	/^    def __setitem__(self, key, val):$/;"	m	class:Block	file:
+__setitem__	InodeDisk.py	/^    def __setitem__(self, key, val):$/;"	m	class:Block	file:
+__setitem__	WALDisk.py	/^    def __setitem__(self, key, val):$/;"	m	class:Block	file:
+__setitem__	diskimpl.h	/^		void __setitem__(uint64_t key, uint64_t val) {$/;"	f	class:Block
+__setitem__	output.py	/^    def __setitem__(self, key, val):$/;"	m	class:Block	file:
+_allocator	InodeDisk.h	/^		Allocator64 *_allocator;$/;"	m	class:InodeDisk
+_bitmap	InodeDisk.h	/^		Bitmap *_bitmap;$/;"	m	class:InodeDisk
+_cache	WALDisk.h	/^		CacheDict *_cache;$/;"	m	class:WALDisk
+_datadisks	WALDisk.h	/^		PartitionAsyncDiskList *_datadisks;$/;"	m	class:WALDisk
+_dirloop	DirImpl.h	/^		DirLookup *_dirloop;$/;"	m	class:DirImpl
+_iallocator	DirImpl.h	/^		Allocator32 *_iallocator;$/;"	m	class:DirImpl
+_ibitmap	DirImpl.h	/^		Bitmap *_ibitmap;$/;"	m	class:DirImpl
+_idisk	IndirectInodeDisk.h	/^		InodeDisk *_idisk;$/;"	m	class:IndirectInodeDisk
+_ifree	DirImpl.h	/^		Disk *_ifree;$/;"	m	class:DirImpl
+_inode	DirImpl.h	/^		IndirectInodeDisk *_inode;$/;"	m	class:DirImpl
+_inode	InodeDisk.h	/^		InodePack *_inode;$/;"	m	class:InodeDisk
+_logdisk	WALDisk.h	/^		PartitionAsyncDisk *_logdisk;$/;"	m	class:WALDisk
+_orphandisk	DirImpl.h	/^		Disk *_orphandisk;$/;"	m	class:Orphans
+_orphans	DirImpl.h	/^		Disk *_orphans;$/;"	m	class:DirImpl
+_osync	WALDisk.h	/^		int _osync;$/;"	m	class:WALDisk
+_read	DirImpl.py	/^    def _read(self, dev, bid):$/;"	m	class:WALDisk
+_read	IndirectInodeDisk.py	/^    def _read(self, dev, bid):$/;"	m	class:WALDisk
+_read	InodeDisk.py	/^    def _read(self, dev, bid):$/;"	m	class:WALDisk
+_read	WALDisk.cc	/^Block* WALDisk::_read(uint64_t dev, uint64_t bid) {$/;"	f	class:WALDisk
+_read	WALDisk.py	/^    def _read(self, dev, bid):$/;"	m	class:WALDisk
+_read	output.py	/^    def _read(self, dev, bid):$/;"	m	class:WALDisk
+_txn	WALDisk.h	/^		TripleList *_txn;$/;"	m	class:WALDisk
+_txndisk	DirImpl.h	/^		WALDisk *_txndisk;$/;"	m	class:DirImpl
+_txndisk	InodeDisk.h	/^		WALDisk *_txndisk;$/;"	m	class:InodeDisk
+alloc	DirImpl.py	/^    def alloc(self):$/;"	m	class:Allocator32
+alloc	DirImpl.py	/^    def alloc(self):$/;"	m	class:Allocator64
+alloc	DirImpl.py	/^    def alloc(self):$/;"	m	class:InodeDisk
+alloc	IndirectInodeDisk.py	/^    def alloc(self):$/;"	m	class:Allocator64
+alloc	IndirectInodeDisk.py	/^    def alloc(self):$/;"	m	class:InodeDisk
+alloc	InodeDisk.cc	/^uint64_t InodeDisk::alloc() {$/;"	f	class:InodeDisk
+alloc	InodeDisk.py	/^    def alloc(self):$/;"	m	class:Allocator64
+alloc	InodeDisk.py	/^    def alloc(self):$/;"	m	class:InodeDisk
+append	DirImpl.h	/^		void append(uint64_t value) {$/;"	f	class:Orphans
+append	DirImpl.py	/^    def append(self, value):$/;"	m	class:Orphans
+append_triple	DirImpl.py	/^    def append_triple(self, dev, bid, data):$/;"	m	class:TripleList
+append_triple	IndirectInodeDisk.py	/^    def append_triple(self, dev, bid, data):$/;"	m	class:TripleList
+append_triple	InodeDisk.py	/^    def append_triple(self, dev, bid, data):$/;"	m	class:TripleList
+append_triple	WALDisk.py	/^    def append_triple(self, dev, bid, data):$/;"	m	class:TripleList
+append_triple	diskimpl.h	/^		void append_triple(uint64_t dev, uint64_t bid, Block *data) {$/;"	f	class:TripleList
+append_triple	output.py	/^    def append_triple(self, dev, bid, data):$/;"	m	class:TripleList
+begin_tx	DirImpl.py	/^    def begin_tx(self):$/;"	m	class:IndirectInodeDisk
+begin_tx	DirImpl.py	/^    def begin_tx(self):$/;"	m	class:InodeDisk
+begin_tx	DirImpl.py	/^    def begin_tx(self):$/;"	m	class:WALDisk
+begin_tx	IndirectInodeDisk.cc	/^void IndirectInodeDisk::begin_tx() {$/;"	f	class:IndirectInodeDisk
+begin_tx	IndirectInodeDisk.py	/^    def begin_tx(self):$/;"	m	class:IndirectInodeDisk
+begin_tx	IndirectInodeDisk.py	/^    def begin_tx(self):$/;"	m	class:InodeDisk
+begin_tx	IndirectInodeDisk.py	/^    def begin_tx(self):$/;"	m	class:WALDisk
+begin_tx	InodeDisk.cc	/^void InodeDisk::begin_tx() {$/;"	f	class:InodeDisk
+begin_tx	InodeDisk.py	/^    def begin_tx(self):$/;"	m	class:InodeDisk
+begin_tx	InodeDisk.py	/^    def begin_tx(self):$/;"	m	class:WALDisk
+begin_tx	WALDisk.cc	/^void WALDisk::begin_tx() {$/;"	f	class:WALDisk
+begin_tx	WALDisk.py	/^    def begin_tx(self):$/;"	m	class:WALDisk
+begin_tx	output.py	/^    def begin_tx(self):$/;"	m	class:WALDisk
+bmap	DirImpl.py	/^    def bmap(self, vbn):$/;"	m	class:IndirectInodeDisk
+bmap	DirImpl.py	/^    def bmap(self, vbn):$/;"	m	class:InodeDisk
+bmap	IndirectInodeDisk.cc	/^uint64_t IndirectInodeDisk::bmap(uint64_t vbn) {$/;"	f	class:IndirectInodeDisk
+bmap	IndirectInodeDisk.py	/^    def bmap(self, vbn):$/;"	m	class:IndirectInodeDisk
+bmap	IndirectInodeDisk.py	/^    def bmap(self, vbn):$/;"	m	class:InodeDisk
+bmap	InodeDisk.cc	/^uint64_t InodeDisk::bmap(uint64_t vbn) {$/;"	f	class:InodeDisk
+bmap	InodeDisk.py	/^    def bmap(self, vbn):$/;"	m	class:InodeDisk
+bunmap	DirImpl.py	/^    def bunmap(self, vbn):$/;"	m	class:IndirectInodeDisk
+bunmap	DirImpl.py	/^    def bunmap(self, vbn):$/;"	m	class:InodeDisk
+bunmap	IndirectInodeDisk.cc	/^void IndirectInodeDisk::bunmap(uint64_t vbn) {$/;"	f	class:IndirectInodeDisk
+bunmap	IndirectInodeDisk.py	/^    def bunmap(self, vbn):$/;"	m	class:IndirectInodeDisk
+bunmap	IndirectInodeDisk.py	/^    def bunmap(self, vbn):$/;"	m	class:InodeDisk
+bunmap	InodeDisk.cc	/^void InodeDisk::bunmap(uint64_t vbn) {$/;"	f	class:InodeDisk
+bunmap	InodeDisk.py	/^    def bunmap(self, vbn):$/;"	m	class:InodeDisk
+clear	DirImpl.h	/^		void clear(uint64_t idx) {$/;"	f	class:Orphans
+clear	DirImpl.py	/^    def clear(self):$/;"	m	class:TripleList
+clear	DirImpl.py	/^    def clear(self, idx):$/;"	m	class:Orphans
+clear	IndirectInodeDisk.py	/^    def clear(self):$/;"	m	class:TripleList
+clear	InodeDisk.py	/^    def clear(self):$/;"	m	class:TripleList
+clear	WALDisk.py	/^    def clear(self):$/;"	m	class:TripleList
+clear	diskimpl.h	/^		void clear() {$/;"	f	class:TripleList
+clear	output.py	/^    def clear(self):$/;"	m	class:TripleList
+commit_tx	DirImpl.py	/^    def commit_tx(self):$/;"	m	class:IndirectInodeDisk
+commit_tx	DirImpl.py	/^    def commit_tx(self):$/;"	m	class:InodeDisk
+commit_tx	DirImpl.py	/^    def commit_tx(self, force=False):$/;"	m	class:WALDisk
+commit_tx	IndirectInodeDisk.cc	/^void IndirectInodeDisk::commit_tx() {$/;"	f	class:IndirectInodeDisk
+commit_tx	IndirectInodeDisk.py	/^    def commit_tx(self):$/;"	m	class:IndirectInodeDisk
+commit_tx	IndirectInodeDisk.py	/^    def commit_tx(self):$/;"	m	class:InodeDisk
+commit_tx	IndirectInodeDisk.py	/^    def commit_tx(self, force=False):$/;"	m	class:WALDisk
+commit_tx	InodeDisk.cc	/^void InodeDisk::commit_tx() {$/;"	f	class:InodeDisk
+commit_tx	InodeDisk.py	/^    def commit_tx(self):$/;"	m	class:InodeDisk
+commit_tx	InodeDisk.py	/^    def commit_tx(self, force=False):$/;"	m	class:WALDisk
+commit_tx	WALDisk.cc	/^void WALDisk::commit_tx(int force) {$/;"	f	class:WALDisk
+commit_tx	WALDisk.py	/^    def commit_tx(self, force=False):$/;"	m	class:WALDisk
+commit_tx	output.py	/^    def commit_tx(self, force=False):$/;"	m	class:WALDisk
+copy	DirImpl.py	/^    def copy(self):$/;"	m	class:TripleList
+copy	IndirectInodeDisk.py	/^    def copy(self):$/;"	m	class:TripleList
+copy	InodeDisk.py	/^    def copy(self):$/;"	m	class:TripleList
+copy	WALDisk.py	/^    def copy(self):$/;"	m	class:TripleList
+copy	diskimpl.h	/^		TripleList *copy() {$/;"	f	class:TripleList
+copy	output.py	/^    def copy(self):$/;"	m	class:TripleList
+flush	DirImpl.py	/^    def flush(self):$/;"	m	class:PartitionAsyncDisk
+flush	DirImpl.py	/^    def flush(self):$/;"	m	class:WALDisk
+flush	IndirectInodeDisk.py	/^    def flush(self):$/;"	m	class:PartitionAsyncDisk
+flush	IndirectInodeDisk.py	/^    def flush(self):$/;"	m	class:WALDisk
+flush	InodeDisk.py	/^    def flush(self):$/;"	m	class:PartitionAsyncDisk
+flush	InodeDisk.py	/^    def flush(self):$/;"	m	class:WALDisk
+flush	WALDisk.cc	/^void WALDisk::flush() {$/;"	f	class:WALDisk
+flush	WALDisk.py	/^    def flush(self):$/;"	m	class:PartitionAsyncDisk
+flush	WALDisk.py	/^    def flush(self):$/;"	m	class:WALDisk
+flush	diskimpl.h	/^		void flush() {$/;"	f	class:PartitionAsyncDisk
+flush	output.py	/^    def flush(self):$/;"	m	class:PartitionAsyncDisk
+flush	output.py	/^    def flush(self):$/;"	m	class:WALDisk
+free	DirImpl.py	/^    def free(self, lbn):$/;"	m	class:InodeDisk
+free	IndirectInodeDisk.py	/^    def free(self, lbn):$/;"	m	class:InodeDisk
+free	InodeDisk.cc	/^void InodeDisk::free(uint64_t lbn) {$/;"	f	class:InodeDisk
+free	InodeDisk.py	/^    def free(self, lbn):$/;"	m	class:InodeDisk
+get	DirImpl.py	/^    def get(self, key):$/;"	m	class:Block
+get	IndirectInodeDisk.py	/^    def get(self, key):$/;"	m	class:Block
+get3	DirImpl.py	/^    def get3(self, dev, bid, dresult):$/;"	m	class:CacheDict
+get3	IndirectInodeDisk.py	/^    def get3(self, dev, bid, dresult):$/;"	m	class:CacheDict
+get3	InodeDisk.py	/^    def get3(self, dev, bid, dresult):$/;"	m	class:CacheDict
+get3	WALDisk.py	/^    def get3(self, dev, bid, dresult):$/;"	m	class:CacheDict
+get3	diskimpl.h	/^		Block *get3(uint64_t dev, uint64_t bid, Block *dresult) {$/;"	f	class:CacheDict
+get3	output.py	/^    def get3(self, dev, bid, dresult):$/;"	m	class:CacheDict
+get_bid	DirImpl.py	/^    def get_bid(self, idx):$/;"	m	class:TripleList
+get_bid	IndirectInodeDisk.py	/^    def get_bid(self, idx):$/;"	m	class:TripleList
+get_bid	InodeDisk.py	/^    def get_bid(self, idx):$/;"	m	class:TripleList
+get_bid	WALDisk.py	/^    def get_bid(self, idx):$/;"	m	class:TripleList
+get_bid	diskimpl.h	/^		uint64_t get_bid(uint64_t idx) {$/;"	f	class:TripleList
+get_bid	output.py	/^    def get_bid(self, idx):$/;"	m	class:TripleList
+get_data	DirImpl.py	/^    def get_data(self, idx):$/;"	m	class:TripleList
+get_data	IndirectInodeDisk.py	/^    def get_data(self, idx):$/;"	m	class:TripleList
+get_data	InodeDisk.py	/^    def get_data(self, idx):$/;"	m	class:TripleList
+get_data	WALDisk.py	/^    def get_data(self, idx):$/;"	m	class:TripleList
+get_data	diskimpl.h	/^		Block* get_data(uint64_t idx) {$/;"	f	class:TripleList
+get_data	output.py	/^    def get_data(self, idx):$/;"	m	class:TripleList
+get_dev	DirImpl.py	/^    def get_dev(self, idx):$/;"	m	class:TripleList
+get_dev	IndirectInodeDisk.py	/^    def get_dev(self, idx):$/;"	m	class:TripleList
+get_dev	InodeDisk.py	/^    def get_dev(self, idx):$/;"	m	class:TripleList
+get_dev	WALDisk.py	/^    def get_dev(self, idx):$/;"	m	class:TripleList
+get_dev	diskimpl.h	/^		uint64_t get_dev(uint64_t idx) {$/;"	f	class:TripleList
+get_dev	output.py	/^    def get_dev(self, idx):$/;"	m	class:TripleList
+get_iattr	DirImpl.py	/^    def get_iattr(self, ino):$/;"	m	class:IndirectInodeDisk
+get_iattr	DirImpl.py	/^    def get_iattr(self, ino):$/;"	m	class:InodeDisk
+get_iattr	DirImpl.py	/^    def get_iattr(self, ino):$/;"	m	class:InodePack
+get_iattr	IndirectInodeDisk.cc	/^Stat* IndirectInodeDisk::get_iattr(uint64_t ino) {$/;"	f	class:IndirectInodeDisk
+get_iattr	IndirectInodeDisk.py	/^    def get_iattr(self, ino):$/;"	m	class:IndirectInodeDisk
+get_iattr	IndirectInodeDisk.py	/^    def get_iattr(self, ino):$/;"	m	class:InodeDisk
+get_iattr	IndirectInodeDisk.py	/^    def get_iattr(self, ino):$/;"	m	class:InodePack
+get_iattr	InodeDisk.cc	/^Stat* InodeDisk::get_iattr(uint64_t ino) {$/;"	f	class:InodeDisk
+get_iattr	InodeDisk.py	/^    def get_iattr(self, ino):$/;"	m	class:InodeDisk
+get_iattr	InodeDisk.py	/^    def get_iattr(self, ino):$/;"	m	class:InodePack
+get_mapping	DirImpl.py	/^    def get_mapping(self, ino, eoff, block=0):$/;"	m	class:InodePack
+get_mapping	IndirectInodeDisk.py	/^    def get_mapping(self, ino, eoff, block=0):$/;"	m	class:InodePack
+get_mapping	InodeDisk.py	/^    def get_mapping(self, ino, eoff, block=0):$/;"	m	class:InodePack
+index	DirImpl.h	/^		uint64_t index(uint64_t idx) {$/;"	f	class:Orphans
+index	DirImpl.py	/^    def index(self, idx):$/;"	m	class:Orphans
+inode	DirImpl.h	/^		IndirectInodeDisk *inode;$/;"	m	class:MyPIno
+isNone	DirImpl.py	/^    def isNone(self):$/;"	m	class:TripleList
+isNone	IndirectInodeDisk.py	/^    def isNone(self):$/;"	m	class:TripleList
+isNone	InodeDisk.py	/^    def isNone(self):$/;"	m	class:TripleList
+isNone	WALDisk.py	/^    def isNone(self):$/;"	m	class:TripleList
+isNone	diskimpl.h	/^		bool isNone() {$/;"	f	class:TripleList
+isNone	output.py	/^    def isNone(self):$/;"	m	class:TripleList
+isNotNone	DirImpl.py	/^    def isNotNone(self):$/;"	m	class:TripleList
+isNotNone	IndirectInodeDisk.py	/^    def isNotNone(self):$/;"	m	class:TripleList
+isNotNone	InodeDisk.py	/^    def isNotNone(self):$/;"	m	class:TripleList
+isNotNone	WALDisk.py	/^    def isNotNone(self):$/;"	m	class:TripleList
+isNotNone	diskimpl.h	/^		bool isNotNone() {$/;"	f	class:TripleList
+isNotNone	output.py	/^    def isNotNone(self):$/;"	m	class:TripleList
+is_free	DirImpl.py	/^    def is_free(self, vbn):$/;"	m	class:IndirectInodeDisk
+is_free	DirImpl.py	/^    def is_free(self, vbn):$/;"	m	class:InodeDisk
+is_free	IndirectInodeDisk.cc	/^int IndirectInodeDisk::is_free(uint64_t lbn) {$/;"	f	class:IndirectInodeDisk
+is_free	IndirectInodeDisk.py	/^    def is_free(self, lbn):$/;"	m	class:IndirectInodeDisk
+is_free	IndirectInodeDisk.py	/^    def is_free(self, vbn):$/;"	m	class:InodeDisk
+is_free	InodeDisk.cc	/^int InodeDisk::is_free(uint64_t lbn) {$/;"	f	class:InodeDisk
+is_free	InodeDisk.py	/^    def is_free(self, lbn):$/;"	m	class:InodeDisk
+is_mapped	DirImpl.h	/^		int is_mapped(uint64_t vbn, IndirectInodeDisk *_inode = 0) {$/;"	f	class:MyPIno
+is_mapped	DirImpl.py	/^    def is_mapped(self, vbn):$/;"	m	class:IndirectInodeDisk
+is_mapped	DirImpl.py	/^    def is_mapped(self, vbn):$/;"	m	class:InodeDisk
+is_mapped	IndirectInodeDisk.cc	/^int IndirectInodeDisk::is_mapped(uint64_t vbn) {$/;"	f	class:IndirectInodeDisk
+is_mapped	IndirectInodeDisk.py	/^    def is_mapped(self, vbn):$/;"	m	class:IndirectInodeDisk
+is_mapped	IndirectInodeDisk.py	/^    def is_mapped(self, vbn):$/;"	m	class:InodeDisk
+is_mapped	InodeDisk.cc	/^int InodeDisk::is_mapped(uint64_t vbn) {$/;"	f	class:InodeDisk
+is_mapped	InodeDisk.py	/^    def is_mapped(self, vbn):$/;"	m	class:InodeDisk
+is_set	DirImpl.py	/^    def is_set(self, lbn):$/;"	m	class:Bitmap
+is_set	IndirectInodeDisk.py	/^    def is_set(self, lbn):$/;"	m	class:Bitmap
+is_set	InodeDisk.py	/^    def is_set(self, lbn):$/;"	m	class:Bitmap
+length	DirImpl.py	/^    def length(self):$/;"	m	class:TripleList
+length	IndirectInodeDisk.py	/^    def length(self):$/;"	m	class:TripleList
+length	InodeDisk.py	/^    def length(self):$/;"	m	class:TripleList
+length	WALDisk.py	/^    def length(self):$/;"	m	class:TripleList
+length	diskimpl.h	/^		uint64_t length() {$/;"	f	class:TripleList
+length	output.py	/^    def length(self):$/;"	m	class:TripleList
+mappingi	DirImpl.h	/^		uint64_t mappingi(uint64_t vbn, IndirectInodeDisk *_inode = 0) {$/;"	f	class:MyPIno
+mappingi	DirImpl.py	/^    def mappingi(self, vbn):$/;"	m	class:IndirectInodeDisk
+mappingi	DirImpl.py	/^    def mappingi(self, vbn):$/;"	m	class:InodeDisk
+mappingi	IndirectInodeDisk.cc	/^uint64_t IndirectInodeDisk::mappingi(uint64_t vbn) {$/;"	f	class:IndirectInodeDisk
+mappingi	IndirectInodeDisk.py	/^    def mappingi(self, vbn):$/;"	m	class:IndirectInodeDisk
+mappingi	IndirectInodeDisk.py	/^    def mappingi(self, vbn):$/;"	m	class:InodeDisk
+mappingi	InodeDisk.cc	/^uint64_t InodeDisk::mappingi(uint64_t vbn) {$/;"	f	class:InodeDisk
+mappingi	InodeDisk.py	/^    def mappingi(self, vbn):$/;"	m	class:InodeDisk
+mkfs	DirImpl.py	/^    def mkfs(self):$/;"	m	class:Bitmap
+mkfs	DirImpl.py	/^    def mkfs(self):$/;"	m	class:InodeDisk
+mkfs	DirImpl.py	/^    def mkfs(self):$/;"	m	class:InodePack
+mkfs	IndirectInodeDisk.py	/^    def mkfs(self):$/;"	m	class:Bitmap
+mkfs	IndirectInodeDisk.py	/^    def mkfs(self):$/;"	m	class:InodeDisk
+mkfs	IndirectInodeDisk.py	/^    def mkfs(self):$/;"	m	class:InodePack
+mkfs	InodeDisk.cc	/^void InodeDisk::mkfs() {$/;"	f	class:InodeDisk
+mkfs	InodeDisk.py	/^    def mkfs(self):$/;"	m	class:Bitmap
+mkfs	InodeDisk.py	/^    def mkfs(self):$/;"	m	class:InodeDisk
+mkfs	InodeDisk.py	/^    def mkfs(self):$/;"	m	class:InodePack
+read	DirImpl.py	/^    def read(self, bid):$/;"	m	class:Disk
+read	DirImpl.py	/^    def read(self, blknum):$/;"	m	class:PartitionAsyncDisk
+read	DirImpl.py	/^    def read(self, dev, bid):$/;"	m	class:WALDisk
+read	DirImpl.py	/^    def read(self, ino):$/;"	m	class:InodePack
+read	DirImpl.py	/^    def read(self, lbn):$/;"	m	class:IndirectInodeDisk
+read	DirImpl.py	/^    def read(self, lbn):$/;"	m	class:InodeDisk
+read	IndirectInodeDisk.cc	/^Block* IndirectInodeDisk::read(uint64_t lbn) {$/;"	f	class:IndirectInodeDisk
+read	IndirectInodeDisk.py	/^    def read(self, bid):$/;"	m	class:Disk
+read	IndirectInodeDisk.py	/^    def read(self, blknum):$/;"	m	class:PartitionAsyncDisk
+read	IndirectInodeDisk.py	/^    def read(self, dev, bid):$/;"	m	class:WALDisk
+read	IndirectInodeDisk.py	/^    def read(self, ino):$/;"	m	class:InodePack
+read	IndirectInodeDisk.py	/^    def read(self, lbn):$/;"	m	class:IndirectInodeDisk
+read	IndirectInodeDisk.py	/^    def read(self, lbn):$/;"	m	class:InodeDisk
+read	InodeDisk.cc	/^Block* InodeDisk::read(uint64_t lbn) {$/;"	f	class:InodeDisk
+read	InodeDisk.py	/^    def read(self, bid):$/;"	m	class:Disk
+read	InodeDisk.py	/^    def read(self, blknum):$/;"	m	class:PartitionAsyncDisk
+read	InodeDisk.py	/^    def read(self, dev, bid):$/;"	m	class:WALDisk
+read	InodeDisk.py	/^    def read(self, ino):$/;"	m	class:InodePack
+read	InodeDisk.py	/^    def read(self, lbn):$/;"	m	class:InodeDisk
+read	WALDisk.cc	/^Block* WALDisk::read(uint64_t dev, uint64_t bid) {$/;"	f	class:WALDisk
+read	WALDisk.py	/^    def read(self, blknum):$/;"	m	class:PartitionAsyncDisk
+read	WALDisk.py	/^    def read(self, dev, bid):$/;"	m	class:WALDisk
+read	diskimpl.h	/^		Block* read(uint64_t blknum) {$/;"	f	class:PartitionAsyncDisk
+read	output.py	/^    def read(self, blknum):$/;"	m	class:PartitionAsyncDisk
+read	output.py	/^    def read(self, dev, bid):$/;"	m	class:WALDisk
+reset	DirImpl.h	/^		void reset() {$/;"	f	class:Orphans
+reset	DirImpl.py	/^    def reset(self):$/;"	m	class:Orphans
+set	DirImpl.py	/^    def set(self, key, val):$/;"	m	class:Block
+set	IndirectInodeDisk.py	/^    def set(self, key, val):$/;"	m	class:Block
+set	InodeDisk.py	/^    def set(self, key, val):$/;"	m	class:Block
+set	WALDisk.py	/^    def set(self, key, val):$/;"	m	class:Block
+set	diskimpl.h	/^		void set(uint64_t key, uint64_t val) {$/;"	f	class:Block
+set	output.py	/^    def set(self, key, val):$/;"	m	class:Block
+set3	DirImpl.py	/^    def set3(self, dev, bid, data):$/;"	m	class:CacheDict
+set3	IndirectInodeDisk.py	/^    def set3(self, dev, bid, data):$/;"	m	class:CacheDict
+set3	InodeDisk.py	/^    def set3(self, dev, bid, data):$/;"	m	class:CacheDict
+set3	WALDisk.py	/^    def set3(self, dev, bid, data):$/;"	m	class:CacheDict
+set3	diskimpl.h	/^		void set3(uint64_t dev, uint64_t bid, Block *data) {$/;"	f	class:CacheDict
+set3	output.py	/^    def set3(self, dev, bid, data):$/;"	m	class:CacheDict
+setNone	DirImpl.py	/^    def setNone(self, _is_none):$/;"	m	class:TripleList
+setNone	IndirectInodeDisk.py	/^    def setNone(self, _is_none):$/;"	m	class:TripleList
+setNone	InodeDisk.py	/^    def setNone(self, _is_none):$/;"	m	class:TripleList
+setNone	WALDisk.py	/^    def setNone(self, _is_none):$/;"	m	class:TripleList
+setNone	diskimpl.h	/^		void setNone(bool _is_none) {$/;"	f	class:TripleList
+setNone	output.py	/^    def setNone(self, _is_none):$/;"	m	class:TripleList
+set_bit	DirImpl.py	/^    def set_bit(self, lbn):$/;"	m	class:Bitmap
+set_bit	IndirectInodeDisk.py	/^    def set_bit(self, lbn):$/;"	m	class:Bitmap
+set_bit	InodeDisk.py	/^    def set_bit(self, lbn):$/;"	m	class:Bitmap
+set_iattr	DirImpl.py	/^    def set_iattr(self, ino, attr):$/;"	m	class:IndirectInodeDisk
+set_iattr	DirImpl.py	/^    def set_iattr(self, ino, attr):$/;"	m	class:InodeDisk
+set_iattr	DirImpl.py	/^    def set_iattr(self, ino, attr):$/;"	m	class:InodePack
+set_iattr	IndirectInodeDisk.cc	/^void IndirectInodeDisk::set_iattr(uint64_t ino, Stat *attr) {$/;"	f	class:IndirectInodeDisk
+set_iattr	IndirectInodeDisk.py	/^    def set_iattr(self, ino, attr):$/;"	m	class:IndirectInodeDisk
+set_iattr	IndirectInodeDisk.py	/^    def set_iattr(self, ino, attr):$/;"	m	class:InodeDisk
+set_iattr	IndirectInodeDisk.py	/^    def set_iattr(self, ino, attr):$/;"	m	class:InodePack
+set_iattr	InodeDisk.cc	/^void InodeDisk::set_iattr(uint64_t ino, Stat *attr) {$/;"	f	class:InodeDisk
+set_iattr	InodeDisk.py	/^    def set_iattr(self, ino, attr):$/;"	m	class:InodeDisk
+set_iattr	InodeDisk.py	/^    def set_iattr(self, ino, attr):$/;"	m	class:InodePack
+set_mapping	DirImpl.py	/^    def set_mapping(self, ino, off, ptr, block=0):$/;"	m	class:InodePack
+set_mapping	IndirectInodeDisk.py	/^    def set_mapping(self, ino, off, ptr, block=0):$/;"	m	class:InodePack
+set_mapping	InodeDisk.py	/^    def set_mapping(self, ino, off, ptr, block=0):$/;"	m	class:InodePack
+size	DirImpl.h	/^		uint64_t size() {$/;"	f	class:Orphans
+size	DirImpl.py	/^    def size(self):$/;"	m	class:Orphans
+uint64_t	DirImpl.py	/^uint64_t = int$/;"	v
+uint64_t	IndirectInodeDisk.py	/^uint64_t = int$/;"	v
+uint64_t	InodeDisk.py	/^uint64_t = int$/;"	v
+uint64_t	WALDisk.h	/^typedef unsigned long long uint64_t;$/;"	t
+uint64_t	WALDisk.py	/^uint64_t = int$/;"	v
+uint64_t	diskimpl.h	/^typedef unsigned long long uint64_t;$/;"	t
+uint64_t	output.py	/^uint64_t = int$/;"	v
+unset_bit	DirImpl.py	/^    def unset_bit(self, lbn):$/;"	m	class:Bitmap
+unset_bit	IndirectInodeDisk.py	/^    def unset_bit(self, lbn):$/;"	m	class:Bitmap
+unset_bit	InodeDisk.py	/^    def unset_bit(self, lbn):$/;"	m	class:Bitmap
+write	DirImpl.py	/^    def write(self, bid, data):$/;"	m	class:Disk
+write	DirImpl.py	/^    def write(self, blknum, block, cond=1):$/;"	m	class:PartitionAsyncDisk
+write	DirImpl.py	/^    def write(self, dev, bid, data):$/;"	m	class:WALDisk
+write	DirImpl.py	/^    def write(self, lbn, data):$/;"	m	class:IndirectInodeDisk
+write	DirImpl.py	/^    def write(self, lbn, data):$/;"	m	class:InodeDisk
+write	IndirectInodeDisk.cc	/^void IndirectInodeDisk::write(uint64_t lbn, Block *data) {$/;"	f	class:IndirectInodeDisk
+write	IndirectInodeDisk.py	/^    def write(self, bid, data):$/;"	m	class:Disk
+write	IndirectInodeDisk.py	/^    def write(self, blknum, block, cond=1):$/;"	m	class:PartitionAsyncDisk
+write	IndirectInodeDisk.py	/^    def write(self, dev, bid, data):$/;"	m	class:WALDisk
+write	IndirectInodeDisk.py	/^    def write(self, lbn, data):$/;"	m	class:IndirectInodeDisk
+write	IndirectInodeDisk.py	/^    def write(self, lbn, data):$/;"	m	class:InodeDisk
+write	InodeDisk.cc	/^void InodeDisk::write(uint64_t lbn, Block *data) {$/;"	f	class:InodeDisk
+write	InodeDisk.py	/^    def write(self, bid, data):$/;"	m	class:Disk
+write	InodeDisk.py	/^    def write(self, blknum, block, cond=1):$/;"	m	class:PartitionAsyncDisk
+write	InodeDisk.py	/^    def write(self, dev, bid, data):$/;"	m	class:WALDisk
+write	InodeDisk.py	/^    def write(self, lbn, data):$/;"	m	class:InodeDisk
+write	WALDisk.cc	/^void WALDisk::write(uint64_t dev, uint64_t bid, Block *data) {$/;"	f	class:WALDisk
+write	WALDisk.py	/^    def write(self, blknum, block, cond=1):$/;"	m	class:PartitionAsyncDisk
+write	WALDisk.py	/^    def write(self, dev, bid, data):$/;"	m	class:WALDisk
+write	diskimpl.h	/^		void write(uint64_t blknum, Block *block, int cond = 1) {$/;"	f	class:PartitionAsyncDisk
+write	output.py	/^    def write(self, blknum, block, cond=1):$/;"	m	class:PartitionAsyncDisk
+write	output.py	/^    def write(self, dev, bid, data):$/;"	m	class:WALDisk
+write_tx	DirImpl.py	/^    def write_tx(self, dev, bid, data):$/;"	m	class:WALDisk
+write_tx	DirImpl.py	/^    def write_tx(self, lbn, data):$/;"	m	class:IndirectInodeDisk
+write_tx	DirImpl.py	/^    def write_tx(self, lbn, data):$/;"	m	class:InodeDisk
+write_tx	IndirectInodeDisk.cc	/^void IndirectInodeDisk::write_tx(uint64_t lbn, Block *data) {$/;"	f	class:IndirectInodeDisk
+write_tx	IndirectInodeDisk.py	/^    def write_tx(self, dev, bid, data):$/;"	m	class:WALDisk
+write_tx	IndirectInodeDisk.py	/^    def write_tx(self, lbn, data):$/;"	m	class:IndirectInodeDisk
+write_tx	IndirectInodeDisk.py	/^    def write_tx(self, lbn, data):$/;"	m	class:InodeDisk
+write_tx	InodeDisk.cc	/^void InodeDisk::write_tx(uint64_t lbn, Block *data) {$/;"	f	class:InodeDisk
+write_tx	InodeDisk.py	/^    def write_tx(self, dev, bid, data):$/;"	m	class:WALDisk
+write_tx	InodeDisk.py	/^    def write_tx(self, lbn, data):$/;"	m	class:InodeDisk
+write_tx	WALDisk.cc	/^void WALDisk::write_tx(uint64_t dev, uint64_t bid, Block *data) {$/;"	f	class:WALDisk
+write_tx	WALDisk.py	/^    def write_tx(self, dev, bid, data):$/;"	m	class:WALDisk
+write_tx	output.py	/^    def write_tx(self, dev, bid, data):$/;"	m	class:WALDisk
+writev	DirImpl.py	/^    def writev(self, ):$/;"	m	class:WALDisk
+writev	IndirectInodeDisk.py	/^    def writev(self, ):$/;"	m	class:WALDisk
+writev	InodeDisk.py	/^    def writev(self, ):$/;"	m	class:WALDisk
+writev	WALDisk.cc	/^void WALDisk::writev(TripleList *iov) {$/;"	f	class:WALDisk
+writev	WALDisk.py	/^    def writev(self, iov):$/;"	m	class:WALDisk
+writev	output.py	/^    def writev(self, iov):$/;"	m	class:WALDisk
