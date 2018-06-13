@@ -10,6 +10,7 @@ class Disk {
 		Disk(uint64_t _dev, WALDisk *_txndisk);
 		Block *read(uint64_t bid);
 		void write(uint64_t bid, Block *data);
+		void flush();
 };
 
 class Allocator64 {
@@ -35,6 +36,7 @@ class Stat {
 		uint64_t bsize;
 		uint64_t size;
 		uint64_t fsize;
+		uint64_t mtime;
 };
 
 class InodePack {

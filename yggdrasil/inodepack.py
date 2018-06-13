@@ -3,90 +3,73 @@ if not cython.compiled:
     from disk import *
 from collections import namedtuple
 
+from py_exclusive import *    
+
+__all__ = ['InodePackDisk']
+
 
 # A class that packs multiple inodes together into a single block
 
-
-class InodePackDisk(object):
-    # Field index for meta-data
-    SIZE = 0
-    MTIME = 1
-    MODE = 2
-    NLINK = 3
-    _UNUSED = 4
-    OFF = 5
-
+# This class is auto-generated from cpp codes
+class InodePackDisk:
     def __init__(self, metadisk, datadisk):
         self._disk = metadisk
+        self.SIZE = 0
+        self.MTIME = 1
+        self.MODE = 2
+        self.NLINK = 3
+        self._UNUSED = 4
+        self.OFF = 5
 
     def read(self, ino):
         return self._disk.read(LShR(ino, 5))
 
-    @cython.locals(off='unsigned long long')
-    @cython.locals(bid='unsigned long long')
-    def set_iattr(self, ino, attr, block=None):
+    def set_iattr(self, ino, attr, block=0):
         off = Extract(8, 0, ino * 16)
-        bid = LShR(ino, 5) # UDiv(ino, 32)
-
-        if block is None:
+        bid = LShR(ino, 5)
+        if block == 0:
             inode = self._disk.read(bid)
         else:
             inode = block
-
-        inode[self.SIZE + off] = attr.size
-        inode[self.MTIME + off] = attr.mtime
-        inode[self.MODE + off] = attr.mode
-        inode[self.NLINK + off] = attr.nlink
+        inode.__setitem__(self.SIZE + off, attr.size)
+        inode.__setitem__(self.MTIME + off, attr.mtime)
+        inode.__setitem__(self.MODE + off, attr.mode)
+        inode.__setitem__(self.NLINK + off, attr.nlink)
         self._disk.write(bid, inode)
 
-    @cython.locals(off='unsigned long long')
-    @cython.locals(bid='unsigned long long')
-    def get_iattr(self, ino, block=None):
+    def get_iattr(self, ino, block=0):
         off = Extract(8, 0, ino * 16)
-        bid = LShR(ino, 5) # UDiv(ino, 32)
-
-        if block is None:
+        bid = LShR(ino, 5)
+        if block == 0:
             inode = self._disk.read(bid)
         else:
             inode = block
-        return Stat(
-                inode[off + self.SIZE],
-                inode[off + self.MTIME],
-                inode[off + self.MODE],
-                inode[off + self.NLINK])
+        stat = Stat(inode.__getitem__(off + self.SIZE), inode.__getitem__(off + self.MTIME), inode.__getitem__(off + self.MODE), inode.__getitem__(off + self.NLINK))
+        return stat
 
-    @cython.locals(ioff='unsigned long long')
-    @cython.locals(bid='unsigned long long')
-    def set_mapping(self, ino, off, ptr, block=None):
+    def set_mapping(self, ino, off, ptr, block=0):
         assertion(ULT(off, 11))
-
         ioff = Extract(8, 0, ino * 16)
-        bid = LShR(ino, 5) # UDiv(ino, 32)
-
-        if block is None:
+        bid = LShR(ino, 5)
+        if block == 0:
             old = self._disk.read(bid)
         else:
             old = block
-
-        old[off + ioff + self.OFF] = ptr
+        old.__setitem__(off + ioff + self.OFF, ptr)
         self._disk.write(bid, old)
 
-    def get_mapping(self, ino, off, block=None):
+    def get_mapping(self, ino, off, block=0):
         if off >= 11:
             return 0
         return self._get_mapping(ino, off, block)
 
-    @cython.locals(ioff='unsigned long long')
-    @cython.locals(bid='unsigned long long')
-    def _get_mapping(self, ino, off, block=None):
+    def _get_mapping(self, ino, off, block=0):
         ioff = Extract(8, 0, ino * 16)
-        bid = LShR(ino, 5) # UDiv(ino, 32)
-
-        if block is None:
+        bid = LShR(ino, 5)
+        if block == 0:
             block = self._disk.read(bid)
-
-        return block[off + ioff + self.OFF]
-
+        return block.__getitem__(off + ioff + self.OFF)
+        
     def crash(self, mach):
         return self.__class__(self._disk.crash(mach),
                 self._disk.crash(mach))
