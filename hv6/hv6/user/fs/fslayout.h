@@ -26,6 +26,8 @@ typedef unsigned int uint;
 #define ROOTINO 1  /* root i-number */
 #define BSIZE 4096 /* block size */
 
+
+
 /* file system super block */
 struct superblock {
     uint size;    /* size of file system image (blocks) */
@@ -34,6 +36,7 @@ struct superblock {
     uint nlog;    /* number of log blocks */
 };
 
+#ifndef __cplusplus
 #define NDIRECT 8
 #define NINDIRECT (BSIZE / sizeof(uint))
 #define NDINDIRECT (NINDIRECT * NINDIRECT)
@@ -92,3 +95,5 @@ struct inode {
 
 #define I_BUSY 0x1
 #define I_VALID 0x2
+
+#endif

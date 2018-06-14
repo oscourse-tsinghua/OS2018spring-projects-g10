@@ -18,6 +18,7 @@ LIBDIR		= $(shell "$(LLVM_CONFIG)" --libdir)
 LIBS		= $(shell "$(LLVM_CONFIG)" --libs)
 SYSLIBS		= $(shell "$(LLVM_CONFIG)" --system-libs)
 CXXFLAGS	= $(shell "$(LLVM_CONFIG)" --cxxflags)
+CXXFLAGS        += -std=c++11
 
 CLANG		= $(shell "$(LLVM_CONFIG)" --bindir)/clang
 

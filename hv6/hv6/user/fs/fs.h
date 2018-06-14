@@ -2,11 +2,13 @@
 
 #include "fslayout.h"
 #include "user.h"
+#include "AsyncDisk.h"
 
 #define NINODE 100 /* maximum number of active i-nodes */
 #define NDEV 10    /* maximum major device number */
 #define ROOTDEV 1  /* device number of file system root disk */
 
+#ifndef __cplusplus
 enum {
     FSIPC_OPEN = 1,
     FSIPC_PREAD,
@@ -72,6 +74,12 @@ extern struct devsw devsw[];
 
 struct pipe;
 
+#endif
+
+#ifdef __cplusplus
+#include <uapi/cdefs.h>
+#endif
+
 struct buf {
     int flags;
     uint dev;
@@ -85,6 +93,8 @@ struct buf {
 #define B_BUSY 0x1  /* buffer is locked by some process */
 #define B_VALID 0x2 /* buffer has been read from disk */
 #define B_DIRTY 0x4 /* buffer needs to be written to disk */
+
+#ifndef __cplusplus
 
 struct spinlock {
     int locked;
@@ -107,20 +117,24 @@ static inline void wakeup(void *addr)
 }
 
 void unix_init(void);
-void unix_read(uint64_t block, void *buf);
-void unix_write(uint64_t block, const void *buf);
+void unix_read(uint64_t block, void *buf, AsyncDisk*);
+void unix_write(uint64_t block, const void *buf, AsyncDisk*);
 void unix_flush(void);
 int unix_time(void);
 
 /* bio.c */
+#endif
 void binit(void);
 struct buf *bread(uint, uint);
 void brelse(struct buf *);
 void bwrite(struct buf *);
+#ifndef __cplusplus
 
 /* ide.c */
+#endif
 void iderw(struct buf *);
 void ideflush(void);
+#ifndef __cplusplus
 
 /* file.c */
 int fileopen(struct file *cwd, char *path, int omode);
@@ -152,7 +166,11 @@ static inline struct pipe *file_pipe(struct file *f)
 }
 
 /* fs.c */
+
+#endif
+
 void readsb(int dev, struct superblock *sb);
+#ifndef __cplusplus
 int dirlink(struct inode *, char *, uint);
 struct inode *dirlookup(struct inode *, char *, uint *);
 struct inode *ialloc(uint, short);
@@ -182,3 +200,5 @@ int pipealloc(int fds[2]);
 void pipeclose(struct pipe *, int);
 int piperead(struct pipe *, char *addr, int);
 int pipewrite(struct pipe *, char *addr, int);
+
+#endif

@@ -32,7 +32,7 @@ QUIET_CXX     = $(Q:@=@echo    '     C++      '$@;)
 QUIET_AR      = $(Q:@=@echo    '     AR       '$@;)
 QUIET_RANLIB  = $(Q:@=@echo    '     RANLIB   '$@;)
 
-CFLAGS       += -fno-PIE 
+CFLAGS       += -fno-PIE
 CFLAGS       += -ffreestanding -MD -MP
 CFLAGS       += -Wall
 CFLAGS       += -g
@@ -41,9 +41,9 @@ CFLAGS       += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
 CFLAGS       += -DCOMMIT_HASH=$(shell git rev-parse --short --verify HEAD)
 CFLAGS       += -DCOMMIT_BRANCH=$(shell git rev-parse --abbrev-ref --verify HEAD)
 CFLAGS       += -imacros kernel/config.h
-CFLAGS       += -I include -I $(O)/include 
+CFLAGS       += -I include -I $(O)/include
 
-KERNEL_CFLAGS = $(CFLAGS) -DNR_CPUS=$(NR_CPUS) -fwrapv -I $(PROJECT) -I kernel -I kernel/include 
+KERNEL_CFLAGS = $(CFLAGS) -DNR_CPUS=$(NR_CPUS) -fwrapv -I $(PROJECT) -I kernel -I kernel/include
 
 USER_CFLAGS   = $(CFLAGS)
 
@@ -68,7 +68,7 @@ LLVM_PREFIX  :=
 else
 LLVM_PREFIX  := "$(shell '$(LLVM_CONFIG)' --bindir)/"
 endif
-LLVM_CC      += $(LLVM_PREFIX)clang -target $(ARCH)-linux-gnu -Wno-initializer-overrides
+LLVM_CC      += $(LLVM_PREFIX)clang++ -target $(ARCH)-linux-gnu -Wno-initializer-overrides
 LLVM_LINK    := $(LLVM_PREFIX)llvm-link
 
 KERNEL_LDS   := $(O)/kernel/kernel.lds
@@ -107,7 +107,7 @@ QEMUOPTS     += -display $(QEMU_DISPLAY)
 QEMUOPTS     += -smp cpus=$(NR_CPUS)
 QEMUOPTS     += -device isa-debug-exit
 QEMUOPTS     += -debugcon file:/dev/stdout
-QEMUOPTS     += -netdev user,id=net0,hostfwd=tcp::10007-:7,hostfwd=tcp::10080-:80,hostfwd=tcp::5900-:5900
+QEMUOPTS     += -netdev user,id=net0,hostfwd=tcp::10004-:4,hostfwd=tcp::10071-:71,hostfwd=tcp::5911-:5911
 QEMUOPTS     += -device $(QEMU_NIC),netdev=net0 -object filter-dump,id=filter0,netdev=net0,file=$(O)/qemu.pcap
 QEMUOPTS     += -device $(IOMMU),intremap=on
 
@@ -190,6 +190,9 @@ $(O)/%.o: %.S
 	$(QUIET_CC)$(CC) -o $@ -c $(KERNEL_CFLAGS) $<
 
 $(O)/%.o: %.c
+	$(Q)$(MKDIR_P) $(@D)
+	$(QUIET_CC)$(CC) -o $@ -c $(KERNEL_CFLAGS) $<
+$(O)/%.o: %.cpp
 	$(Q)$(MKDIR_P) $(@D)
 	$(QUIET_CC)$(CC) -o $@ -c $(KERNEL_CFLAGS) $<
 

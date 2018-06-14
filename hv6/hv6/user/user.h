@@ -1,5 +1,6 @@
 #pragma once
 
+#ifndef __cplusplus
 #include <uapi/machine/cpufunc.h>
 #include <uapi/machine/io.h>
 #include <uapi/machine/mmu.h>
@@ -127,7 +128,12 @@ void dprintf(int, const char *, ...) __printf(2, 3);
 void vsnprintf(char *str, size_t size, const char *fmt, va_list ap) __printf(3, 0);
 void snprintf(char *str, size_t size, const char *fmt, ...) __printf(3, 4);
 void vcprintf(const char *, va_list ap) __printf(1, 0);
+#endif
+#ifdef __cplusplus
+#include <uapi/cdefs.h>
+#endif
 void cprintf(const char *, ...) __printf(1, 2);
+#ifndef __cplusplus
 
 /* xv6 compatible */
 #define vprintf vdprintf
@@ -173,7 +179,12 @@ int pipe(int fds[2]);
 void *membuf(int *pos);
 
 void *sbrk(intptr_t increment);
+#endif
+#ifdef __cplusplus
+#include <stddef.h>
+#endif
 void *malloc(size_t);
+#ifndef __cplusplus
 void *realloc(void *ap, size_t);
 void free(void *);
 
@@ -216,8 +227,13 @@ void debug_print_screen(const void *s, size_t n);
 int atoi(const char *s);
 void *memchr(const void *s, int c, size_t n);
 int memcmp(const void *v1, const void *v2, size_t n);
+#endif
+#ifdef __cplusplus
+#include <stddef.h>
+#endif
 void *memcpy(void *dst, const void *src, size_t n);
 void *memmove(void *dst, const void *src, size_t n);
+#ifndef __cplusplus
 void *memset(void *s, int c, size_t n);
 char *strchr(const char *s, int c);
 int strcmp(const char *s, const char *t);
@@ -234,3 +250,4 @@ const char *strerror(int err);
 /* for lwip */
 uint32_t sys_now(void);
 void microdelay(uint64_t delay);
+#endif

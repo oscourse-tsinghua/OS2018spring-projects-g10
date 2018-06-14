@@ -4,18 +4,21 @@ HV6_FS_SRCS :=                 \
         hv6/user/fs/fs.c       \
         hv6/user/fs/ide.c      \
         hv6/user/fs/inode.c    \
-        hv6/user/fs/log.c      \
         hv6/user/fs/pipe.c     \
         hv6/user/fs/uiommu.c   \
         lib/console.c          \
         drivers/kbd.c          \
         drivers/membuf.c       \
         drivers/uart_8250.c    \
+#        hv6/user/fs/log.c      \
 
 # use in-memory disk
 HV6_FS_SRCS +=                 \
-        hv6/user/fs/memdisk.c  \
+        hv6/user/fs/AsyncDisk.cpp \
         hv6/user/fs/memfs.S    \
+#        hv6/user/fs/memdisk.c  \
+
+HV6_FS_SRCS += hv6/user/fs/WALDisk.cpp \
 
 # use nvme disk
 HV6_FS_SRCS +=                 \
@@ -26,7 +29,7 @@ HV6_INIT_SRCS :=               \
         hv6/user/initcode.S    \
         $(HV6_FS_SRCS)
 
-HV6_INIT_OBJS := $(addprefix $(O)/,$(patsubst %.c,%.o,$(patsubst %.S,%.o,$(HV6_INIT_SRCS))))
+HV6_INIT_OBJS := $(addprefix $(O)/,$(patsubst %.cpp, %.o, $(patsubst %.c,%.o,$(patsubst %.S,%.o,$(HV6_INIT_SRCS)))))
 
 HV6_ULIB_SRCS :=                  \
         hv6/user/lib/exec.c       \

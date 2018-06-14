@@ -1,9 +1,12 @@
 #include "fs.h"
+#include "AsyncDisk.h"
 
 struct asyncdisk_buf {
 }; 
 
 uint8_t* get_asyncdisk_buffer();
+
+extern AsyncDisk* defaultAsyncDisk;
 
 void iderw(struct buf *b)
 {
@@ -13,10 +16,10 @@ void iderw(struct buf *b)
         panic("iderw: nothing to do");
 
     if (b->flags & B_DIRTY) {
-        unix_write(b->sector, b->data);
+        unix_write(b->sector, b->data, defaultAsyncDisk);
         b->flags &= ~B_DIRTY;
     } else {
-        unix_read(b->sector, b->data);
+        unix_read(b->sector, b->data, defaultAsyncDisk);
         b->flags |= B_VALID;
     }
 }
