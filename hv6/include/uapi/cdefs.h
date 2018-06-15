@@ -210,7 +210,9 @@ typedef int64_t pid_t;
 #define KLOG_NR_LINES  SZ_1K
 #define KLOG_LINE_SIZE 256
 
+#ifndef __cplusplus
 noreturn void panic(const char *fmt, ...) __printf(1, 2);
+#endif
 void syslog(int priority, const char *fmt, ...) __printf(2, 3);
 void vsyslog(int priority, const char *fmt, va_list ap) __printf(2, 0);
 int syslog_read(void *dest, size_t n, size_t offset);

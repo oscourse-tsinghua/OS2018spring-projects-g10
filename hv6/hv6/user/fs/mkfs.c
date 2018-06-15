@@ -9,7 +9,7 @@
 #define stat xv6_stat
 #include "stat.h"
 
-#define SIZE 2000
+#define SIZE 1000
 //#define NINODES 4000
 //#define NINODES 3500
 #define NINODES 4000

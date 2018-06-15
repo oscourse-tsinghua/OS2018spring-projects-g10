@@ -17,6 +17,10 @@ inline uint64_t USub(uint64_t a, uint64_t b) {
 	return a - b;
 }
 
+inline uint64_t LShR(uint64_t a, uint64_t b) {
+	return a >> b;
+}
+
 inline uint64_t UGT(uint64_t a, uint64_t b);
 
 inline uint64_t Concat32(uint64_t a, uint64_t b) {
@@ -68,6 +72,31 @@ class PartitionAsyncDisk {
 		void flush() {
 		}
 };
+
+// class Disk {
+// 	public:
+// 		void write(uint64_t blknum, Block *block, int cond = 1) {
+// 		}
+// 		Block* read(uint64_t blknum) {
+// 			return new Block();
+// 		}
+// 		void flush() {
+// 		}	
+// };
+
+// class Stat {
+//     public:
+// 		uint64_t size;
+//         uint64_t mtime;
+//         uint64_t mode;
+//         uint64_t nlink;
+// 		Stat(uint64_t _size, uint64_t _mtime, uint64_t _mode, uint64_t _nlink) {
+// 			size = _size;
+// 			mtime = _mtime;
+// 			mode = _mode;
+// 			nlink = _nlink;
+// 		}
+// };
 
 /*
 class List {

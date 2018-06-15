@@ -1,6 +1,7 @@
 #include <uapi/machine/io.h>
 #include <uapi/console.h>
 #include "fs.h"
+#include "AsyncDisk.h"
 
 typedef int (*handler_t)(pid_t);
 
@@ -35,6 +36,7 @@ static struct file *fd_lookup(pid_t pid, int fd);
 
 noreturn void fs_main(void)
 {
+    initAsyncDisk();
     struct superblock sb;
     int r;
 
