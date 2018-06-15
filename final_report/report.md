@@ -15,19 +15,60 @@
 		* [Definition 3](#definition-3)
 		* [Definition 4](#definition-4)
 		* [Definition 5](#definition-5)
+		* [Definition 6](#definition-6)
 	* [掉电文件系统开发流程](#掉电文件系统开发流程)
 * [Yggdrasil代码介绍与分析](#yggdrasil代码介绍与分析)
 	* [环境设置](#环境设置)
-	* [Yhv6文件系统结构](#yhv6文件系统结构)
 	* [Yggdrasil代码](#yggdrasil代码)
+		* [verify.py](#verifypy)
+		* [test_waldisk.py](#test_waldiskpy)
 		* [符号执行引擎](#符号执行引擎)
 		* [Z3 SMT Solver](#z3-smt-solver)
-* [hv6 OS分析与介绍](#hv6-os分析与介绍)
+* [hv6 FS分析与介绍](#hv6-fs分析与介绍)
 	* [LLVMPy Emmiter](#llvmpy-emmiter)
-	* [hv6文件系统](#hv6文件系统)
+		* [PyEmitter](#pyemitter)
+			* [Emitter.hh & Emitter.cc](#emitterhh--emittercc)
+			* [PyEmitter.hh & PyEmitter.cc](#pyemitterhh--pyemittercc)
+			* [PyLLVMEmitter.hh && PyLLVMEmitter.cc](#pyllvmemitterhh--pyllvmemittercc)
 * [工作计划](#工作计划)
-* [任务分工](#任务分工)
-* [实验收获](#实验收获)
+* [14-16周完成的工作](#14-16周完成的工作)
+	* [工作简述](#工作简述)
+	* [实验环境配置](#实验环境配置)
+		* [seasnake编译器配置](#seasnake编译器配置)
+		* [docker的配置与使用](#docker的配置与使用)
+	* [Yxv6文件系统从python到C++的移植工作](#yxv6文件系统从python到c的移植工作)
+		* [整体移植思路](#整体移植思路)
+		* [WALDisk类 (Transaction层)](#waldisk类-transaction层)
+			* [简要介绍](#简要介绍)
+			* [移植细节](#移植细节)
+		* [InodeDisk类, IndirectInodeDisk类 (VirtualTransaction层，Inode层)](#inodedisk类-indirectinodedisk类-virtualtransaction层inode层)
+			* [简要介绍](#简要介绍-1)
+			* [移植细节](#移植细节-1)
+		* [DirImpl类 (File System层)](#dirimpl类-file-system层)
+			* [简要介绍](#简要介绍-2)
+			* [移植细节](#移植细节-2)
+		* [Bitmap类](#bitmap类)
+			* [简要介绍](#简要介绍-3)
+			* [移植细节](#移植细节-3)
+		* [InodePack类](#inodepack类)
+			* [简要介绍](#简要介绍-4)
+			* [移植细节](#移植细节-4)
+		* [Partition类](#partition类)
+			* [简要介绍](#简要介绍-5)
+			* [移植细节](#移植细节-5)
+	* [将移植到C++的Yxv文件系统接入hv6操作系统](#将移植到c的yxv文件系统接入hv6操作系统)
+		* [整体思路](#整体思路)
+		* [C与C++的混合编译](#c与c的混合编译)
+		* [AsyncDisk Layer](#asyncdisk-layer)
+		* [Transaction Layer (WALDisk类](#transaction-layer-waldisk类)
+		* [其他胶水代码](#其他胶水代码)
+	* [Travis CI持续集成开发](#travis-ci持续集成开发)
+	* [实验结果展示](#实验结果展示)
+		* [hv6运行与验证](#hv6运行与验证)
+		* [移植到C++的Yxv6文件系统的验证](#移植到c的yxv6文件系统的验证)
+		* [代码量展示](#代码量展示)
+	* [实验结论与收获](#实验结论与收获)
+	* [致谢](#致谢)
 * [参考文献](#参考文献)
 
 <!-- vim-markdown-toc -->
@@ -252,11 +293,87 @@ test_atomic函数：证明Def 6，也即crash之后再恢复的状态为crash之
     3. name(llvm::Value) get the name of Value
     4. get(llvm::Value) if Value is an instruction, it returns ctx.stack["name(i)"]; if Value is a constant, it returns visitConstant(Value); if Value is am Argument, it returns ctx.stack["name(i)"]; if Value is an InlineAsm, it returns python function call asm + asmstring with quote.
 
-## 工作计划
+## 工作计划 
 1. 将hv6FS的代码做irpy产生符号化执行图
 2. 将1.中的执行图在Yggdrasil中做验证（难点）
 3. 将Yggdrasil的FS port到hv6中（难点）
 4. 验证新写出的FS代码
+
+## 14-16周完成的工作
+
+### 工作简述
+
+### 实验环境配置
+
+#### seasnake编译器配置
+
+#### docker的配置与使用
+
+### Yxv6文件系统从python到C++的移植工作
+
+#### 整体移植思路
+
+#### WALDisk类 (Transaction层)
+
+##### 简要介绍
+
+##### 移植细节
+
+#### InodeDisk类, IndirectInodeDisk类 (VirtualTransaction层，Inode层)
+
+##### 简要介绍
+
+##### 移植细节
+
+#### DirImpl类 (File System层)
+
+##### 简要介绍
+
+##### 移植细节
+
+#### Bitmap类
+
+##### 简要介绍
+
+##### 移植细节
+
+#### InodePack类
+
+##### 简要介绍
+
+##### 移植细节
+
+#### Partition类
+
+##### 简要介绍
+
+##### 移植细节
+
+### 将移植到C++的Yxv文件系统接入hv6操作系统
+
+#### 整体思路
+
+#### C与C++的混合编译
+
+#### AsyncDisk Layer
+
+#### Transaction Layer (WALDisk类
+
+#### 其他胶水代码
+
+### Travis CI持续集成开发
+
+### 实验结果展示
+
+#### hv6运行与验证
+
+#### 移植到C++的Yxv6文件系统的验证
+
+#### 代码量展示
+
+### 实验结论与收获
+
+### 致谢
 
 ## 参考文献
 
