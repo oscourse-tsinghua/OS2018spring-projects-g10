@@ -35,7 +35,7 @@
 	* [工作简述](#工作简述)
 	* [实验环境配置](#实验环境配置)
 		* [seasnake编译器配置](#seasnake编译器配置)
-		* [docker的配置与使用](#docker的配置与使用)
+		* [docker的配置(hv6与其他工具环境配置)与使用](#docker的配置hv6与其他工具环境配置与使用)
 	* [Yxv6文件系统从python到C++的移植工作](#yxv6文件系统从python到c的移植工作)
 		* [整体移植思路](#整体移植思路)
 		* [WALDisk类 (Transaction层)](#waldisk类-transaction层)
@@ -71,6 +71,7 @@
 		* [代码量展示](#代码量展示)
 	* [任务分工](#任务分工)
 	* [实验结论与收获](#实验结论与收获)
+	* [代码文件说明](#代码文件说明)
 	* [致谢](#致谢)
 * [参考文献](#参考文献)
 
@@ -306,13 +307,67 @@ test_atomic函数：证明Def 6，也即crash之后再恢复的状态为crash之
 
 ### 工作简述
 
+接下来先简要介绍在14周展示到第16周最终展示这两周内完成的工作，如下文所示：
+
+在本段时间里主要完成的工作是将经过验证的，使用python语言完成的Yxv6文件系统移植到C++中，并且使用c++到python的编译器seasnake来建立起将C++的文件系统实现转化成python代码，之后在原先的文件系统验证框架中进行验证这一流程，使得保证C++实现的文件系统本身是掉电安全的；此外，还尝试将C++完成的文件系统实际接入hv6操作系统中，使其能够为hv6操作系统提供服务，最终实现结果为成功将移植到C++的文件系统中的两层接入到hv6操作系统中，并且使得该操作系统可以成功运行。此外，还在开发过程中使用持续集成工具travis CI进行自动测试，来保证移植过程中，移植结果的正确性。
+
+下表将直观地说明本段时间工作的内容:
+
+![workload](./workload.png)
+
 ### 实验环境配置
+
+接下来说明实验环境的配置方法。
 
 #### seasnake编译器配置
 
-#### docker的配置与使用
+首先说明seasnake编译器的配置方法，根据seasnake代码仓库中的自动测试脚本travis.yml可知或者其环境配置方法，具体如下（Ubuntu 16.04操作系统中）:
+
+- sudo apt-get update -y
+- sudo apt-get install libclang-3.6 clang-3.6 -y
+- 如果发现缺少库lz，则需要安装: sudo apt-get install zlib1g-dev
+- 如果缺少库lcurses，则需要安装：sudo apt-get install libncurses5-dev
+- git clone https://github.com/pybee/seasnake.git
+- export LD_LIBRARY_PATH=/usr/lib/llvm-3.6/lib
+- export LLVM_HOME=/usr/lib/llvm-3.6
+- cd seasnake
+- pip install .
+
+至此配置完成了seasnake编译工具所需要使用的系统环境，如果需要使用seasnake工具，可以使用如下命令：
+
+- seasnake -s WALDisk.cc WALDisk.h diskimpl.h 
+
+表示编译WALDisk.cc中的内容到python，其中\*.为依赖的头文件；
+
+#### docker的配置(hv6与其他工具环境配置)与使用
+
+接下来简要介绍docker的配置与使用，在前文中已经介绍过了yggdrasil与seasnake的环境配置方法，因此在本处不再赘述，在本次课程设计中，所使用的用于持续集成开发以及日常开发使用的docker image的是使用ubuntu 16.04的image配置而成的，接下来将简要介绍在已经配置好了seasnake, yggdrasil的环境中配置hv6环境的方法(参考了group 9在ubuntu 17.10上的配置工作)：
+
+- 安装qemu;
+	- wget https://download.qemu.org/qemu-2.10.1.tar.xz
+	- tar xvJf qemu-2.10.1.tar.xz
+	- cd qemu-2.10.1
+	- sudo apt-get install automake && apt-get install libtool && sudo apt install pkg-config libglib2.0-dev
+	- ./configure
+	- make && sudo make install
+- 更新编译工具；
+	- sudo apt-get upgrade build-essential
+	- sudo apt-get upgrade g++
+- 此时已经可以使用qemu运行hv6操作系统了：
+	- make
+	- make qemu
+- 由于hv6原先实在ubuntu 17.10上编写的，使用的编译环境版本较高，使用make verify验证的时候有可能无法通过，因此需要对代码进行部分修改：
+	- 在irpy/compiler/PyLLVMEmitter.cc文件开头加上，#define _GLIBCXX_USE_CXX11_ABI 1；
+	- 在irpy/compiler/PyLLVMEmitter.cc中，形如{"inbounds", "True"}的代码一律修改成std::tuple<std::string, std::string>{"inbounds", "True"}（前者是高版本C++的一个新特性）；
+- 完成了上述操作之后，便可以使用make verify进行验证了;
+
+至此介绍完成了所有环境配置工作，完成了所有环境配置工作的docker image被push到docker hub上，供需要使用，如果需要使用，可使用以下命令获取image：
+
+- docker pull amadeuschan/osproject
 
 ### Yxv6文件系统从python到C++的移植工作
+
+接下来将介绍将Yxv6文件系统从python语言移植到C++语言实现的移植工作；
 
 #### 整体移植思路
 
@@ -380,7 +435,32 @@ test_atomic函数：证明Def 6，也即crash之后再恢复的状态为crash之
 
 ### 任务分工
 
+以下将说明在本次课程设计中，本小组的两位成员的任务分工：
+
+- 陈经基
+
+	* 相关文献阅读与分析，主要包括
+		* yggdrasil论文
+		* xv6文档
+		* 其他资料，比如与符号执行相关的tutorial
+	* 环境配置
+		* 适用于yggdrasil, hv6，以及seasnake工具的docker配置
+		* travis CI上的自动测试配置（朱昊同学也使用了另一种方法完成了travis CI的配置）
+	* 项目代码分析
+	* seasnake工具的学习与了解
+	* python到C++的文件系统主体部分的移植，包括如下部分:
+		- WALDisk (Transaction Layer)
+		- InodeDisk, IndirectInodeDisk (Virtual Transaction Layer, Inode Layer)
+		- DirImpl (File System Layer)
+		- 部分胶水代码
+	* 部分实验文档，展示slide等
+
+- 朱昊
+
+
 ### 实验结论与收获
+
+### 代码文件说明
 
 ### 致谢
 
