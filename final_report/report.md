@@ -298,7 +298,7 @@ Yggdrasil中的符号执行引擎使用了Z3， 符号化执行引擎的作用�
 在这个基本思路中，面临的基本挑战以及其解决方案分别有:
 
 - 先将C++代码编译成LLVM IR中间代码，然后使用IRPY emiteer工具将IR编译成python；这种思路的优缺点分别如下所示
-	- **（需要补充完成）**优点：
+	- 优点：可以重复使用Irpy的代码（HyperKernel中）。Irpy从llvm ir编码出发可以更本质地验证操作系统。
 	- 缺点：
 - 上述思路是hv6进行安全性验证的基本思路，但是由于上述提及到的种种缺点，最终使得我们放弃了使用irpy编译器来完成C++代码到python代码的转化，因此我们另寻思路，希望能够找到一个C++到python之间更加方便的编译器，最终我们选择了seasnake编译器，这是github上的一个开源项目，其主要优缺点如下所示：
 	- 优点：
@@ -507,7 +507,7 @@ void WALDisk::writev(TripleList *iov) {
 		* travis CI上的自动测试配置（陈经基同学也使用了另一种方法完成了travis CI的配置）
 	* 项目代码分析
 	* seasnake工具的学习与了解
-	* Irpy的学习和封装，实现了和Yggdrasil的融合。提供的使用样例见Wiki [Symbolic Execution for C Codes](https://github.com/oscourse-tsinghua/OS2018spring-projects-g10/wiki/Symbolic-Execution-for-C-Codes)。最终证明该方法存在缺陷，使用seasnake代替了该方法。
+	* Irpy的学习和封装，实现了和Yggdrasil的融合。提供的使用样例见Wiki [Symbolic Execution for C Codes](https://github.com/oscourse-tsinghua/OS2018spring-projects-g10/wiki/Symbolic-Execution-for-C-Codes)。最终证明了该方法不是最优方法，使用seasnake代替了该方法。
 	* python到C++的文件系统上三层的移植，包括如下部分:
 		- Bimap (VirtualTransaction Layer)
 		- InodePack (Inodes Layer)
