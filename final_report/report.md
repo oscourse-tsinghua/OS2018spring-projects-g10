@@ -6,7 +6,7 @@
 
 <!-- vim-markdown-toc GFM -->
 
-* [背景介绍](#背景介绍)
+* [引言](##引言)
 * [任务介绍](#任务介绍)
 * [掉电安全文件系统介绍](#掉电安全文件系统介绍)
 	* [Crash-Refinement的形式化定义](#crash-refinement的形式化定义)
@@ -77,20 +77,26 @@
 
 <!-- vim-markdown-toc -->
 
-## 背景介绍
+## 引言
 文件系统是操作系统的一个不可缺少的组成成分。而硬盘上的数据结构非常复杂，进行验证与复现bug比较困难。在这个工作中，我们讨论如何写出并验证一个crash-safe的文件系统。
 
-之前的文献中已经提及一个crash-safe的文件系统Yggdrasil，然而这个文件系统
+之前的文献 (Sigurbjarnarson et al., 2016) 中已经提及一个crash-safe的文件系统Yggdrasil，然而这个文件系统使用Python写成，尽管在使用中可以很容易地转换成C语言，但是仍然不是一个操作系统中的有机的组成成分。和它形成鲜明对比的是，我们将考虑验证一个真实操作系统中的文件系统。我们将展示如何在一个C语言写成的操作系统中，使用C++语言完成文件系统中的主要分层，并对其进行验证。
+
+再进一步，我们将考虑在一个内核安全的操作系统 (Nelson et al., 2017) 中对于文件系统进行验证。和他们不同的是，他们对于文件系统的处理略显粗暴，将文件系统直接放在用户态而并不加以验证。而我们将直接对于文件系统的crash safety进行验证。
+
+这个工作的贡献主要有以下的几个方面：
+1. 据我们所知，我们首次提出同时验证一个操作系统的内核安全性和文件系统的掉电安全性；
+2. 我们提供了验证C++写成的文件系统的完整工具链条。
+3. 我们在实验中证明了我们的文件系统确实可以防止一部分掉电漏洞，并能给出反例。
 
 ## 任务介绍
-
 接下来对本次大实验中所需要完成的实验任务进行简要介绍：
 
 在本次实验中，我们最主要的工作在于对Yggdrasil这一用于验证掉电安全的文件系统的框架的代码与论文分别进行分析与理解，并且对代码进行注释，并且得到分析文档；其次对hv6操作系统的文件系统进行分析与理解，并且得到分析文档；在完成了足够的分析了解之后，将Yggdrasil中验证的使用cython实现的fuse文件系统Yxv6fs移植到使用C实现的hv6文件系统中，并且使用hv6中原先使用的符号执行框架，与Yggdrasil中进行掉电安全性验证的部分连接起来，从而使得hv6操作系统中拥有一个掉电安全的文件系统。
 
-## 掉电安全文件系统介绍
+### 掉电安全文件系统介绍
 
-在接下来将对掉电安全的文件系统进行介绍；在我们参考的论文中，使用了crash refinement作为了文件系统掉电安全性的形式化定义；在该形式化定义下，如果要验证某一个文件系统的掉电安全性，首先需要一份本身就应当被认为是安全的规范设置，称为specification，以及在每一个特定的磁盘状态下应当满足的不变量（表示为一阶谓词逻辑定理）；在拥有了specification的情况下，要求在当前文件系统实现在任何出现系统崩溃并且之后正确地执行了回复程序recovery之后的情况下，磁盘所处的状态与必须与某一个specification中执行了同一操作之后到达的状态等价（之所以说是某个状态，是因为认为specification中能够通过操作和系统奔溃的组合能够到达的所有状态都是合法的，因此特定一个specification中到达的状态，经过指定的某一次操作之后，能够到达的状态并不一定只有一个）；如果所有实现能够达到的磁盘状态均与specification能够达到的某状态想等价，则认为这个文件系统的实现是关于这个specification掉电安全的。
+Nelson et al. (2017) 使用了crash refinement作为了文件系统掉电安全性的形式化定义；在该形式化定义下，如果要验证某一个文件系统的掉电安全性，首先需要一份本身就应当被认为是安全的规范设置，称为specification，以及在每一个特定的磁盘状态下应当满足的不变量（表示为一阶谓词逻辑定理）；在拥有了specification的情况下，要求在当前文件系统实现在任何出现系统崩溃并且之后正确地执行了回复程序recovery之后的情况下，磁盘所处的状态与必须与某一个specification中执行了同一操作之后到达的状态等价（之所以说是某个状态，是因为认为specification中能够通过操作和系统奔溃的组合能够到达的所有状态都是合法的，因此特定一个specification中到达的状态，经过指定的某一次操作之后，能够到达的状态并不一定只有一个）；如果所有实现能够达到的磁盘状态均与specification能够达到的某状态想等价，则认为这个文件系统的实现是关于这个specification掉电安全的。
 
 ### Crash-Refinement的形式化定义
 
@@ -181,40 +187,10 @@
 
 此外，还在travis CI上配置了自动测试，由于travis CI默认需要10min内至少有一次对stdout的显式输出，而在yggdrasil中，某些test需要的时间要略长于10min，因此实现了后台脚本每隔10min往stdout输出的方式来欺骗travis CI平台，从而使得能够正确地完成测试。
 
+### 符号执行引擎
+Yggdrasil中的符号执行引擎使用了Z3， 符号化执行引擎的作用为对于将函数的返回值与输入值的关系表达成计算图。符号化执行引擎支持指定的输入类型，如定长的BitVec（用来代替int，short等类型），Function（提供输入对输出的映射）等。
 
-### Yggdrasil代码
-
-#### verify.py
-
-入口程序，通过shell调用
-
-1. ('test_waldisk.py', 'WAL Layer'),
-
-2. ('test_xv6inode.py ', 'Inode layer'),
-
-3. ('test_dirspec.py', 'Directory layer'),
-
-4. ('test_bitmap.py', 'Bitmap disk refinement'),
-
-5. ('test_inodepack.py', 'Inode disk refinement'),
-
-6. ('test_partition.py', 'Multi disk partition refinement')
-
-六个测试程序。
-
-#### test_waldisk.py
-
-这个程序是用来测试WAL Layer的。总体上，使用python的unittest框架来自动执行以test开头的两个程序。
-
-test_idempotent_recovery函数：测试Def 3:r(f(x, b), true) = r(x, true)。这个函数首先创建了一个Machine对象，这个类是在yggdrasil/diskspec.py中定义的。这个函数主要分为四步
-
-对恢复后的情况的检验 得到未crash恢复之后的磁盘状态x 得到crash恢复之后的磁盘状态y 检验x == y
-
-test_atomic函数：证明Def 6，也即crash之后再恢复的状态为crash之前的状态或者已经执行过crash时的操作的状态。
-
-#### 符号执行引擎
-
-#### Z3 SMT Solver
+在Yggdrasil中，Z3还被用来验证一系列一阶谓词逻辑表达式，也即作为SMT solver使用。像我们前面所说的，约束本身会被实现为一个自动机，而实现通过Z3的符号执行也会产生一个自动机，两个自动机的某些state应当具有等价性（也即前面所说的Def 1-6），我们将这些等价性的与的取反作为一阶谓词逻辑输入Z3 solver中就可以进行验证，如果存在成立条件，表明存在掉电情况下不符合crash-safe定义的情况。同时Z3支持对于可满足的情况给出满足的解，在这个框架中也就是crash unsafe的情况。如果不存在成立条件，也就是说在任何情况下都不存在似的掉电不安全的解，也即掉电安全。
 
 ## hv6 FS分析与介绍
 
@@ -247,55 +223,8 @@ test_atomic函数：证明Def 6，也即crash之后再恢复的状态为crash之
 
 
 
-### LLVMPy Emmiter
-#### PyEmitter
-##### Emitter.hh & Emitter.cc
-
-* The Emitter class is in `namespace irpy`
-* Member: an ostream and an indent level
-* Only constructed by calling Emitter(stream = stream, indent_level = 0)
-* Two methods: 
-    1. line(string) indents for indent_level times and output the string
-    2. line(void) output a return symbol
-
-##### PyEmitter.hh & PyEmitter.cc
-
-* PyEmitter is a subclass of Emitter
-* Constructed by calling PyEmitter(stream)
-* Four methods:
-    1. genBlock(string, function<void()>) output the block + ":"; indent; execute the function; unindent
-    2. genDef(string, vector<string>, function<void()>) output "def " + function's name + "(" + args' names + ")" + ":"; indent; excute function; unindent
-    3. genException(string) output an Exception message
-    4. emitWarning(string) give warning that this file is automatically generate from another file.
-
-##### PyLLVMEmitter.hh && PyLLVMEmitter.cc
-
-* PyLLVMEmitter is a subclass of PyEmitter
-* Constructed by calling PyLLVMEmitter(stream, module) module is an instance of LLVM:Module
-* Six methods:
-    1. emitModule(void) 
-    2. emitMetadata(void);
-    3. emitBasicBlock(llvm::BasicBlock &bb);
-    4. emitStructType(const llvm::StructType &type);
-    5. emitFunction(llvm::Function &func);
-    6. emitGlobalVariable(const llvm::GlobalVariable &type);
-* function quoto(string) add quotes to a string
-* function nameType(llvm::Value) return "itypes.parse_type(ctx," + the Value's type + ")"
-* function getPrintingName(llvm::Value, bool, llvm::Module) return the name of this llvm::Value
-* MetadataVisitor is a subclass of llvm::InstVisitor<MetadataVisitor>
-* Constructed by MetadataVisitor(llvm::Module, bool) the Module to visit and recursive or not
-* Four methods:
-    1. addMDNode(llvm::MDNode) add this MDNode to the set of meta data nodes; if recursive also add its operands
-    2. visitFunction(llvm::Function) add all metadata attached to the function
-    3. visitInstruction(llvm::Instruction) add all metadata attached to the instruction
-    4. getMetaData(void) get the list of identifier, metadata pairs
-* PyInstVisitor is a subclass of llvm::InstVisitor<PyInstVisitor>
-* Constructed by PyInstVisitor(PyEmitter, llvm::Module) 
-* functions:
-    1. genPyCallFromInstruction(bool, string, T, kwargs_t)
-    2. genPyCall(string, args_t, kwargs_t) together with _genPyCall(stringm, args_t, kwargs_t) generate a function call "irpy."+string(ctx, args, kwargs)
-    3. name(llvm::Value) get the name of Value
-    4. get(llvm::Value) if Value is an instruction, it returns ctx.stack["name(i)"]; if Value is a constant, it returns visitConstant(Value); if Value is am Argument, it returns ctx.stack["name(i)"]; if Value is an InlineAsm, it returns python function call asm + asmstring with quote.
+### LLVMPy Emitter
+这一部分文档较长，请见Wiki [PyEmitter](https://github.com/oscourse-tsinghua/OS2018spring-projects-g10/wiki/PyEmitter)。
 
 ## 工作计划 
 1. 将hv6FS的代码做irpy产生符号化执行图
@@ -405,7 +334,7 @@ test_atomic函数：证明Def 6，也即crash之后再恢复的状态为crash之
 
 ##### 简要介绍
 
-首先简要介绍WALDisk类的作用，其对应到了文件系统中的Transaction层，其基本左右为保证在每一对begin_tx, commit_tx之间的所有write操作整体体现出原子性，这些write操作的集合被称之为一个transaction，一个transaction中的所有write操作要么都被写到disk上了，要不就都没有被写到disk上了，该原子性利用了一个额外的log分区来实现，基本思路为，在开始一个transaction的时候，将所有的write操作都暂时地记录到log分区上，然后直到结束一个transaction的时候，再将分区的第一个block里面的一个计数器从原先的0修改成write操作的数量，然后再从log分区中读取write操作的数据，将其写到数据分区中区，知道所有write操作都正确地写进了数据分区，才修改log分区的计数器，将其修改成0；如果在写入数据分区的过程中，反正了磁盘奔溃的操作，那么在下次重启的时候，将执行磁盘恢复操作，这时候会检查log分区中是否计数器非零，如果非零的话，将log分区中的所有write操作再重新写入数据分区，这就最终保证了整个transaction的原子性；
+首先简要介绍WALDisk类的作用，其对应到了文件系统中的Transaction层，其基本作用为保证在每一对begin_tx, commit_tx之间的所有write操作整体体现出原子性，这些write操作的集合被称之为一个transaction，一个transaction中的所有write操作要么都被写到disk上了，要不就都没有被写到disk上了，该原子性利用了一个额外的log分区来实现，基本思路为，在开始一个transaction的时候，将所有的write操作都暂时地记录到log分区上，然后直到结束一个transaction的时候，再将分区的第一个block里面的一个计数器从原先的0修改成write操作的数量，然后再从log分区中读取write操作的数据，将其写到数据分区中区，知道所有write操作都正确地写进了数据分区，才修改log分区的计数器，将其修改成0；如果在写入数据分区的过程中，反正了磁盘奔溃的操作，那么在下次重启的时候，将执行磁盘恢复操作，这时候会检查log分区中是否计数器非零，如果非零的话，将log分区中的所有write操作再重新写入数据分区，这就最终保证了整个transaction的原子性；
 
 ##### 移植细节
 
@@ -453,44 +382,63 @@ test_atomic函数：证明Def 6，也即crash之后再恢复的状态为crash之
 - 函数具有多个返回值，需要将多个返回值封装成一个类，然后函数返回这个类的对象即可；
 - 此外遇到的其他语言特性在先前的移植工作中已经遇到过了，此处不再赘述；
 
-#### Bitmap类
+#### BitmapDisk类（VirtualTransaction层）
+BitmapDisk是VirtualTransaction层的一部分，它对于每一个block只存储一个bit，这种操作对于SMT推理进行了简化，当然也浪费了磁盘空间。根据 (Sigurbjarnarson et al., 2016) 中所言，我们可以使用一个packed bitmap来代替每个block只存储一个bit的BitmapDisk，也即bitmap中的第n个bit被存储在第n个block的最低位。另一方面，一个packed bitmap disk 在每一个block中存储了4KB × 8 = 2^15 bits，第n个bit被存储在第n/2^15个block的第n mod 2^15位。这明显地表明，packed bitmap是前面提到的稀疏存储的一个crash refinement。
+
+这个类是文件系统的一部分，这个类实现了对于文件系统中单bit的操作——修改和读取。其基本作用是保证对于单bit读写的原子性。
 
 ##### 简要介绍
+在test bitmap的过程中，我们主要验证在写入和读取单bit的过程中的安全性。
 
 ##### 移植细节
+BitmapDisk中主要需要实现三个函数is_set，set_bit和unset_bit。这三个函数的主要实现方法类似，均接受一个bit作为输入，这个bit的高49位表明了block的标号，中9位表明了block中的域（field），第6位表明了bit的标号。获得了这个bit的位置之后我们就可以实现读取、设成1、设成0三种操作。
 
 #### InodePack类
+和Bitmap类类似，为了简化SMT求解，我们实际使用了Packed inode的实现，也就是说，我们验证的是一个硬盘上多个不重合分区，来作为多个硬盘的一个crash refinement。由于使用一个硬盘可以显著地减少状态数，SMT的求解将会更加快速。
+
+正像(Sigurbjarnarson et al., 2016) 中的定理6讲的，一个异步磁盘上的不重合分区，使用packed bitmap和inodes，是使用多个硬盘的crash refinement。
 
 ##### 简要介绍
+在test Inodepack的过程中，我们主要验证在写入和读取meta和映射信息的过程中的安全性。
 
 ##### 移植细节
+InodePackDisk中主要需要实现五个函数：read，set_iattr, get_iattr, set_mapping和get_mapping。需要额外实现Stat类，来存储meta信息，如大小，修改时间，模式，链接数等。
 
 #### Partition类
+Partition类比较简单，需要实现控制磁盘上分区的功能。
 
 ##### 简要介绍
+像我们前面所说的Yggdrasil中文件系统使用了多分区来作为多硬盘的crash refinement，Partition就是用来实现多分区功能的。
 
 ##### 移植细节
+Partition中的读写就是硬盘的读写，当然为了实现分区，我们对于输入的地址需要做判断，判断是否超出了本分区。
 
 ### 将移植到C++的Yxv文件系统接入hv6操作系统
 
 #### 整体思路
+在验证过程中，我们没有实现AsyncDisk类，而在C++文件系统中，我们需要实现该类作为一个模拟的磁盘驱动器，并能实现分区管理。为了验证现实世界的C++文件系统确实能够经过我们进行crash safety的验证，我们替换了原来的log层为我们的waldisk层进行验证。
 
 #### C与C++的混合编译
+在一般情况下C/C++的混合编译还算比较容易。我们可以把C语言的代码和C++语言的代码都编译成.o文件，之后进行链接。但是在一个复杂的C语言操作系统中的混合编译，就会比较麻烦了。为了后面的方便，我们使用了clang++==3.8.0作为编译器，因为它能够根据文件的后缀名使用不同的编译器。
+##### 通常情况下的混合编译方法
+通常情况下，在C语言调用C++语言的函数时，我们可以使用`extern "C"` 来包裹C++函数。而C++语言调用C语言函数的时候，需要使用`extern "C"` 来包裹需要调用的函数对应的头文件。这样就实现了相互调用。一个比较头疼的问题是，C++语言中的类与C语言中struct并不完全对应。这个问题的解决办法是把这个类的struct形式（C语言）定义成这个类的名字，比如`typedef struct AsyncDisk AsyncDisk;` 这样就可以让C语言和C++语言使用同样的代码来定义这个类的对象（结构体的实例）了。然而这里又出现一个问题，我们在定义一个类的对象时不能使用操作系统提供给我们的服务，比如new一个新的对象，因此要使用malloc（我们的操作系统中实现的）函数来分配对象的内存。
+##### C语言与C++语言的标准不同带来的问题
+前文提到了，我们会使用hv6OS中的已经实现好的malloc函数。除去malloc之外，还有很多的函数和类型定义是需要使用hv6OS中本来的定义的。这些函数的实现固然可以用C语言编译器变成.o之后直接使用，然而其声明和一部分实现却出现在了头文件中。这些头文件中有诸多不符合C++语言规范的语法，使用include之后进行编译时会出现问题。
+
+解决的办法是使用`__cplusplus` 宏来处理。我们可以从一层层引用的文件中挑出来我们需要的那些声明，然后使用`#ifndef __cplusplus ... #endif` 来包裹其余部分。
 
 #### AsyncDisk Layer
+AsyncDisk Layer与原来hv6OS实现的不同在于AsyncDisk对于不同分区进行了封装，因此需要在原来的整块硬盘（使用内存模拟）上分开不同的区域。在访问时添加对于边界的检查，防止修改其他分区。
 
-#### Transaction Layer (WALDisk类
-
-#### 其他胶水代码
-
-### Travis CI持续集成开发
-
+#### Transaction Layer (WALDisk类）
+原来hv6OS中的log层与WALDisk类的实现基本一致，只是面向过程的语言与封装起来的代码不太一样。因此，需要实现原来log层的`initlog`，`logwrite` ，`begin_op` 和`end_op` 的接口。由于原来hv6FS中的锁本质上不存在，所有对于锁的实现都是空函数，因此`begin_op` 和`end_op` 本质上没有任何意义，我们只需要实现`initlog`，`logwrite`即可。`initlog`就对应了WALDisk中的构造函数，而`logwrite`则对应了WALDisk里面的write函数。
 ### 实验结果展示
 
 #### hv6运行与验证
-
+![hv6](./def3.png)
+运行方法：`cd hv6; make; make qemu`
 #### 移植到C++的Yxv6文件系统的验证
-
+验证方法:`cd yggdrasil; python verify.py`
 ##### 正常验证结果
 
 ##### 构造带有bug的文件系统实现的验证结果
@@ -520,13 +468,34 @@ test_atomic函数：证明Def 6，也即crash之后再恢复的状态为crash之
 	* 部分实验文档，展示slide等
 
 - 朱昊
+	* 相关文献阅读与分析，主要包括
+		* yggdrasil论文
+		* xv6文档
+		* 其他资料，比如与符号执行相关的tutorial
+	* 环境配置
+		* 适用于yggdrasil, hv6，以及seasnake工具的docker配置
+		* travis CI上的自动测试配置（陈经基同学也使用了另一种方法完成了travis CI的配置）
+	* 项目代码分析
+	* seasnake工具的学习与了解
+	* Irpy的学习和封装，实现了和Yggdrasil的融合。提供的使用样例见Wiki [Symbolic Execution for C Codes](https://github.com/oscourse-tsinghua/OS2018spring-projects-g10/wiki/Symbolic-Execution-for-C-Codes)。最终证明该方法存在缺陷，使用seasnake代替了该方法。
+	* python到C++的文件系统上三层的移植，包括如下部分:
+		- Bimap (VirtualTransaction Layer)
+		- InodePack (Inodes Layer)
+		- Partition类（分区管理）
+	* 融合C++文件系统与hv6OS
+		 * AsyncDisk的实现 
+		 * WalDisk Layer的移植和胶水代码
+	* 部分实验文档，展示slide等
 
 
 ### 实验结论与收获
 
 ### 代码文件说明
+`yggdrasil` 下是我们改造的Yggdrasil文件系统的验证代码，其中`yggdrasil/yggdrasil` 是融合了irpy的Yggdrail验证代码，`hv6` 文件夹下是我们改造的hv6OS操作系统。`yxv6fs` 是我们的CPP实现文件系统。
 
 ### 致谢
+* 感谢陈渝教授，向勇教授，张强学长，秦岳同学，陈宇同学，王曦教授
+* 感谢seasnake包的贡献者
 
 ## 参考文献
 
