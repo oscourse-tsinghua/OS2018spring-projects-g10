@@ -6,9 +6,9 @@
 
 <!-- vim-markdown-toc GFM -->
 
-* [引言](##引言)
+* [引言](#引言)
 * [任务介绍](#任务介绍)
-* [掉电安全文件系统介绍](#掉电安全文件系统介绍)
+	* [掉电安全文件系统介绍](#掉电安全文件系统介绍)
 	* [Crash-Refinement的形式化定义](#crash-refinement的形式化定义)
 		* [Definition 1](#definition-1)
 		* [Definition 2](#definition-2)
@@ -19,17 +19,9 @@
 	* [掉电文件系统开发流程](#掉电文件系统开发流程)
 * [Yggdrasil代码介绍与分析](#yggdrasil代码介绍与分析)
 	* [环境设置](#环境设置)
-	* [Yggdrasil代码](#yggdrasil代码)
-		* [verify.py](#verifypy)
-		* [test_waldisk.py](#test_waldiskpy)
-		* [符号执行引擎](#符号执行引擎)
-		* [Z3 SMT Solver](#z3-smt-solver)
+	* [符号执行引擎](#符号执行引擎)
 * [hv6 FS分析与介绍](#hv6-fs分析与介绍)
-	* [LLVMPy Emmiter](#llvmpy-emmiter)
-		* [PyEmitter](#pyemitter)
-			* [Emitter.hh & Emitter.cc](#emitterhh--emittercc)
-			* [PyEmitter.hh & PyEmitter.cc](#pyemitterhh--pyemittercc)
-			* [PyLLVMEmitter.hh && PyLLVMEmitter.cc](#pyllvmemitterhh--pyllvmemittercc)
+	* [LLVMPy Emitter](#llvmpy-emitter)
 * [工作计划](#工作计划)
 * [14-16周完成的工作](#14-16周完成的工作)
 	* [工作简述](#工作简述)
@@ -47,7 +39,7 @@
 		* [DirImpl类 (File System层)](#dirimpl类-file-system层)
 			* [简要介绍](#简要介绍-2)
 			* [移植细节](#移植细节-2)
-		* [Bitmap类](#bitmap类)
+		* [BitmapDisk类（VirtualTransaction层）](#bitmapdisk类virtualtransaction层)
 			* [简要介绍](#简要介绍-3)
 			* [移植细节](#移植细节-3)
 		* [InodePack类](#inodepack类)
@@ -59,16 +51,15 @@
 	* [将移植到C++的Yxv文件系统接入hv6操作系统](#将移植到c的yxv文件系统接入hv6操作系统)
 		* [整体思路](#整体思路)
 		* [C与C++的混合编译](#c与c的混合编译)
+			* [通常情况下的混合编译方法](#通常情况下的混合编译方法)
+			* [C语言与C++语言的标准不同带来的问题](#c语言与c语言的标准不同带来的问题)
 		* [AsyncDisk Layer](#asyncdisk-layer)
-		* [Transaction Layer (WALDisk类](#transaction-layer-waldisk类)
-		* [其他胶水代码](#其他胶水代码)
-	* [Travis CI持续集成开发](#travis-ci持续集成开发)
+		* [Transaction Layer (WALDisk类）](#transaction-layer-waldisk类)
 	* [实验结果展示](#实验结果展示)
 		* [hv6运行与验证](#hv6运行与验证)
 		* [移植到C++的Yxv6文件系统的验证](#移植到c的yxv6文件系统的验证)
 			* [正常验证结果](#正常验证结果)
 			* [构造带有bug的文件系统实现的验证结果](#构造带有bug的文件系统实现的验证结果)
-		* [代码量展示](#代码量展示)
 	* [任务分工](#任务分工)
 	* [实验结论与收获](#实验结论与收获)
 	* [代码文件说明](#代码文件说明)
@@ -435,15 +426,54 @@ AsyncDisk Layer与原来hv6OS实现的不同在于AsyncDisk对于不同分区进
 ### 实验结果展示
 
 #### hv6运行与验证
-![hv6](./def3.png)
+
+![hv6](./hv6.png)
 运行方法：`cd hv6; make; make qemu`
+
 #### 移植到C++的Yxv6文件系统的验证
-验证方法:`cd yggdrasil; python verify.py`
+
+验证方法:`cd yggdrasil; make verify`
+
 ##### 正常验证结果
+
+接下来显示在实现没有问题下的正常验证通过结果:
+
+![nobug](./nobug.png)
 
 ##### 构造带有bug的文件系统实现的验证结果
 
-#### 代码量展示
+接下来修改原先掉电安全的文件系统实现，使得实现中存在bug，借此来验证本文件系统验证框架是否能够正确找出bug；修改的代码如下所示：修改的内容为删除掉所显示代码中的第一个flush操作，即将其注释掉，之后再对该文件系统进行验证，得到的结果如下所示;
+
+```c++
+void WALDisk::writev(TripleList *iov) {
+	// ......
+
+	_logdisk->write(LOG_DEV_HEADER_BLOCK, hdr_dev1);
+	_logdisk->write(LOG_DEV_HEADER_BLOCK + 1, hdr_dev2);
+	_logdisk->write(LOG_BID_HEADER_BLOCK + 1, hdr_bid2);
+	
+	//_logdisk->flush(); if this flush is deleted, the FS is not carsh-safe.
+	_logdisk->write(LOG_BID_HEADER_BLOCK, hdr_bid1);
+	_logdisk->flush();
+
+	for (uint64_t i = 0; i < iov_len; ++ i) {
+		uint64_t dev = iov->get_dev(i);
+		uint64_t bid = iov->get_bid(i);
+		Block *data = iov->get_data(i);
+		_datadisks->__getitem__(dev)->write(bid, data);
+	}
+	__commit();
+}
+
+```
+
+![bug](./bug.png)
+
+根据上述结果可以知道，最终验证框架找到了该bug，并且得出了文件系统实现不是掉电安全的结论；
+
+解释上述注释掉第一个flush会对文件系统的掉电安全性造成破坏的原因：
+
+上述代码来自于write-ahead logging disk，使用了典型的logging文件系统来保证一个transaction操作的原子性，其基本思路为首先将所有的write操作都写到log分区中，然后修改分区的第一个block的计数器，暂时将整个transaction保存下来，然后再进行写操作，所有写操作完成之后再将计数器清零，如果FS崩溃重启，则会发现log分区的计数器非零，则会开始重写log分区中保存的write操作，这样就保证了原子性。但是如果在没能确保write操作的所有数据都到达了disk上就贸然修改了计数器，则会使得最终可能出现计数器非零，但是所有write的数据还没有写入disk上（在cache上）就FS崩溃的情况，这就使得之后的恢复操作变得不可能，这就出现了一个bug，因此验证没法通过；
 
 ### 任务分工
 
